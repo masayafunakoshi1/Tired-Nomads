@@ -1,3 +1,6 @@
+A map application to mark where you've slept during a road-trip. Using React, Google-Maps-API, Places-Autocomplete, Geocode, and Combo box inputs, references, and styles. Will eventually add user-authentication, allowing users personalized maps and the ability to leave reviews, comments, and share their own maps. 
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
