@@ -42,3 +42,14 @@ h1 {
   width: 30px;
   cursor: pointer;
 }
+
+.reset {
+  position: absolute;
+  top: 15px;
+  left: 90%;
+  background: none;
+  border: none;
+  z-index: 10;
+}
+
+

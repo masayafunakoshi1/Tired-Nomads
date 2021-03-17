@@ -2,22 +2,21 @@ import
   React, 
   {useState, 
   useCallback, 
-  useRef} from 'react';
+  useRef
+} from 'react';
 import {
   GoogleMap,
   useLoadScript,
   Marker,
-  InfoWindow
 } from "@react-google-maps/api";
-
 import '@reach/combobox/styles.css'
-import { formatRelative } from "date-fns";
 
 import './App.css';
 import mapStyles from './mapStyles'
 
 import Search from './Components/Search'
 import Locate from './Components/Locate';
+import Information from './Components/Information'
 
   //Avoid rerenders
   const libraries = ["places"];
@@ -30,14 +29,14 @@ import Locate from './Components/Locate';
     lat: 41.076206,
     lng: -73.858749,
   }
-
   const options = {
     styles: mapStyles,
     disableDefaultUI: true,
     zoomControl: true
   }
 
-  
+
+
 const App = () => {
     const { isLoaded, loadError } = useLoadScript({
       //Get API key from the env.local file
@@ -47,7 +46,7 @@ const App = () => {
     });
     const [markers, setMarkers] = useState([]);
     //Gets the information of the currently selected marker
-    const[selected, setSelected] = useState(null);
+    const [selected, setSelected] = useState(null);
 
     //Use useCallback for functions you only want to run in certain situations
     const onMapClick = useCallback((event) => {
@@ -63,11 +62,22 @@ const App = () => {
         mapRef.current = map;
       }, []);
 
+    //When searching a location, zoom into the location on map
     const panTo = React.useCallback(({lat, lng}) => {
       mapRef.current.panTo({lat, lng});
       mapRef.current.setZoom(14);
     }, [])
 
+    //Delete selected marker
+    const deleteMarker = () => {
+      const newMarkerList = markers.filter((deleteFromMarkers) => {
+        if(selected !== deleteFromMarkers) {
+          return deleteFromMarkers
+        } 
+      })
+      setMarkers(newMarkerList);
+      setSelected(null);
+    }
 
     //If there is a load error, DOM will show this message
     if(loadError) return(<div className="App">Error loading maps</div>)
@@ -84,7 +94,7 @@ const App = () => {
           </h1>
 
         <Search panTo = {panTo}/>
-        <Locate panTo = {panTo} />
+        <Locate panTo = {panTo} setMarkers={setMarkers} setSelected={setSelected} />
 
         <GoogleMap 
         mapContainerStyle={mapContainerStyle} 
@@ -96,34 +106,26 @@ const App = () => {
         >
           {/* Render markers onto map in GoogleMap component with a Marker component. Need to add a key as we are iterating through."marker" is the new version of "markers*/}
           {markers.map((newMarker) =>  (
-            <Marker 
-            key={newMarker.time.toISOString()} 
-            position={{lat: newMarker.lat, lng: newMarker.lng}} 
-            //Change Icon
-            icon = {{
-              url: "/sleeping.svg",
-              scaledSize: new window.google.maps.Size(30,30),
-              origin: new window.google.maps.Point(0,0),
-              anchor: new window.google.maps.Point(15,15),
-              }}
-            onClick={() => {
-              setSelected(newMarker);
-              }}
-            />
+            <span>
+              <Marker 
+              key={newMarker.time.toISOString()} 
+              position={{lat: newMarker.lat, lng: newMarker.lng}} 
+              //Change Icon, icon styles
+              icon = {{
+                url: "/sleeping.svg",
+                scaledSize: new window.google.maps.Size(30,30),
+                origin: new window.google.maps.Point(0,0),
+                anchor: new window.google.maps.Point(15,15),
+                }}
+              onClick={() => {
+                setSelected(newMarker);
+                }}
+              />
+            </span>
             // Makes marker show when clicking on the map
           ))}
 
-          {selected ? (
-          <InfoWindow 
-          position={{lat: selected.lat, lng: selected.lng}} 
-          onCloseClick = {() => {
-            setSelected(null);
-          }}>
-            <div>
-              <h2>Slept Here</h2>
-              <p>Time: {formatRelative(selected.time, new Date())}</p>
-            </div>
-          </InfoWindow>) : null}
+          {selected ? <Information selected={selected} setSelected={setSelected} deleteMarker={deleteMarker}/> : null}
 
         </GoogleMap>
       </div>
