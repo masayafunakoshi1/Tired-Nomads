@@ -17,7 +17,6 @@ import '@reach/combobox/styles.css'
 import '../App.css';
 
 
-
 function Search({panTo}){
   const {
     ready, 

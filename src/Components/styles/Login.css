@@ -1,0 +1,17 @@
+.loginContainer {
+  max-height: 200px;
+  cursor: auto;
+}
+
+.loginTitle {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.btnContainer {
+  margin-top: 20px;
+}
+
+.links {
+  margin-top: 20px;
+}

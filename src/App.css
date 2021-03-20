@@ -1,7 +1,6 @@
 .App {
   text-align: center;
   font-family: "Courier New", Courier, monospace;
-  cursor: pointer;
 }
 
 h1 {
@@ -45,11 +44,18 @@ h1 {
 
 .reset {
   position: absolute;
-  top: 15px;
-  left: 90%;
+  top: 12px;
+  left: 94%;
   background: none;
   border: none;
   z-index: 10;
 }
 
-
+.buttons {
+  position: absolute;
+  background: none;
+  top: 15px;
+  left: 85%;
+  border: none;
+  z-index: 10;
+}
