@@ -3,7 +3,8 @@ import
     {
     useState, 
     useRef, 
-    useCallback
+    useCallback,
+    useEffect,
 }from 'react';
 
 import {
@@ -15,12 +16,16 @@ import '@reach/combobox/styles.css'
 
 import '../App.css';
 import mapStyles from '../mapStyles'
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { Button } from '@material-ui/core';
+import {
+    Alert
+} from '@material-ui/lab'
 
 import Information from './Information'
 import Search from './Search'
 import Locate from './Locate';
+import {useAuth} from './contexts/AuthContext'
 
 
   //Avoid rerenders
@@ -40,7 +45,7 @@ import Locate from './Locate';
     zoomControl: true
   }
 
-const GoogleMapContainer = () => {
+const GoogleMapsPersonal = ({keepMarkers, setKeepMarkers}) => {
 //Hooks
     const { isLoaded, loadError } = useLoadScript({
       //Get API key from the env.local file
@@ -48,20 +53,25 @@ const GoogleMapContainer = () => {
       //Loading additional libraries when loading google scripts, "in this case libraries"
       libraries,
     });
+
     const [markers, setMarkers] = useState([]);
-        //Gets the information of the currently selected marker
+    //Gets the information of the currently selected marker
     const [selected, setSelected] = useState(null);
+    const [error, setError] = useState('')
     const mapRef = useRef()
+    const history = useHistory()
+    const {currentUser, logout} = useAuth();
 
 
 //Functions
     //Use useCallback for functions you only want to run in certain situations
-    const onMapClick = useCallback((event) => {
+    const onMapClick = useCallback(async(event) => {
           setMarkers(current => [...current, {
             lat: event.latLng.lat(),
             lng: event.latLng.lng(),
             time: new Date(),
           }])
+          await setKeepMarkers(markers)
     }, [])
 
     const onMapLoad = useCallback((map) => {
@@ -86,6 +96,24 @@ const GoogleMapContainer = () => {
       setSelected(null);
     }
 
+    const handleLogout = async() => {
+        setError('')
+        try{
+            await logout()
+            history.push('/')
+        } catch{
+            setError("Failed to log out")
+        }
+    }
+
+    useEffect(() => {
+        if(markers === []){
+        setMarkers(keepMarkers)
+        } else {
+            console.log("No Changes")
+        } 
+    }, [])
+
         //If there is a load error, DOM will show this message
     if(loadError) return(<div className="App">Error loading maps</div>)
     //When map is loading, will show this message
@@ -93,22 +121,20 @@ const GoogleMapContainer = () => {
 
     return (
     <div className="App">
+        {error && <Alert severity="error">{error}</Alert>}
         <h1>
-        Car Camping 
+        Welcome back, {currentUser.email}!
             <span role="img" aria-label="sleep">
-            🚗
+            😎
             </span>
         </h1>
 
         <Search panTo = {panTo}/>
         <Locate panTo = {panTo} setMarkers={setMarkers} setSelected={setSelected} />
 
-        {/* Login & Signup buttons */}
         <div className="buttons">
-            <Button variant="contained" component={Link} to="/login">Log In</Button>
-            <Button variant="contained" color="primary" component={Link} to="/signup">Sign Up</Button>
-         </div>
-
+            <Button variant="contained" color="secondary" onClick={handleLogout}>Log Out</Button>
+        </div>
         <GoogleMap 
             mapContainerStyle={mapContainerStyle} 
             zoom={10} 
@@ -117,23 +143,23 @@ const GoogleMapContainer = () => {
             onClick={onMapClick}
             onLoad = {onMapLoad}
             >
-            {/* Render markers onto map in GoogleMap component with a Marker component. Need to add a key as we are iterating through."Marker" is the new version of "markers*/}
+            {/* Render markers onto map in GoogleMap component with a Marker component. Need to add a key as we are iterating through."marker" is the new version of "markers*/}
             {markers.map((newMarker) =>  (
                 <span>
-                <Marker 
-                key={newMarker.time.toISOString()} 
-                position={{lat: newMarker.lat, lng: newMarker.lng}} 
-                //Change Icon, icon styles
-                icon = {{
-                    url: "/sleeping.svg",
-                    scaledSize: new window.google.maps.Size(30,30),
-                    origin: new window.google.maps.Point(0,0),
-                    anchor: new window.google.maps.Point(15,15),
-                    }}
-                onClick={() => {
-                    setSelected(newMarker);
-                    }}
-                />
+                    <Marker 
+                    key={newMarker.time.toISOString()} 
+                    position={{lat: newMarker.lat, lng: newMarker.lng}} 
+                    //Change Icon, icon styles
+                    icon = {{
+                        url: "/sleeping.svg",
+                        scaledSize: new window.google.maps.Size(30,30),
+                        origin: new window.google.maps.Point(0,0),
+                        anchor: new window.google.maps.Point(15,15),
+                        }}
+                    onClick={() => {
+                        setSelected(newMarker);
+                        }}
+                    />
                 </span>
                 // Makes marker show when clicking on the map
             ))}
@@ -147,4 +173,4 @@ const GoogleMapContainer = () => {
     )
 }
 
-export default GoogleMapContainer
+export default GoogleMapsPersonal

@@ -15,3 +15,9 @@
 .links {
   margin-top: 20px;
 }
+
+.closeButton {
+  position: fixed;
+  left: 90%;
+  bottom: 90%;
+}

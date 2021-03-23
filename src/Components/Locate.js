@@ -1,12 +1,11 @@
 import React from 'react'
 import '../App.css';
 import RefreshIcon from '@material-ui/icons/Refresh';
-import { Button } from '@material-ui/core';
 import {useAuth} from './contexts/AuthContext'
-import { Link } from 'react-router-dom'
+
 
 export const Locate = ({panTo, setMarkers, setSelected}) => {
-    const {currentUser, login, signup, logout} = useAuth();
+    // const {currentUser, login, signup, logout} = useAuth();
 
     return (
         <>
@@ -28,11 +27,6 @@ export const Locate = ({panTo, setMarkers, setSelected}) => {
             }}>
                 <RefreshIcon color="secondary" fontSize="large" cursor="pointer"/>
             </button>
-            
-            <div className="buttons">
-                <Button variant="contained" component={Link} to="/login">Log In</Button>
-                <Button variant="contained" color="primary" component={Link} to="/signup">Sign Up</Button>
-            </div>
         </>
     )
 }

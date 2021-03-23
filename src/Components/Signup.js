@@ -7,6 +7,8 @@ import {
 import {
     Alert
 } from '@material-ui/lab'
+import CloseIcon from '@material-ui/icons/Close';
+
 import {useAuth} from './contexts/AuthContext'
 import { Link, useHistory } from 'react-router-dom'
 import "./styles/Login.css"
@@ -41,41 +43,52 @@ const Signup = () => {
 
     return (
         <Container className="loginContainer" maxWidth="sm">
+
             <h2 className="loginTitle">Sign Up</h2>
+
+            <div className="closeButton">
+                <Link to="/">
+                    <CloseIcon style={{ fontSize: 50 }} />
+                </Link>
+            </div>
+
             {error && <Alert severity="error">{error}</Alert>}
-            <div>
-                <TextField 
-                label="Email" 
-                margin="normal" 
-                type="email" 
-                inputRef={emailRef} 
-                required/> 
-            </div> 
-            <div>
-                <TextField 
-                label="Password"  
-                margin="normal" 
-                type="password" 
-                inputRef={passwordRef} 
-                required/>
-            </div>
-            <div>
-                <TextField 
-                label="Password Confirmation"  
-                margin="normal" 
-                type="password" 
-                inputRef={passwordConfirmRef} 
-                required/>
-            </div>
 
-            <div className="btnContainer">
-                <Button 
-                disabled = {loading}
-                variant="contained" 
-                color="primary" 
-                onClick={handleSubmit}>Sign Up</Button>
-            </div>
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <TextField 
+                    label="Email" 
+                    margin="normal" 
+                    type="email" 
+                    inputRef={emailRef} 
+                    required/> 
+                </div> 
+                <div>
+                    <TextField 
+                    label="Password"  
+                    margin="normal" 
+                    type="password" 
+                    inputRef={passwordRef} 
+                    required/>
+                </div>
+                <div>
+                    <TextField 
+                    label="Password Confirmation"  
+                    margin="normal" 
+                    type="password" 
+                    inputRef={passwordConfirmRef} 
+                    required/>
+                </div>
 
+                <div className="btnContainer">
+                    <Button 
+                    disabled = {loading}
+                    variant="contained" 
+                    color="primary"
+                    type="submit" 
+                    >Sign Up</Button>
+                </div>
+            </form>
             <div className="links">
                 Already have an account?
                 <Link to="/login">Log in</Link>

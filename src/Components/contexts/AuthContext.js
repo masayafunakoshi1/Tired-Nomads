@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
     //Unsubscribe from the onAuthStateChange listener whenever it's done
     //Does verification to see if there is a user
     useEffect(() => {
-       const unsubscribe =  auth.onAuthStateChanged(user => {
+       const unsubscribe = auth.onAuthStateChanged(user => {
             setCurrentUser(user)
             setLoading(false)
         })
