@@ -59,3 +59,7 @@ h1 {
   border: none;
   z-index: 10;
 }
+
+#saveBtn {
+  left: 81%;
+}

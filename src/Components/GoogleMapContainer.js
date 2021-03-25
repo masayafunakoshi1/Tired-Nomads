@@ -18,7 +18,7 @@ import mapStyles from '../mapStyles'
 import { Link } from 'react-router-dom'
 import { Button } from '@material-ui/core';
 
-import Information from './Information'
+import Information from './Users/Information'
 import Search from './Search'
 import Locate from './Locate';
 

@@ -1,7 +1,6 @@
 import React from 'react'
 import '../App.css';
 import RefreshIcon from '@material-ui/icons/Refresh';
-import {useAuth} from './contexts/AuthContext'
 
 
 export const Locate = ({panTo, setMarkers, setSelected}) => {
