@@ -15,7 +15,7 @@ import "./styles/Login.css"
 const Login = () => {
     const emailRef = useRef()
     const passwordRef = useRef()
-    const {login} = useAuth()
+    const {login, googleSignin} = useAuth()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
     const history = useHistory()
@@ -75,9 +75,14 @@ const Login = () => {
                 </div>
             </form>
 
+            <div>
+                <p>Login with <button onClick={googleSignin}>Google Account</button></p>
+            </div>
+
             <div className="links">
                 <Link to="/forgot-password">Forgot Password</Link>
             </div>
+
 
             <div className="links">
                 Need an account? 

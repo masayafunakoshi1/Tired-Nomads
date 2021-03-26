@@ -108,10 +108,11 @@ const GoogleMapsPersonal = () => {
     }
 
     //Get data from firestore to show on map 
+
     useEffect(() => {
       console.log(docs)
-        //  setMarkers(docs)
-    }, [])
+      setMarkers(docs)
+    }, [docs])
 
 
     //If there is a load error, DOM will show this message
