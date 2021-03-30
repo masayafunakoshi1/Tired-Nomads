@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react'
-import firebase from 'firebase/app'
-import {auth, provider, fire} from '../../firebase'
+import { useHistory } from 'react-router-dom'
+import {auth, provider} from '../../firebase'
 
 const AuthContext = React.createContext()
 
@@ -11,6 +11,7 @@ export function useAuth() {
 export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null)
     const [loading, setLoading] = useState(true)
+    const history = useHistory()
 
     //Not setting user while creating them becuase of Firebase's own method to notify you when the user is set
     function signup(email, password){
@@ -27,10 +28,12 @@ export const AuthProvider = ({ children }) => {
     }
 
     function googleSignin() {
-        fire.signInWithPopup(provider)
+        auth.signInWithPopup(provider)
+        // auth.signInWithRedirect(provider)
             .then((result) => {
                     let credential = result.credential;
                     // This gives you a Google Access Token. You can use it to access the Google API.
+                    history.push("/myMap")
                     console.log(credential, result.user)
                 }).catch((error) => {
                     console.log(error.code, error.message)

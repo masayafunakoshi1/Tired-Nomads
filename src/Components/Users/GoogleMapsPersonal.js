@@ -24,8 +24,7 @@ import Locate from '../Locate';
 import SaveButton from './SaveButton';
 
 import {useAuth} from '../contexts/AuthContext'
-import useFirestore from '../contexts/useFirestore'
-
+import {db} from '../../firebase'
 
   //Avoid rerenders
   const libraries = ["places"];
@@ -61,8 +60,7 @@ const GoogleMapsPersonal = () => {
     const mapRef = useRef()
     const history = useHistory()
     const {currentUser, logout} = useAuth();
-    const { docs } = useFirestore("markers")
-
+    const markersDocs = db.collection('users').doc('user1').collection('markers')
 
 //Functions
     //Use useCallback for functions you only want to run in certain situations
@@ -71,6 +69,7 @@ const GoogleMapsPersonal = () => {
             lat: event.latLng.lat(),
             lng: event.latLng.lng(),
             time: new Date(),
+            key: `${event.latLng.lat()}-${event.latLng.lng()}` //key is Doc ID
           }])
     }, [])
 
@@ -85,16 +84,23 @@ const GoogleMapsPersonal = () => {
     }, [])
 
     //Delete selected marker
-    const deleteMarker = () => {
-      const newMarkerList = markers.filter((deleteFromMarkers) => {
-        if(selected !== deleteFromMarkers) {
-          return deleteFromMarkers
-        } 
-      })
-      setMarkers(newMarkerList);
-      setSelected(null);
-    }
+    const deleteMarker = async (props) => {
+      const fbMarkerID = markersDocs.doc(props)
 
+        fbMarkerID.delete().then(() => {
+          console.log("Document successfully deleted!");
+      }).catch((error) => {
+          console.error("Error removing document: ", error);
+      }); 
+
+      const newMarkerList = markers.filter((deleteFromMarkers) => {
+          if(selected !== deleteFromMarkers) {
+            return deleteFromMarkers
+          } 
+        })
+      await setMarkers(newMarkerList);
+      await setSelected(null);
+    }
 
     //Logout and go back to homepage
     const handleLogout = async() => {
@@ -108,11 +114,10 @@ const GoogleMapsPersonal = () => {
     }
 
     //Get data from firestore to show on map 
-
     useEffect(() => {
-      console.log(docs)
-      setMarkers(docs)
-    }, [docs])
+      console.log(markersDocs)
+      // setMarkers(markersDocs)
+    }, [markersDocs])
 
 
     //If there is a load error, DOM will show this message
@@ -151,7 +156,7 @@ const GoogleMapsPersonal = () => {
             onClick={onMapClick}
             onLoad = {onMapLoad}
             >
-            {/* Render markers onto map in GoogleMap component with a Marker component. Need to add a key as we are iterating through."marker" is the new version of "markers*/}
+            {/* Render markers onto map in GoogleMap component with a Marker component. Need to add a key as we are iterating through."newMarker" is the new version of "markers*/}
             {markers.map((newMarker) => (
               <span>
                   <Marker 
@@ -164,6 +169,7 @@ const GoogleMapsPersonal = () => {
                       origin: new window.google.maps.Point(0,0),
                       anchor: new window.google.maps.Point(15,15),
                       }}
+                  animation={2}
                   onClick={() => {
                       setSelected(newMarker);
                       }}

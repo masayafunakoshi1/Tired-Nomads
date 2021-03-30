@@ -20,6 +20,8 @@ const Information = ({selected, setSelected, deleteMarker}) => {
 
     })
 
+    console.log(selected)
+
     return (
             <InfoWindow 
             position={{lat: parseFloat(selected.lat), lng: parseFloat(selected.lng)}} 
@@ -30,7 +32,6 @@ const Information = ({selected, setSelected, deleteMarker}) => {
                 <div>
                 <h2>Slept Here</h2>
                 <p>Time: {`${selected.time.toString()}`}</p>
-                <p>{selected.lat}</p>
 
                 <Ratings/>
                 <Comments user={user}/>
@@ -38,7 +39,7 @@ const Information = ({selected, setSelected, deleteMarker}) => {
                     variant="contained"
                     color="secondary"
                     startIcon={<DeleteIcon />}
-                    onClick={() => deleteMarker()}
+                    onClick={() => deleteMarker(selected.key)}
                     >
                     Delete
                 </Button>

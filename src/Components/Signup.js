@@ -9,6 +9,7 @@ import {
 } from '@material-ui/lab'
 import CloseIcon from '@material-ui/icons/Close';
 
+import {db} from '.././firebase'
 import {useAuth} from './contexts/AuthContext'
 import { Link, useHistory } from 'react-router-dom'
 import "./styles/Login.css"
@@ -39,6 +40,10 @@ const Signup = () => {
             setError("Failed to create an account")
         }
         setLoading(false)
+    }
+
+    const handleFirestoreAcc = () => {
+        
     }
 
     return (

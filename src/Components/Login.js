@@ -34,8 +34,8 @@ const Login = () => {
         } catch {
             setError("Failed to sign in")
         }
-        setLoading(false)
-    }
+            setLoading(false)
+        }
 
     return (
         <Container className="loginContainer" maxWidth="sm">
