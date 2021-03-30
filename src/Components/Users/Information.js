@@ -2,25 +2,25 @@ import React, {useState} from 'react'
 import {
   InfoWindow
 } from "@react-google-maps/api";
-import { formatRelative } from "date-fns";
 import '../../App.css'
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
+import {db} from '../../firebase'
 
-import Ratings from '../InfoComponents/Ratings'
-import Comments from '../InfoComponents/Comments'
+import Ratings from './InfoComponents/Ratings'
+import Comments from './InfoComponents/Comments'
 
 
 const Information = ({selected, setSelected, deleteMarker}) => {
+
+    const userRating = db.collection('users').doc('user1').collection('ratings')
+    const userReviews = db.collection('users').doc('user1').collection('reviews')
 
     const [user, setUser] = useState({
        userName: "John Chongus",
        avatar: null,
        comment: "I thought that this was a really nice place to sleep!"
-
     })
-
-    console.log(selected)
 
     return (
             <InfoWindow 
@@ -31,10 +31,10 @@ const Information = ({selected, setSelected, deleteMarker}) => {
 
                 <div>
                 <h2>Slept Here</h2>
-                <p>Time: {`${selected.time.toString()}`}</p>
+                <p>Time: {`${selected.time}`}</p>
 
-                <Ratings/>
-                <Comments user={user}/>
+                <Ratings userRating={userRating}/>
+                <Comments userReviews={userReviews} user={user}/>
                 <Button
                     variant="contained"
                     color="secondary"

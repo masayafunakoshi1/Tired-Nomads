@@ -25,9 +25,11 @@ const SaveButton = ({markers, setSuccess}) => {
             })
             batch.commit()
             .then(openAlert())
-        } 
+        } else{
+            console.log("nothing to commit")
+        }
         
-        console.log("nothing to commit")
+        
     };
 
     return (

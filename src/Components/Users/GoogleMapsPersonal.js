@@ -26,8 +26,6 @@ import SaveButton from './SaveButton';
 import {useAuth} from '../contexts/AuthContext'
 import {db} from '../../firebase'
 
-  //Avoid rerenders
-  const libraries = ["places"];
   //Must be set with 100 vw/vh to make it fit page
   const mapContainerStyle = {
     width: '100vw',
@@ -44,6 +42,9 @@ import {db} from '../../firebase'
   }
 
 const GoogleMapsPersonal = () => {
+    //Avoid rerenders
+    const [libraries] = useState(["places"]);
+
 //Hooks
     const { isLoaded, loadError } = useLoadScript({
       //Get API key from the env.local file
@@ -64,15 +65,17 @@ const GoogleMapsPersonal = () => {
 
 //Functions
     //Use useCallback for functions you only want to run in certain situations
+    //Creates markers and sets them on map click
     const onMapClick = useCallback((event) => {
           setMarkers(current => [...current, {
             lat: event.latLng.lat(),
             lng: event.latLng.lng(),
-            time: new Date(),
+            time: new Date().toString(),
             key: `${event.latLng.lat()}-${event.latLng.lng()}` //key is Doc ID
           }])
     }, [])
 
+    //Loads up map
     const onMapLoad = useCallback((map) => {
         mapRef.current = map;
       }, []);
@@ -80,27 +83,50 @@ const GoogleMapsPersonal = () => {
     //When searching a location, zoom into the location on map
     const panTo = React.useCallback(({lat, lng}) => {
       mapRef.current.panTo({lat, lng});
-      mapRef.current.setZoom(14);
+      mapRef.current.setZoom(10);
     }, [])
 
-    //Delete selected marker
+
+////////////////////////// Data Modification //////////////////////////////////
+    //Delete selected marker and firestore data, props is key value/ID on firestore
     const deleteMarker = async (props) => {
-      const fbMarkerID = markersDocs.doc(props)
+        deleteMarkerData(props)
+        const newMarkerList = markers.filter((deleteFromMarkers) => {
+            if(selected !== deleteFromMarkers) {
+              return deleteFromMarkers
+            } 
+          })
+        await setMarkers(newMarkerList);
+        await setSelected(null);
+      }
+
+
+    const deleteMarkerData = (markerKey) => {
+      const fbMarkerID = markersDocs.doc(markerKey)
 
         fbMarkerID.delete().then(() => {
           console.log("Document successfully deleted!");
       }).catch((error) => {
           console.error("Error removing document: ", error);
       }); 
-
-      const newMarkerList = markers.filter((deleteFromMarkers) => {
-          if(selected !== deleteFromMarkers) {
-            return deleteFromMarkers
-          } 
-        })
-      await setMarkers(newMarkerList);
-      await setSelected(null);
     }
+
+      
+    //Get data from firestore to show on map on page load
+    useEffect(() => {
+      markersDocs.get()
+        .then((snapshot) => {
+          const data = snapshot.docs.map((doc) => ({
+            ...doc.data(),
+            key: doc.id,
+          }))
+          setMarkers(data)
+        })
+        .catch(() => {
+          console.log("Failed to get data")
+        })
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
 
     //Logout and go back to homepage
     const handleLogout = async() => {
@@ -112,12 +138,6 @@ const GoogleMapsPersonal = () => {
             setError("Failed to log out")
         }
     }
-
-    //Get data from firestore to show on map 
-    useEffect(() => {
-      console.log(markersDocs)
-      // setMarkers(markersDocs)
-    }, [markersDocs])
 
 
     //If there is a load error, DOM will show this message
@@ -158,7 +178,6 @@ const GoogleMapsPersonal = () => {
             >
             {/* Render markers onto map in GoogleMap component with a Marker component. Need to add a key as we are iterating through."newMarker" is the new version of "markers*/}
             {markers.map((newMarker) => (
-              <span>
                   <Marker 
                   key={`${newMarker.lat}-${newMarker.lng}`} 
                   position={{lat: parseFloat(newMarker.lat), lng: parseFloat(newMarker.lng)}} 
@@ -174,7 +193,6 @@ const GoogleMapsPersonal = () => {
                       setSelected(newMarker);
                       }}
                   />
-              </span>
                 // Makes marker show when clicking on the map
             ))}
 

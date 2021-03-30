@@ -9,7 +9,6 @@ import {
 } from '@material-ui/lab'
 import CloseIcon from '@material-ui/icons/Close';
 
-import {db} from '.././firebase'
 import {useAuth} from './contexts/AuthContext'
 import { Link, useHistory } from 'react-router-dom'
 import "./styles/Login.css"
@@ -42,9 +41,9 @@ const Signup = () => {
         setLoading(false)
     }
 
-    const handleFirestoreAcc = () => {
+    // const handleFirestoreAcc = () => {
         
-    }
+    // }
 
     return (
         <Container className="loginContainer" maxWidth="sm">
