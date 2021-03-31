@@ -3,13 +3,21 @@ import { Button } from '@material-ui/core';
 import {db} from '../../firebase'
 import '../../App.css'
 
-const SaveButton = ({markers, setSuccess}) => {
+const SaveButton = ({markers, setSuccess, setError, currentUser}) => {
 
-    const openAlert = () => {
+    const openSuccessAlert = () => {
         setSuccess("Saved Successfully")
         setTimeout(() => {
             setSuccess("")
         }, 2000)
+    }
+
+    const openFailureAlert = () => {
+        setError("Failed to save")
+        setTimeout(() => {
+            setError("")
+        }, 2000)
+
     }
 
     const saveHandler = () => {
@@ -18,15 +26,15 @@ const SaveButton = ({markers, setSuccess}) => {
         if(markers !== [] || null || undefined){
             markers.forEach((doc) => {
                 let markersList = db.collection('users')
-                                .doc('user1')
+                                .doc(currentUser.uid)
                                 .collection('markers')
                                 .doc(`${doc.key}`);
                 batch.set(markersList, doc);
             })
             batch.commit()
-            .then(openAlert())
+            .then(openSuccessAlert())
         } else{
-            console.log("nothing to commit")
+            openFailureAlert()
         }
         
         

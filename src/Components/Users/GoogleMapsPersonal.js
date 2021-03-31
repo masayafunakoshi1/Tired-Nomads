@@ -61,7 +61,7 @@ const GoogleMapsPersonal = () => {
     const mapRef = useRef()
     const history = useHistory()
     const {currentUser, logout} = useAuth();
-    const markersDocs = db.collection('users').doc('user1').collection('markers')
+    const markersDocs = db.collection('users').doc(currentUser.uid).collection('markers')
 
 //Functions
     //Use useCallback for functions you only want to run in certain situations
@@ -121,7 +121,7 @@ const GoogleMapsPersonal = () => {
             key: doc.id,
           }))
           setMarkers(data)
-        })
+              })
         .catch(() => {
           console.log("Failed to get data")
         })
@@ -150,7 +150,8 @@ const GoogleMapsPersonal = () => {
         {error && <Alert severity="error">{error}</Alert>}
         {success && <Alert severity="success">{success}</Alert>}
         <h1>
-        Welcome back, {currentUser.email}!
+        Welcome back, 
+        <br/>{currentUser.email}!
             <span role="img" aria-label="sleep">
             😎
             </span>
@@ -166,7 +167,8 @@ const GoogleMapsPersonal = () => {
         <SaveButton 
         markers={markers} 
         setSuccess={setSuccess}
-        setError={setError}/>
+        setError={setError}
+        currentUser={currentUser}/>
 
         <GoogleMap 
             mapContainerStyle={mapContainerStyle} 
@@ -196,7 +198,13 @@ const GoogleMapsPersonal = () => {
                 // Makes marker show when clicking on the map
             ))}
 
-            {selected ? <Information selected={selected} setSelected={setSelected} deleteMarker={deleteMarker}/> : null}  
+            {selected ? <Information 
+                          selected={selected} 
+                          setSelected={setSelected} 
+                          deleteMarker={deleteMarker} 
+                          currentUser={currentUser}/> 
+                : null}  
+                
             </GoogleMap>
 
     </div>

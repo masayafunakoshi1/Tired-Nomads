@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react'
 import { useHistory } from 'react-router-dom'
-import {auth, provider} from '../../firebase'
+import {auth, db, provider} from '../../firebase'
 
 const AuthContext = React.createContext()
 
@@ -30,11 +30,9 @@ export const AuthProvider = ({ children }) => {
     function googleSignin() {
         auth.signInWithPopup(provider)
         // auth.signInWithRedirect(provider)
-            .then((result) => {
-                    let credential = result.credential;
+            .then(() => {
                     // This gives you a Google Access Token. You can use it to access the Google API.
                     history.push("/myMap")
-                    console.log(credential, result.user)
                 }).catch((error) => {
                     console.log(error.code, error.message)
             });

@@ -5,24 +5,23 @@ import {
 import '../../App.css'
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
-import {db} from '../../firebase'
-
 import Ratings from './InfoComponents/Ratings'
-import Comments from './InfoComponents/Comments'
+import Comments from './InfoComponents/Reviews'
+import ClickOutsideAlerter from'./InfoComponents/ClickOutsideAlerter'
 
+const Information = ({selected, setSelected, deleteMarker, currentUser}) => {
 
-const Information = ({selected, setSelected, deleteMarker}) => {
-
-    const userRating = db.collection('users').doc('user1').collection('ratings')
-    const userReviews = db.collection('users').doc('user1').collection('reviews')
+    // const userRating = db.collection('users').doc(currentUser.uid).collection('ratings')
+    // const userReviews = db.collection('users').doc(currentUser.uid).collection('reviews')
 
     const [user, setUser] = useState({
-       userName: "John Chongus",
-       avatar: null,
-       comment: "I thought that this was a really nice place to sleep!"
+       userName: `${currentUser.email}`,
+       avatar: `${currentUser.avatar}`,
+       review: "I thought that this was a really nice place to sleep!"
     })
 
     return (
+        <ClickOutsideAlerter>
             <InfoWindow 
             position={{lat: parseFloat(selected.lat), lng: parseFloat(selected.lng)}} 
             onCloseClick = {() => {
@@ -33,8 +32,8 @@ const Information = ({selected, setSelected, deleteMarker}) => {
                 <h2>Slept Here</h2>
                 <p>Time: {`${selected.time}`}</p>
 
-                <Ratings userRating={userRating}/>
-                <Comments userReviews={userReviews} user={user}/>
+                <Ratings selected={selected} currentUser={currentUser}/>
+                <Comments user={user} />
                 <Button
                     variant="contained"
                     color="secondary"
@@ -46,6 +45,7 @@ const Information = ({selected, setSelected, deleteMarker}) => {
                 </div>
 
             </InfoWindow>
+        </ClickOutsideAlerter> 
 
     )
 }
