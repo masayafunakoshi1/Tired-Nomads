@@ -15,7 +15,7 @@ import '../../App.css';
 import mapStyles from '../../mapStyles'
 
 import { useHistory } from 'react-router-dom'
-import { Button } from '@material-ui/core';
+import { Button} from '@material-ui/core';
 import {Alert} from '@material-ui/lab'
 
 import Information from './Information'
@@ -100,7 +100,6 @@ const GoogleMapsPersonal = () => {
         await setSelected(null);
       }
 
-
     const deleteMarkerData = (markerKey) => {
       const fbMarkerID = markersDocs.doc(markerKey)
 
@@ -109,7 +108,6 @@ const GoogleMapsPersonal = () => {
       }).catch((error) => {
           console.error("Error removing document: ", error);
       }); 
-      
     }
 
       
@@ -139,7 +137,6 @@ const GoogleMapsPersonal = () => {
             setError("Failed to log out")
         }
     }
-
 
     //If there is a load error, DOM will show this message
     if(loadError) return(<div className="App">Error loading maps</div>)
@@ -199,11 +196,12 @@ const GoogleMapsPersonal = () => {
                 // Makes marker show when clicking on the map
             ))}
 
-            {selected ? <Information 
-                          selected={selected} 
-                          setSelected={setSelected} 
-                          deleteMarker={deleteMarker} 
-                          currentUser={currentUser}/> 
+            {selected ?
+                    <Information 
+                    selected={selected} 
+                    setSelected={setSelected} 
+                    deleteMarker={deleteMarker} 
+                    currentUser={currentUser}/>                     
                 : null}  
                 
             </GoogleMap>

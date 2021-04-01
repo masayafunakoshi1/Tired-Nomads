@@ -79,11 +79,11 @@ const Comments = ({user}) => {
                 rowsMax={6}
                 onChange={(e) => handleChange(e)} 
                />
-              <IconButton 
-              color="primary" 
-              className={classes.iconButton} 
-              aria-label="submit"
-              >
+                <IconButton 
+                color="primary" 
+                className={classes.iconButton} 
+                aria-label="submit"
+                >
                 <PublishIcon />
               </IconButton>
             </form>

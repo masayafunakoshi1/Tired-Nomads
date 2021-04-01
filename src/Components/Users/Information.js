@@ -3,11 +3,10 @@ import {
   InfoWindow
 } from "@react-google-maps/api";
 import '../../App.css'
-import Button from '@material-ui/core/Button';
+import {Button, ClickAwayListener} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Ratings from './InfoComponents/Ratings'
 import Comments from './InfoComponents/Reviews'
-import ClickOutsideAlerter from'./InfoComponents/ClickOutsideAlerter'
 
 const Information = ({selected, setSelected, deleteMarker, currentUser}) => {
 
@@ -20,14 +19,18 @@ const Information = ({selected, setSelected, deleteMarker, currentUser}) => {
        review: "I thought that this was a really nice place to sleep!"
     })
 
+    //Handle Click Away from Component
+    const handleClickAway = () => {
+      setSelected(null)
+    }
+
     return (
-        <ClickOutsideAlerter>
             <InfoWindow 
             position={{lat: parseFloat(selected.lat), lng: parseFloat(selected.lng)}} 
             onCloseClick = {() => {
                 setSelected(null);
             }}>
-
+        <ClickAwayListener onClickAway={handleClickAway}>
                 <div>
                 <h2>Slept Here</h2>
                 <p>Time: {`${selected.time}`}</p>
@@ -43,10 +46,8 @@ const Information = ({selected, setSelected, deleteMarker, currentUser}) => {
                     Delete
                 </Button>
                 </div>
-
+            </ClickAwayListener>
             </InfoWindow>
-        </ClickOutsideAlerter> 
-
     )
 }
 
