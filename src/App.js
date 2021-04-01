@@ -16,7 +16,7 @@ const App = () => {
         <Router>
           <AuthProvider>
             <Switch>
-              <Route exact path="/" component={GoogleMapContainer}/>
+              <Route exact path="/"component={GoogleMapContainer} />
               <Privateroute 
                 path="/myMap" 
                 component={GoogleMapsPersonal}

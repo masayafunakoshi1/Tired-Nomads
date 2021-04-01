@@ -109,6 +109,7 @@ const GoogleMapsPersonal = () => {
       }).catch((error) => {
           console.error("Error removing document: ", error);
       }); 
+      
     }
 
       

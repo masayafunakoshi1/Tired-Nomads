@@ -3,7 +3,8 @@ import
     {
     useState, 
     useRef, 
-    useCallback
+    useCallback,
+    useEffect
 }from 'react';
 
 import {
@@ -21,6 +22,7 @@ import { Button } from '@material-ui/core';
 import Information from './Users/Information'
 import Search from './Search'
 import Locate from './Locate';
+import DialogPopup from './DialogPopup';
 
 
   //Avoid rerenders
@@ -40,7 +42,7 @@ import Locate from './Locate';
     zoomControl: true
   }
 
-const GoogleMapContainer = () => {
+const GoogleMapContainer = ({popup, setPopup}) => {
 //Hooks
     const { isLoaded, loadError } = useLoadScript({
       //Get API key from the env.local file
@@ -93,9 +95,9 @@ const GoogleMapContainer = () => {
     return (
     <div className="App">
         <h1>
-        Car Camping 
+          Tired Nomads
             <span role="img" aria-label="sleep">
-            🚗
+            🚗🚙🚚💤
             </span>
         </h1>
 
@@ -107,6 +109,8 @@ const GoogleMapContainer = () => {
             <Button variant="contained" component={Link} to="/login">Log In</Button>
             <Button variant="contained" color="primary" component={Link} to="/signup">Sign Up</Button>
          </div>
+
+         <DialogPopup/>
 
         <GoogleMap 
             mapContainerStyle={mapContainerStyle} 
@@ -129,6 +133,7 @@ const GoogleMapContainer = () => {
                       origin: new window.google.maps.Point(0,0),
                       anchor: new window.google.maps.Point(15,15),
                       }}
+                  animation={2}
                   onClick={() => {
                       setSelected(newMarker);
                       }}
