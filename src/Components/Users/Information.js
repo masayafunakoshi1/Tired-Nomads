@@ -13,9 +13,7 @@ const Information = ({selected, setSelected, deleteMarker, currentUser}) => {
     const [user, setUser] = useState({
        userName: currentUser ? `${currentUser.email}` : 'JohnChongus@gmail.com',
        avatar: currentUser ? `${currentUser.avatar}` : null,
-    })
-    const [reviewHolder, setReviewHolder] = useState({
-      review: "I thought that this was a really nice place to sleep!"
+       uid: currentUser ? currentUser.uid : null,
     })
 
     //Handle Click Away from Component
@@ -34,8 +32,8 @@ const Information = ({selected, setSelected, deleteMarker, currentUser}) => {
                 <h2>Slept Here</h2>
                 <p>Time: {`${selected.time}`}</p>
 
-                <Ratings selected={selected} currentUser={currentUser}/>
-                <Reviews user={user} reviewHolder={reviewHolder} setReview={setReviewHolder}/>
+                <Ratings selected={selected} user={user}/>
+                <Reviews user={user} selected={selected}/>
                 <Button
                     variant="contained"
                     color="secondary"

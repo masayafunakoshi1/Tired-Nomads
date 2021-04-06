@@ -92,6 +92,7 @@ const GoogleMapsPersonal = () => {
     const deleteMarker = async (props) => {
         deleteMarkerData(props)
         await deleteRatingData(props)
+        await deleteReviewData(props)
         const newMarkerList = markers.filter((deleteFromMarkers) => {
             if(selected !== deleteFromMarkers) {
               return deleteFromMarkers
@@ -121,6 +122,16 @@ const GoogleMapsPersonal = () => {
       }); 
     }
 
+    const deleteReviewData = (markerKey) => {
+      const fbReviewID = db.collection('users').doc(currentUser.uid).collection('reviews').doc(markerKey)
+
+        fbReviewID.delete().then(() => {
+          console.log("Review successfully deleted!");
+      }).catch((error) => {
+          console.error("Error removing document: ", error);
+      }); 
+    }
+
     //Get data from firestore to show on map on page load
     useEffect(() => {
       markersDocs.get()
@@ -134,7 +145,7 @@ const GoogleMapsPersonal = () => {
         .catch(() => {
           console.log("Failed to get data")
         })
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [])
 
 /////////////////////////////////// Logout /////////////////////////////////////
 

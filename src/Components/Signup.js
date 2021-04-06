@@ -11,7 +11,7 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import {useAuth} from './contexts/AuthContext'
 import { Link, useHistory } from 'react-router-dom'
-import "./styles/Login.css"
+import "../styles/Login.css"
 
 const Signup = () => {
     const emailRef = useRef()

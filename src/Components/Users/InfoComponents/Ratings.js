@@ -4,9 +4,9 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import {db} from '../../../firebase'
 
-const Ratings = ({selected, currentUser}) => {
+const Ratings = ({selected, user}) => {
     const [value, setValue] = useState(1)
-    const userRating = db.collection('users').doc(currentUser ? currentUser.uid : 'user1').collection('ratings')
+    const userRating = db.collection('users').doc(user ? user.uid : null).collection('ratings')
 
     //Adds value into firestore "ratings", using same key/id as "markers" in firestore
     //Sets value state hook AND rating to newValue, and sends to firestore
