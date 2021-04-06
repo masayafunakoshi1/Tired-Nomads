@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import PublishIcon from '@material-ui/icons/Publish';
@@ -14,15 +14,13 @@ import {
   IconButton
 } from '@material-ui/core';
 
-
-
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
     maxWidth: '50ch',
     backgroundColor: theme.palette.background.paper,
         '& .MuiTextField-root': {
-          width: '30ch',
+          width: '35ch',
         },
   },
   inline: {
@@ -31,18 +29,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const Comments = ({user}) => {
+const Reviews = ({user, reviewHolder, setReviewHolder}) => {
+    const [text, setText] = useState('')
     const classes = useStyles();
 
     const handleSubmit =(e) => {
       e.preventDefault();
-      console.log("submitted")
+      setReviewHolder({
+        review: `${text}`
+      })
+      setText('')
+      console.log(reviewHolder)
     }
-
-    const handleChange = (e) => {
-      console.log(e.target.value)
-    }
-
 
     return (
         <List className={classes.root}>
@@ -61,27 +59,27 @@ const Comments = ({user}) => {
                         color="textPrimary"
                     >
                     </Typography>
-                    {user.comment}
+                    {reviewHolder.review}
                     <Divider component={"span"}/>
                 </>
             }
             />
         </ListItem>
-            <form onSubmit={handleSubmit} noValidate autoComplete="off">
-              <TextField 
-                multiline={true}
-                id="outlined-basic" 
-                label="Add a review"
-                placeholder="Write review here" 
-                variant="outlined"
-                size="medium"
-                rows={2}
-                rowsMax={6}
-                onChange={(e) => handleChange(e)} 
-               />
+            <form onSubmit={e => handleSubmit(e)} noValidate autoComplete="off">
+                <TextField 
+                  multiline={true}
+                  id="outlined-basic" 
+                  label="Add a review"
+                  placeholder="Write review here" 
+                  variant="outlined"
+                  size="medium"
+                  rows={2}
+                  rowsMax={6}
+                  onChange={(e) => setText(e)}
+                />
                 <IconButton 
-                color="primary" 
-                className={classes.iconButton} 
+                color="primary"
+                type="submit" 
                 aria-label="submit"
                 >
                 <PublishIcon />
@@ -91,4 +89,4 @@ const Comments = ({user}) => {
     )
 }
 
-export default Comments
+export default Reviews
