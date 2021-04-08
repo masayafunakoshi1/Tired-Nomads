@@ -13,7 +13,7 @@ const Information = ({selected, setSelected, deleteMarker, currentUser}) => {
     const [user, setUser] = useState({
        userName: currentUser ? `${currentUser.email}` : 'JohnChongus@gmail.com',
        avatar: currentUser ? `${currentUser.avatar}` : null,
-       uid: currentUser ? currentUser.uid : null,
+       uid: currentUser ? currentUser.uid : "user1",
     })
 
     //Handle Click Away from Component

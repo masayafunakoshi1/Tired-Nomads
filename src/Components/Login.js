@@ -76,7 +76,7 @@ const Login = () => {
             </form>
 
             <div>
-                <p>Login with <button onClick={googleSignin}>Google Account</button></p>
+                <p>Login with <button onClick={googleSignin()}>Google Account</button></p>
             </div>
 
             <div className="links">

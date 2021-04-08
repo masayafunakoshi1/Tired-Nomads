@@ -99,7 +99,7 @@ const Reviews = ({user, selected}) => {
                         color="textPrimary"
                     >
           {/*////// May want to add multiple reviews eventually/////// */}
-                      {reviewArr}
+                      {user && user.uid !== "user1" ? reviewArr : "This was a nice Walmart to sleep at"}
 
                       {reviewArr !== null || undefined ? <IconButton 
                         color="secondary"

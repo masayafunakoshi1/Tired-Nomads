@@ -12,13 +12,13 @@ import GoogleMapsPersonal from './Components/Users/GoogleMapsPersonal';
 const App = () => {
 
     return (
+      <Router>
       <div className="App">
-        <Router>
           <AuthProvider>
             <Switch>
               <Route exact path="/"component={GoogleMapContainer} />
               <Privateroute 
-                path="/myMap" 
+                exact path="/myMap" 
                 component={GoogleMapsPersonal}
               />
               <Route path="/login" component={Login}/>
@@ -26,8 +26,8 @@ const App = () => {
               {/* add private route for user's personal data */}
             </Switch>
           </AuthProvider>
-        </Router>
       </div>
+      </Router>
     );
   }
 

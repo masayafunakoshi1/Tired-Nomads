@@ -12,22 +12,26 @@ const Ratings = ({selected, user}) => {
     //Sets value state hook AND rating to newValue, and sends to firestore
     const onValueSet = (newValue) => {
         setValue(newValue)
-        userRating.doc(`${selected.key}`).set({
-            rating: newValue
-        }).then(() => {
-            console.log("Rating set successfully")
-        }).catch((err) => {
-            console.log(err)
-        })
+        if(userRating){
+            userRating.doc(`${selected.key}`).set({
+                rating: newValue
+            }).then(() => {
+                console.log("Rating set successfully")
+            }).catch((err) => {
+                console.log(err)
+            })
+        } else {
+            console.log("No account storage located")
+        }
     }
 
     //Gets "rating" value from firestore and sets it on selected marker's information window
     useEffect(() => {
+        if(userRating){
         userRating.doc(`${selected.key}`).get()
             .then((doc) => {
                 if(doc.exists){
                     setValue(doc.data().rating)
-                    console.log(doc.data().rating)
                 }
                 else{
                     console.log("Rating doesn't exist")
@@ -35,6 +39,9 @@ const Ratings = ({selected, user}) => {
             }).catch((err) => {
                     console.log("Process unsuccessful", err)
             })
+        } else {
+            console.log("No account data located")
+        }
     }, [selected])
 
 

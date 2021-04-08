@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react'
 import { useHistory } from 'react-router-dom'
-import {auth, db, provider} from '../../firebase'
+import {auth, provider} from '../../firebase'
 
 const AuthContext = React.createContext()
 
@@ -29,11 +29,15 @@ export const AuthProvider = ({ children }) => {
 
     function googleSignin() {
         auth.signInWithPopup(provider)
-        // auth.signInWithRedirect(provider)
             .then(() => {
                     // This gives you a Google Access Token. You can use it to access the Google API.
+                    console.log(history)
+        //Problem with history.push when logging in with google account first time, doesn't redirect. Redirects on the second time.
                     history.push("/myMap")
-                }).catch((error) => {
+                }) .then(() => {
+                    console.log(history)
+                })
+                .catch((error) => {
                     console.log(error.code, error.message)
             });
     }
