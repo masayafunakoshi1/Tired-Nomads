@@ -14,14 +14,13 @@ import '@reach/combobox/styles.css'
 import '../../App.css';
 import mapStyles from '../../mapStyles'
 
-import { useHistory } from 'react-router-dom'
-import { Button} from '@material-ui/core';
 import {Alert} from '@material-ui/lab'
 
 import Information from './Information'
 import Search from '../Search'
 import Locate from '../Locate';
 import SaveButton from './SaveButton';
+import Logout from '../Logout'
 
 import {useAuth} from '../contexts/AuthContext'
 import {db} from '../../firebase'
@@ -58,9 +57,9 @@ const GoogleMapsPersonal = () => {
     const [selected, setSelected] = useState(null);
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
+    const [changes, setChanges] = useState(false)
     const mapRef = useRef()
-    const history = useHistory()
-    const {currentUser, logout} = useAuth();
+    const {currentUser} = useAuth();
     const markersDocs = db.collection('users').doc(currentUser.uid).collection('markers')
 
 //Functions
@@ -73,6 +72,7 @@ const GoogleMapsPersonal = () => {
             time: new Date().toString(),
             key: `${event.latLng.lat()}-${event.latLng.lng()}` //key is Doc ID
           }])
+          setChanges(true);
     }, [])
 
     //Loads up map
@@ -85,7 +85,6 @@ const GoogleMapsPersonal = () => {
       mapRef.current.panTo({lat, lng});
       mapRef.current.setZoom(10);
     }, [])
-
 
 ////////////////////////// Data Modification //////////////////////////////////
     //Delete selected marker and firestore data, props is key value/ID on firestore
@@ -100,6 +99,7 @@ const GoogleMapsPersonal = () => {
           })
         await setMarkers(newMarkerList);
         await setSelected(null);
+        setChanges(true)
       }
 
     const deleteMarkerData = (markerKey) => {
@@ -147,18 +147,6 @@ const GoogleMapsPersonal = () => {
         })
     }, [])
 
-/////////////////////////////////// Logout /////////////////////////////////////
-
-    //Logout and go back to homepage
-    const handleLogout = async() => {
-        setError('')
-        try{
-            await logout()
-            history.push('/')
-        } catch{
-            setError("Failed to log out")
-        }
-    }
 
     //If there is a load error, DOM will show this message
     if(loadError) return(<div className="App">Error loading maps</div>)
@@ -178,17 +166,21 @@ const GoogleMapsPersonal = () => {
         </h1>
 
         <Search panTo = {panTo}/>
-        <Locate panTo = {panTo} setMarkers={setMarkers} setSelected={setSelected} />
+        <Locate 
+        panTo = {panTo} 
+        setMarkers={setMarkers} 
+        setSelected={setSelected} 
+        setChanges={setChanges}/>
 
-        <div className="buttons">
-            <Button variant="contained" color="secondary" onClick={handleLogout}>Log Out</Button>
-        </div>
+        <Logout setError={setError} changes={changes}/>
 
         <SaveButton 
         markers={markers} 
         setSuccess={setSuccess}
         setError={setError}
-        currentUser={currentUser}/>
+        currentUser={currentUser}
+        setChanges={setChanges}
+        changes={changes}/>
 
         <GoogleMap 
             mapContainerStyle={mapContainerStyle} 
@@ -223,7 +215,8 @@ const GoogleMapsPersonal = () => {
                     selected={selected} 
                     setSelected={setSelected} 
                     deleteMarker={deleteMarker} 
-                    currentUser={currentUser}/>                     
+                    currentUser={currentUser}
+                    />                     
                 : null}  
                 
             </GoogleMap>

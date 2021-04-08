@@ -29,14 +29,15 @@ export const AuthProvider = ({ children }) => {
 
     function googleSignin() {
         auth.signInWithPopup(provider)
-            .then(() => {
+            .then(async () => {
                     // This gives you a Google Access Token. You can use it to access the Google API.
-                    console.log(history)
-        //Problem with history.push when logging in with google account first time, doesn't redirect. Redirects on the second time.
-                    history.push("/myMap")
-                }) .then(() => {
-                    console.log(history)
-                })
+                    
+                    //Problem with history.push when logging in with google account first time, doesn't redirect. Redirects on the second time.
+                    setCurrentUser(currentUser)
+                    //Works with await console.log(), so probably a timing issue
+                    await console.log(currentUser);
+                    await history.push("/myMap")
+                }) 
                 .catch((error) => {
                     console.log(error.code, error.message)
             });
@@ -46,7 +47,7 @@ export const AuthProvider = ({ children }) => {
     //Unsubscribe from the onAuthStateChange listener whenever it's done
     //Does verification to see if there is a user
     useEffect(() => {
-       const unsubscribe = auth.onAuthStateChanged(user => {
+       const unsubscribe = auth.onAuthStateChanged(async user => {
             setCurrentUser(user)
             setLoading(false)
         })

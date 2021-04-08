@@ -3,7 +3,14 @@ import { Button } from '@material-ui/core';
 import {db} from '../../firebase'
 import '../../App.css'
 
-const SaveButton = ({markers, setSuccess, setError, currentUser}) => {
+const SaveButton = (
+    {markers, 
+    setSuccess, 
+    setError, 
+    currentUser, 
+    setChanges, 
+    changes}
+    ) => {
 
     const openSuccessAlert = () => {
         setSuccess("Saved Successfully")
@@ -32,7 +39,10 @@ const SaveButton = ({markers, setSuccess, setError, currentUser}) => {
                 batch.set(markersList, doc);
             })
             batch.commit()
-            .then(openSuccessAlert())
+            .then(() => {
+                openSuccessAlert()
+                setChanges(false)
+            })
         } else{
             openFailureAlert()
         }
@@ -42,7 +52,12 @@ const SaveButton = ({markers, setSuccess, setError, currentUser}) => {
 
     return (
         <div className="buttons" id="saveBtn">
-            <Button variant="contained" color="primary" onClick={saveHandler}>Save</Button>
+            <Button 
+            variant="contained" 
+            color="primary" 
+            onClick={saveHandler}
+            disabled={!changes}
+            >Save</Button>
         </div>
     )
 }
