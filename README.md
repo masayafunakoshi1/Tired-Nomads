@@ -1,4 +1,4 @@
-A map application to mark where you've slept during a road-trip. Using React, Google-Maps-API, Places-Autocomplete, Geocode, and Combo box inputs, references, and styles. Using firestore as backend for user-authentication and storing data, allowing users personalized maps and the ability to leave reviews, comments, and share their own maps. 
+A map application to mark where you've slept during a road-trip. Using React, Google-Maps-API, Places-Autocomplete, Geocode, and Combo box. Using firestore as backend for user-authentication and storing data, allowing users personalized maps and the ability to leave reviews, comments, and share their own maps. 
 
 
 # Getting Started with Create React App
