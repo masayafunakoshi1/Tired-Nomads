@@ -18,12 +18,13 @@ import {Alert} from '@material-ui/lab'
 
 import Information from './Information'
 import Search from '../Search'
-import Locate from '../Locate';
+import LocateReset from '../LocateReset';
 import SaveButton from './SaveButton';
 import Logout from '../Logout'
 
 import {useAuth} from '../contexts/AuthContext'
 import {db} from '../../firebase'
+import PopoverComp from '../PopoverComp';
 
   //Must be set with 100 vw/vh to make it fit page
   const mapContainerStyle = {
@@ -51,16 +52,17 @@ const GoogleMapsPersonal = () => {
       //Loading additional libraries when loading google scripts, "in this case libraries"
       libraries,
     });
-
     const [markers, setMarkers] = useState([])
     //Gets the information of the currently selected marker
     const [selected, setSelected] = useState(null);
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
     const [changes, setChanges] = useState(false)
+    const [popoverNum, setPopoverNum] = useState(null)
     const mapRef = useRef()
     const {currentUser} = useAuth();
     const markersDocs = db.collection('users').doc(currentUser.uid).collection('markers')
+
 
 //Functions
     //Use useCallback for functions you only want to run in certain situations
@@ -166,11 +168,17 @@ const GoogleMapsPersonal = () => {
         </h1>
 
         <Search panTo = {panTo}/>
-        <Locate 
+
+        {/* <PopoverComp onMouseOver={() => setPopoverNum(0)} popoverNum={popoverNum}> */}
+        <LocateReset 
         panTo = {panTo} 
         setMarkers={setMarkers} 
         setSelected={setSelected} 
-        setChanges={setChanges}/>
+        setChanges={setChanges}
+        setPopoverNum={setPopoverNum}
+        popoverNum={popoverNum}
+        />
+        {/* </PopoverComp> */}
 
         <Logout setError={setError} changes={changes}/>
 

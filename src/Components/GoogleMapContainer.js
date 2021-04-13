@@ -21,7 +21,7 @@ import { Button } from '@material-ui/core';
 
 import Information from './Users/Information'
 import Search from './Search'
-import Locate from './Locate';
+import LocateReset from './LocateReset';
 import DialogPopup from './DialogPopup';
 
 
@@ -102,7 +102,7 @@ const GoogleMapContainer = ({popup, setPopup}) => {
         </h1>
 
         <Search panTo = {panTo}/>
-        <Locate panTo = {panTo} setMarkers={setMarkers} setSelected={setSelected} />
+        <LocateReset panTo = {panTo} setMarkers={setMarkers} setSelected={setSelected} />
 
         {/* Login & Signup buttons */}
         <div className="buttons">

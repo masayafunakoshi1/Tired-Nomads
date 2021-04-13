@@ -1,15 +1,27 @@
-import React from 'react'
+import React, {useRef} from 'react'
 import '../App.css';
 import DeleteSweepIcon from '@material-ui/icons/DeleteSweep';
 import PopoverComp from './PopoverComp'
 
-export const Locate = ({panTo, setMarkers, setSelected, setChanges}) => {
+export const LocateReset = (
+    {panTo, 
+    setMarkers, 
+    setSelected, 
+    setChanges, 
+    setPopoverNum, 
+    popoverNum}
+            ) => {
+
+    const locateBtn = useRef(null)
 
     return (
         <>
             {/*FIND YOUR LOCATION BUTTON */}
             <button 
-            className="locate" onClick={() => {
+            ref={locateBtn}
+            onMouseOver={() => setPopoverNum(0)}
+            className="locate"
+            onClick={() => {
                 //On click will locate position of user if location is allowed in browser
                 navigator.geolocation.getCurrentPosition((position)=>{
                     //panTo user's location
@@ -22,9 +34,14 @@ export const Locate = ({panTo, setMarkers, setSelected, setChanges}) => {
             >
                 <img src="compass.svg" alt="compass - locate me" />
             </button>
+            <PopoverComp popoverNum={popoverNum}>
+                Find Yourself
+            </PopoverComp>
 
             {/*MARKER RESET BUTTON */}
             <button 
+
+            
             className="reset" onClick={() => {
                 setMarkers([]);
                 setSelected(null);
@@ -32,11 +49,14 @@ export const Locate = ({panTo, setMarkers, setSelected, setChanges}) => {
             }}
             >
                 <DeleteSweepIcon color="secondary" fontSize="large" cursor="pointer"/>
-            </button>
 
+                <PopoverComp onMouseOver={() => setPopoverNum(1)} popoverNum={popoverNum}>
+                    Reset Markers
+                </PopoverComp>
+            </button>
             
         </>
     )
 }
 
-export default Locate
+export default LocateReset

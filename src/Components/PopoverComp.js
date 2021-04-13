@@ -13,45 +13,39 @@ padding: theme.spacing(1),
 }));
 
 
-const PopoverComp = ({props, componentID}) => {
+const PopoverComp = React.forwardRef((props, ref) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const classes = useStyles();
     const open = Boolean(anchorEl);
-
-    //  aria-owns={open ? 'locationPopover' : undefined}
-    // aria-haspopup="true"
-    // onMouseEnter={handlePopoverOpen}
-    // onMouseLeave={handlePopoverClose}
-
+    
     const handlePopoverOpen = (event) => {
         setAnchorEl(event.currentTarget);
+        console.log(ref)
     };
 
     const handlePopoverClose = () => {
         setAnchorEl(null);
     };
 
-    console.log(props.children)
     
     return (
-        <div>
+        <div onMouseOver={handlePopoverOpen}>
             <Popover
-                id={componentID}
-                className={classes.popover}
-                classes={{paper: classes.paper,}}
-                open={open}
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-                }}
-                onClose={handlePopoverClose}
-                disableRestoreFocus
-                >
-                <Typography>Location</Typography>
+            className={classes.popover}
+            classes={{paper: classes.paper,}}
+            open={open}
+            anchorEl={anchorEl}
+            anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+            }}
+            onClose={handlePopoverClose}
+            > 
+                {props.children}
             </Popover>
         </div>
+
     )
-}
+})
 
 export default PopoverComp
