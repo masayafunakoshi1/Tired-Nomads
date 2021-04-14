@@ -53,6 +53,8 @@ const GoogleMapContainer = ({popup, setPopup}) => {
     const [markers, setMarkers] = useState([]);
         //Gets the information of the currently selected marker
     const [selected, setSelected] = useState(null);
+    //Gets anchor element for popover to show    
+    const [anchorEl, setAnchorEl] = useState(null);
     const mapRef = useRef()
 
 //Functions
@@ -102,7 +104,13 @@ const GoogleMapContainer = ({popup, setPopup}) => {
         </h1>
 
         <Search panTo = {panTo}/>
-        <LocateReset panTo = {panTo} setMarkers={setMarkers} setSelected={setSelected} />
+        <LocateReset 
+        panTo = {panTo} 
+        setMarkers={setMarkers} 
+        setSelected={setSelected} 
+        setAnchorEl={setAnchorEl}
+        anchorEl={anchorEl}
+        />
 
         {/* Login & Signup buttons */}
         <div className="buttons">

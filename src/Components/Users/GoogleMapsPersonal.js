@@ -57,8 +57,10 @@ const GoogleMapsPersonal = () => {
     const [selected, setSelected] = useState(null);
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
+    // Checks if there were changes to determine if the save btn should be available or not
     const [changes, setChanges] = useState(false)
-    const [popoverNum, setPopoverNum] = useState(null)
+    //Gets anchor element for popover to show
+    const [anchorEl, setAnchorEl] = useState(null);
     const mapRef = useRef()
     const {currentUser} = useAuth();
     const markersDocs = db.collection('users').doc(currentUser.uid).collection('markers')
@@ -175,8 +177,8 @@ const GoogleMapsPersonal = () => {
         setMarkers={setMarkers} 
         setSelected={setSelected} 
         setChanges={setChanges}
-        setPopoverNum={setPopoverNum}
-        popoverNum={popoverNum}
+        anchorEl={anchorEl}
+        setAnchorEl={setAnchorEl}
         />
         {/* </PopoverComp> */}
 

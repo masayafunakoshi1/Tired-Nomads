@@ -1,51 +1,54 @@
 import React, {useState} from 'react'
 import Popover from '@material-ui/core/Popover';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
-  popover: {
-    pointerEvents: 'none',
-  },
-paper: {
-padding: theme.spacing(1),
-},
+    popover: {
+        pointerEvents: 'none',
+    },
+    paper: {
+        padding: theme.spacing(1),
+    },
 }));
 
 
-const PopoverComp = React.forwardRef((props, ref) => {
-    const [anchorEl, setAnchorEl] = useState(null);
+const PopoverComp = (props) => {
+    // const arrayOfLabels = ['Your Location', 'Reset Markers']
+    // const [label, setLabel] = useState('')
     const classes = useStyles();
-    const open = Boolean(anchorEl);
-    
-    const handlePopoverOpen = (event) => {
-        setAnchorEl(event.currentTarget);
-        console.log(ref)
-    };
+    const open = Boolean(props.anchorEl);
 
-    const handlePopoverClose = () => {
-        setAnchorEl(null);
-    };
 
+    const switchFunc = (className) => {
+        switch(className){
+            case 'locate': 
+                return <Typography>Your Location</Typography>
+            case 'reset':
+                return <Typography>Reset Markers</Typography>
+            default: 
+                return null
+        };
+    }
     
+
     return (
-        <div onMouseOver={handlePopoverOpen}>
-            <Popover
+        <div>
+            {props.anchorEl ? <Popover
             className={classes.popover}
             classes={{paper: classes.paper,}}
             open={open}
-            anchorEl={anchorEl}
+            anchorEl={props.anchorEl}
             anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'left',
             }}
-            onClose={handlePopoverClose}
-            > 
-                {props.children}
-            </Popover>
+            >   
+                {switchFunc(props.anchorEl.className)}
+            </Popover> : null}
         </div>
 
     )
-})
+}
 
 export default PopoverComp
