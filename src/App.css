@@ -31,8 +31,8 @@ h1 {
 
 .locate {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 15px;
+  left: 93%;
   background: none;
   border: none;
   z-index: 10;
@@ -45,7 +45,7 @@ h1 {
 .reset {
   position: absolute;
   top: 12px;
-  left: 94%;
+  left: 90%;
   background: none;
   border: none;
   z-index: 10;
@@ -55,11 +55,179 @@ h1 {
   position: absolute;
   background: none;
   top: 15px;
-  left: 85%;
+  left: 80%;
+  border: none;
+  z-index: 10;
+}
+
+.buttons-landing {
+  position: absolute;
+  background: none;
+  top: 15px;
+  left: 80%;
   border: none;
   z-index: 10;
 }
 
 #saveBtn {
-  left: 81%;
+  left: 75%;
+}
+
+#signupBtn {
+  left: 74%;
+}
+
+/*///////////////////////////////// Display Size Changes ////////////////////////////*/
+@media (max-width: 1300px) {
+  h1 {
+    position: absolute;
+    top: 1rem;
+    left: 4%;
+    color: #221a6e;
+    z-index: 10;
+    margin: 0;
+    padding: 0;
+  }
+
+  .search {
+    position: absolute;
+    top: 6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 400px;
+    z-index: 10;
+  }
+
+  .locate {
+    position: absolute;
+    top: 18%;
+    left: 95%;
+    background: none;
+    border: none;
+    z-index: 10;
+  }
+
+  .reset {
+    position: absolute;
+    top: 23%;
+    left: 95%;
+    background: none;
+    border: none;
+    z-index: 10;
+  }
+
+  .buttons {
+    position: absolute;
+    background: none;
+    top: 10%;
+    border: none;
+    z-index: 10;
+  }
+
+  /*/////////////// Btns on homepage after login //////////////////////*/
+  #logoutBtn {
+    left: 90%;
+  }
+
+  #saveBtn {
+    top: 4%;
+    left: 92%;
+  }
+
+  /*//////////////// Btns on landing page /////////////////////////////*/
+  .buttons-landing {
+    position: absolute;
+    background: none;
+    border: none;
+    z-index: 10;
+  }
+
+  #loginBtn {
+    top: 4%;
+    left: 91%;
+  }
+
+  #signupBtn {
+    top: 10%;
+    left: 90%;
+  }
+}
+
+/*///////////////////////////////////////PHONE ///////////////////////////////// */
+@media (max-width: 500px) {
+  h1 {
+    position: absolute;
+    top: 1rem;
+    font-size: 15pt;
+    left: 5%;
+    color: #221a6e;
+    z-index: 10;
+    margin: 0;
+    padding: 0;
+  }
+
+  .search {
+    position: absolute;
+    top: 7rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 75%;
+    max-width: 400px;
+    z-index: 10;
+  }
+
+  .locate {
+    position: absolute;
+    top: 40%;
+    left: 85%;
+    background: none;
+    border: none;
+    z-index: 10;
+  }
+
+  .reset {
+    position: absolute;
+    top: 45%;
+    left: 85%;
+    background: none;
+    border: none;
+    z-index: 10;
+  }
+
+  .buttons {
+    position: absolute;
+    background: none;
+    border: none;
+    z-index: 10;
+  }
+
+  /*/////////////// Btns on homepage after login //////////////////////*/
+  #logoutBtn {
+    top: 25%;
+    left: 80%;
+  }
+
+  #saveBtn {
+    top: 32%;
+    left: 80%;
+  }
+
+  /*//////////////// Btns on landing page /////////////////////////////*/
+  .buttons-landing {
+    position: absolute;
+    background: none;
+    border: none;
+    z-index: 10;
+  }
+
+  #loginBtn {
+    top: 25%;
+    left: 77%;
+  }
+
+  #signupBtn {
+    top: 32%;
+    left: 75%;
+  }
 }

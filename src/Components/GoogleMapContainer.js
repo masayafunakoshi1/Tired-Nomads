@@ -113,10 +113,12 @@ const GoogleMapContainer = ({popup, setPopup}) => {
         />
 
         {/* Login & Signup buttons */}
-        <div className="buttons">
-            <Button variant="contained" component={Link} to="/login">Log In</Button>
-            <Button variant="contained" color="primary" component={Link} to="/signup">Sign Up</Button>
-         </div>
+          <div className="buttons-landing" id="loginBtn">
+            <Button variant="contained" component={Link} to="/login" >Log In</Button>
+          </div>
+          <div className="buttons-landing" id="signupBtn">
+            <Button variant="contained" color="primary" component={Link} to="/signup" >Sign Up</Button>
+          </div>
 
          <DialogPopup/>
 

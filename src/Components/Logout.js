@@ -31,7 +31,7 @@ const Logout = ({setError, changes}) => {
     
 
     return (
-        <div className="buttons">
+        <div className="buttons" id="logoutBtn">
             <Button variant="contained" color="secondary" onClick={handleLogout}>Log Out</Button>
         </div>
     )

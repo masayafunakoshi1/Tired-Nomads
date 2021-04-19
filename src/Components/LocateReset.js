@@ -42,7 +42,9 @@ export const LocateReset = (
             className="reset" onClick={() => {
                 setMarkers([]);
                 setSelected(null);
-                setChanges(true);
+                if(setChanges){
+                    setChanges(true);
+                } 
             }}
             >
                 <DeleteSweepIcon color="secondary" fontSize="large" cursor="pointer"/>
