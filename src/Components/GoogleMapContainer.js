@@ -4,7 +4,6 @@ import
     useState, 
     useRef, 
     useCallback,
-    useEffect
 }from 'react';
 
 import {
@@ -15,7 +14,7 @@ import {
 import '@reach/combobox/styles.css'
 
 import '../App.css';
-import mapStyles from '../mapStyles'
+import {regular, nightMode} from '../mapStyles'
 import { Link } from 'react-router-dom'
 import { Button } from '@material-ui/core';
 
@@ -23,6 +22,7 @@ import Information from './Users/Information'
 import Search from './Search'
 import LocateReset from './LocateReset';
 import DialogPopup from './DialogPopup';
+import NightMode from './NightMode'
 
 
   //Avoid rerenders
@@ -35,11 +35,6 @@ import DialogPopup from './DialogPopup';
   const center = {
     lat: 41.076206,
     lng: -73.858749,
-  }
-  const options = {
-    styles: mapStyles,
-    disableDefaultUI: true,
-    zoomControl: true
   }
 
 const GoogleMapContainer = ({popup, setPopup}) => {
@@ -55,7 +50,14 @@ const GoogleMapContainer = ({popup, setPopup}) => {
     const [selected, setSelected] = useState(null);
     //Gets anchor element for popover to show    
     const [anchorEl, setAnchorEl] = useState(null);
+    const [nightModeHandler, setNightModeHandler] = useState(false)
     const mapRef = useRef()
+
+    const options = {
+      styles: !nightModeHandler ? regular : nightMode,
+      disableDefaultUI: true,
+      zoomControl: true
+   }
 
 //Functions
     //Use useCallback for functions you only want to run in certain situations
@@ -96,7 +98,7 @@ const GoogleMapContainer = ({popup, setPopup}) => {
 
     return (
     <div className="App">
-        <h1>
+        <h1 className={nightModeHandler ? "nightModeFont" : ""}>
           Tired Nomads
             <span role="img" aria-label="sleep">
             🚗🚙🚚💤
@@ -110,6 +112,10 @@ const GoogleMapContainer = ({popup, setPopup}) => {
         setSelected={setSelected} 
         setAnchorEl={setAnchorEl}
         anchorEl={anchorEl}
+        />
+        <NightMode 
+        nightModeHandler = {nightModeHandler}
+        setNightModeHandler = {setNightModeHandler}
         />
 
         {/* Login & Signup buttons */}

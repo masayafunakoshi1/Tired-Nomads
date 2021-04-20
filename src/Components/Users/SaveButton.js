@@ -9,7 +9,8 @@ const SaveButton = (
     setError, 
     currentUser, 
     setChanges, 
-    changes}
+    changes,
+    nightModeHandler}
     ) => {
 
     const openSuccessAlert = () => {
@@ -54,7 +55,7 @@ const SaveButton = (
         <div className="buttons" id="saveBtn">
             <Button 
             variant="contained" 
-            color="primary" 
+            color={nightModeHandler ? "default" : "primary"} 
             onClick={saveHandler}
             disabled={!changes}
             >Save</Button>

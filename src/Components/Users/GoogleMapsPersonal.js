@@ -12,7 +12,7 @@ import {
 } from "@react-google-maps/api";
 import '@reach/combobox/styles.css'
 import '../../App.css';
-import mapStyles from '../../mapStyles'
+import {regular, nightMode} from '../../mapStyles'
 
 import {Alert} from '@material-ui/lab'
 
@@ -21,6 +21,7 @@ import Search from '../Search'
 import LocateReset from '../LocateReset';
 import SaveButton from './SaveButton';
 import Logout from '../Logout'
+import NightMode from '../NightMode'
 
 import {useAuth} from '../contexts/AuthContext'
 import {db} from '../../firebase'
@@ -34,11 +35,6 @@ import PopoverComp from '../PopoverComp';
   const center = {
     lat: 41.076206,
     lng: -73.858749,
-  }
-  const options = {
-    styles: mapStyles,
-    disableDefaultUI: true,
-    zoomControl: true
   }
 
 const GoogleMapsPersonal = () => {
@@ -61,9 +57,18 @@ const GoogleMapsPersonal = () => {
     const [changes, setChanges] = useState(false)
     //Gets anchor element for popover to show
     const [anchorEl, setAnchorEl] = useState(null);
+    const [nightModeHandler, setNightModeHandler] = useState(false)
+
     const mapRef = useRef()
     const {currentUser} = useAuth();
     const markersDocs = db.collection('users').doc(currentUser.uid).collection('markers')
+
+    const options = {
+      styles: !nightModeHandler ? regular : nightMode,
+      disableDefaultUI: true,
+      zoomControl: true
+    }
+
 
 
 //Functions
@@ -161,12 +166,13 @@ const GoogleMapsPersonal = () => {
     <div className="App">
         {error && <Alert severity="error">{error}</Alert>}
         {success && <Alert severity="success">{success}</Alert>}
-        <h1>
-        Welcome back, 
-        <br/>{currentUser.email}!
-            <span role="img" aria-label="sleep">
-            😎
-            </span>
+
+        <h1 className={nightModeHandler ? 'nightModeFont' : ''}>
+          Welcome back, 
+          <br/>{currentUser.email}!
+              <span role="img" aria-label="sleep">
+              😎
+              </span>
         </h1>
 
         <Search panTo = {panTo}/>
@@ -190,7 +196,14 @@ const GoogleMapsPersonal = () => {
         setError={setError}
         currentUser={currentUser}
         setChanges={setChanges}
-        changes={changes}/>
+        changes={changes}
+        nightModeHandler={nightModeHandler}
+        />
+
+        <NightMode 
+        nightModeHandler = {nightModeHandler}
+        setNightModeHandler = {setNightModeHandler}
+        />
 
         <GoogleMap 
             mapContainerStyle={mapContainerStyle} 

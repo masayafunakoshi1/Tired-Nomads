@@ -13,6 +13,10 @@ h1 {
   padding: 0;
 }
 
+.nightModeFont {
+  color: white;
+}
+
 .search {
   position: absolute;
   top: 1rem;
@@ -76,6 +80,11 @@ h1 {
 #signupBtn {
   left: 74%;
 }
+#nightMode {
+  top: 15px;
+  left: 95%;
+  font-size: 16pt;
+}
 
 /*///////////////////////////////// Display Size Changes ////////////////////////////*/
 @media (max-width: 1300px) {
@@ -123,6 +132,11 @@ h1 {
     top: 10%;
     border: none;
     z-index: 10;
+  }
+
+  #nightMode {
+    top: 30%;
+    left: 92%;
   }
 
   /*/////////////// Btns on homepage after login //////////////////////*/
@@ -200,6 +214,11 @@ h1 {
     background: none;
     border: none;
     z-index: 10;
+  }
+
+  #nightMode {
+    top: 50%;
+    left: 75%;
   }
 
   /*/////////////// Btns on homepage after login //////////////////////*/
