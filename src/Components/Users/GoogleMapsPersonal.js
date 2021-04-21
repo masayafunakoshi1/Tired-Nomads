@@ -32,10 +32,23 @@ import {db} from '../../firebase'
     width: '100vw',
     height: '100vh',
   };
-  const center = {
+
+////////////////// Attempting to change starting location to user's location if location checker is allowed/////////////////////////////
+  // const yourLocation = navigator.geolocation.getCurrentPosition((position)=>{
+  //       //User's Location
+  //       return { lat: position.coords.latitude,
+  //             lng: position.coords.longitude}
+  //   }, () => null);
+
+//   const center =  {
+//     {yourLocation ? lat: yourLocation.lat : lng: -73.858749 },
+//     lng: yourLocation.lng
+// }
+  
+const center = {
     lat: 41.076206,
     lng: -73.858749,
-  }
+}
 
 const GoogleMapsPersonal = () => {
     const [libraries] = useState(["places"]);
