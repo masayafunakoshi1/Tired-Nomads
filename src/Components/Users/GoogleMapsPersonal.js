@@ -9,6 +9,7 @@ import {
   GoogleMap,
   useLoadScript,
   Marker,
+  DistanceMatrixService
 } from "@react-google-maps/api";
 import '@reach/combobox/styles.css'
 import '../../App.css';
@@ -25,7 +26,6 @@ import NightMode from '../NightMode'
 
 import {useAuth} from '../contexts/AuthContext'
 import {db} from '../../firebase'
-import PopoverComp from '../PopoverComp';
 
   //Must be set with 100 vw/vh to make it fit page
   const mapContainerStyle = {
@@ -38,7 +38,6 @@ import PopoverComp from '../PopoverComp';
   }
 
 const GoogleMapsPersonal = () => {
-    //Avoid rerenders
     const [libraries] = useState(["places"]);
 
 //Hooks
@@ -58,11 +57,19 @@ const GoogleMapsPersonal = () => {
     //Gets anchor element for popover to show
     const [anchorEl, setAnchorEl] = useState(null);
     const [nightModeHandler, setNightModeHandler] = useState(false)
+    //Distance Matrix API (marking origins and destinations, calculating distance)
+    const [distanceMatrix, setDistanceMatrix] = useState({
+      origins: {lat: 41.048395464035885, lng:-73.86802677461547},
+      destinations: {lat: 37.733795, lng: -122.446747},
+      travelMode: 'DRIVING'
+    });
 
     const mapRef = useRef()
     const {currentUser} = useAuth();
     const markersDocs = db.collection('users').doc(currentUser.uid).collection('markers')
 
+    //Originally outside scope of functional component to prevent rerenders, but couldn't pass nightMode styled map with a conditional, so now inside functional component
+    //If nightModeHandler is toggled, map style becomes nightMode
     const options = {
       styles: !nightModeHandler ? regular : nightMode,
       disableDefaultUI: true,
@@ -71,8 +78,8 @@ const GoogleMapsPersonal = () => {
 
 
 
-//Functions
-    //Use useCallback for functions you only want to run in certain situations
+///////////////////////////////////////Functions///////////////////////////////////////
+    //Use useCallback for functions you only want to run in certain situations or for functions with complex props from components 
     //Creates markers and sets them on map click
     const onMapClick = useCallback((event) => {
           setMarkers(current => [...current, {
@@ -90,12 +97,19 @@ const GoogleMapsPersonal = () => {
       }, []);
 
     //When searching a location, zoom into the location on map
-    const panTo = React.useCallback(({lat, lng}) => {
+    const panTo = useCallback(({lat, lng}) => {
       mapRef.current.panTo({lat, lng});
       mapRef.current.setZoom(10);
     }, [])
 
-////////////////////////// Data Modification //////////////////////////////////
+    //Distance Matrix Service callback function
+    const distanceCallback = useCallback((response) => {
+      console.log(response)
+    }, []);
+
+
+
+              ///////////////// Data Modification ////////////////////////
     //Delete selected marker and firestore data, props is key value/ID on firestore
     const deleteMarker = async (props) => {
         deleteMarkerData(props)
@@ -157,6 +171,7 @@ const GoogleMapsPersonal = () => {
     }, [])
 
 
+    /////////////////////////////////////////JSX///////////////////////////////////
     //If there is a load error, DOM will show this message
     if(loadError) return(<div className="App">Error loading maps</div>)
     //When map is loading, will show this message
@@ -177,7 +192,6 @@ const GoogleMapsPersonal = () => {
 
         <Search panTo = {panTo}/>
 
-        {/* <PopoverComp onMouseOver={() => setPopoverNum(0)} popoverNum={popoverNum}> */}
         <LocateReset 
         panTo = {panTo} 
         setMarkers={setMarkers} 
@@ -186,7 +200,6 @@ const GoogleMapsPersonal = () => {
         anchorEl={anchorEl}
         setAnchorEl={setAnchorEl}
         />
-        {/* </PopoverComp> */}
 
         <Logout setError={setError} changes={changes}/>
 
@@ -203,6 +216,8 @@ const GoogleMapsPersonal = () => {
         <NightMode 
         nightModeHandler = {nightModeHandler}
         setNightModeHandler = {setNightModeHandler}
+        anchorEl={anchorEl}
+        setAnchorEl={setAnchorEl}
         />
 
         <GoogleMap 
@@ -241,9 +256,17 @@ const GoogleMapsPersonal = () => {
                     currentUser={currentUser}
                     />                     
                 : null}  
+
+          <DistanceMatrixService
+            options={{
+              origins: [distanceMatrix.origins],
+              destinations: [distanceMatrix.destinations],
+              travelMode: distanceMatrix.travelMode,
+            }}
+            callback={distanceCallback}
+          />
                 
             </GoogleMap>
-
     </div>
 
     )

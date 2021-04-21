@@ -1,7 +1,8 @@
 import React from 'react'
 import Switch from '@material-ui/core/Switch';
+import PopoverComp from './PopoverComp'
 
-const NightMode = ({nightModeHandler, setNightModeHandler}) => {
+const NightMode = ({nightModeHandler, setNightModeHandler, anchorEl, setAnchorEl}) => {
 
     const switchHandler = () => {
         if(!nightModeHandler){
@@ -13,14 +14,24 @@ const NightMode = ({nightModeHandler, setNightModeHandler}) => {
     }
 
     return (
-    <div className='buttons' id="nightMode">
-        <Switch
-        color="default"
-        inputProps={{ 'aria-label': 'checkbox with default color' }}
-        onChange={switchHandler}
-        /> 
-        {nightModeHandler ? '🌜' : '🌞'}
-    </div>
+    <>
+        <div className='buttons' id="nightMode">
+            <Switch
+            color="default"
+            onChange={switchHandler}
+            /> 
+            
+            <span
+            onMouseEnter={e => setAnchorEl(e.target)}
+            onMouseLeave={() => setAnchorEl(null)}             
+            className='nightMode'
+            >
+                {nightModeHandler ? '🌜' : '🌞'}
+            </span>
+        </div>
+
+        <PopoverComp anchorEl={anchorEl}/>
+    </>
     )
 }
 

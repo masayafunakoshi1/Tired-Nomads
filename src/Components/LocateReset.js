@@ -39,7 +39,8 @@ export const LocateReset = (
             <button 
             onMouseEnter={e => setAnchorEl(e.target)}
             onMouseLeave={() => setAnchorEl(null)}
-            className="reset" onClick={() => {
+            className="reset" 
+            onClick={() => {
                 setMarkers([]);
                 setSelected(null);
                 if(setChanges){
