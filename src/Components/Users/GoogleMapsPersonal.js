@@ -23,6 +23,7 @@ import LocateReset from '../LocateReset';
 import SaveButton from './SaveButton';
 import Logout from '../Logout'
 import NightMode from '../NightMode'
+import DistanceMatrix from './DistanceMatrix'
 
 import {useAuth} from '../contexts/AuthContext'
 import {db} from '../../firebase'
@@ -34,21 +35,31 @@ import {db} from '../../firebase'
   };
 
 ////////////////// Attempting to change starting location to user's location if location checker is allowed/////////////////////////////
-  // const yourLocation = navigator.geolocation.getCurrentPosition((position)=>{
-  //       //User's Location
-  //       return { lat: position.coords.latitude,
-  //             lng: position.coords.longitude}
-  //   }, () => null);
 
-//   const center =  {
-//     {yourLocation ? lat: yourLocation.lat : lng: -73.858749 },
-//     lng: yourLocation.lng
-// }
-  
-const center = {
-    lat: 41.076206,
-    lng: -73.858749,
-}
+  // const successLocation = (position) => {
+  //   return({
+  //       lat: position.coords.latitude,
+  //       lng: position.coords.longitude
+  //     })
+  // }
+
+  // const errorLocation = (err) => {
+  //   console.log(err)
+  //   return ({
+  //     lat: 41.076206,
+  //     lng: -73.858749,
+  //   })
+  // }    
+
+  // const yourLocation = navigator.geolocation.getCurrentPosition(successLocation, errorLocation)
+    
+  // const center = yourLocation
+
+  const center = {
+    lat: 39.099724,
+    lng: -94.578331,
+  }
+
 
 const GoogleMapsPersonal = () => {
     const [libraries] = useState(["places"]);
@@ -70,12 +81,12 @@ const GoogleMapsPersonal = () => {
     //Gets anchor element for popover to show
     const [anchorEl, setAnchorEl] = useState(null);
     const [nightModeHandler, setNightModeHandler] = useState(false)
-    //Distance Matrix API (marking origins and destinations, calculating distance)
-    const [distanceMatrix, setDistanceMatrix] = useState({
-      origins: {lat: 41.048395464035885, lng:-73.86802677461547},
-      destinations: {lat: 37.733795, lng: -122.446747},
-      travelMode: 'DRIVING'
-    });
+    // //Distance Matrix API (marking origins and destinations, calculating distance)
+    // const [distanceMatrix, setDistanceMatrix] = useState({
+    //   origins: {lat: 41.048395464035885, lng:-73.86802677461547},
+    //   destinations: {lat: 37.733795, lng: -122.446747},
+    //   travelMode: 'DRIVING'
+    // });
 
     const mapRef = useRef()
     const {currentUser} = useAuth();
@@ -87,12 +98,11 @@ const GoogleMapsPersonal = () => {
       styles: !nightModeHandler ? regular : nightMode,
       disableDefaultUI: true,
       zoomControl: true
-    }
-
-
+    }     
 
 ///////////////////////////////////////Functions///////////////////////////////////////
-    //Use useCallback for functions you only want to run in certain situations or for functions with complex props from components 
+
+//Use useCallback for functions you only want to run in certain situations or for functions with complex props from components 
     //Creates markers and sets them on map click
     const onMapClick = useCallback((event) => {
           setMarkers(current => [...current, {
@@ -112,13 +122,13 @@ const GoogleMapsPersonal = () => {
     //When searching a location, zoom into the location on map
     const panTo = useCallback(({lat, lng}) => {
       mapRef.current.panTo({lat, lng});
-      mapRef.current.setZoom(10);
+      mapRef.current.setZoom(14);
     }, [])
 
-    //Distance Matrix Service callback function
-    const distanceCallback = useCallback((response) => {
-      console.log(response)
-    }, []);
+    // //Distance Matrix Service callback function
+    // const distanceCallback = useCallback((response) => {
+    //   console.log(response)
+    // }, []);
 
 
 
@@ -214,6 +224,8 @@ const GoogleMapsPersonal = () => {
         setAnchorEl={setAnchorEl}
         />
 
+        <DistanceMatrix />
+
         <Logout setError={setError} changes={changes}/>
 
         <SaveButton 
@@ -235,7 +247,7 @@ const GoogleMapsPersonal = () => {
 
         <GoogleMap 
             mapContainerStyle={mapContainerStyle} 
-            zoom={10} 
+            zoom={4.9} 
             center={center}
             options={options}
             onClick={onMapClick}
@@ -270,14 +282,14 @@ const GoogleMapsPersonal = () => {
                     />                     
                 : null}  
 
-          <DistanceMatrixService
+          {/* <DistanceMatrixService
             options={{
               origins: [distanceMatrix.origins],
               destinations: [distanceMatrix.destinations],
               travelMode: distanceMatrix.travelMode,
             }}
             callback={distanceCallback}
-          />
+          /> */}
                 
             </GoogleMap>
     </div>

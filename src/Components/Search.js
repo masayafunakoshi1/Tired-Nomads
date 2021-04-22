@@ -27,7 +27,7 @@ function Search({panTo}){
   } = usePlacesAutocomplete({ //Autocompletes suggestions of locations and has many available hooks
       requestOptions: {
         location: {    
-          lat: () => 41.076206, //want to recieve function that it can call
+          lat: () => 41.076206, //want to receive function that it can call
           lng: () => -73.858749,
         },
         radius: 200 * 1000, //need radius of search in meters
@@ -64,7 +64,7 @@ return(
                 <ComboboxList>
                     {
                     status === "OK" && data.map(({index, description}) => (
-                        <ComboboxOption key = {index} value = {description} 
+                        <ComboboxOption key={index} value={description} 
                         //Gives suggestion opetions 
                         />
                     ))}
