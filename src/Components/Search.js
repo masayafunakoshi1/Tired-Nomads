@@ -5,6 +5,11 @@ import usePlacesAutocomplete, {
   getLatLng,
 } from "use-places-autocomplete";
 
+// import {TextField, Typography} from '@material-ui/core';
+// import Autocomplete from '@material-ui/lab/Autocomplete';
+// import LocationOnIcon from '@material-ui/icons/LocationOn';
+// import { makeStyles } from '@material-ui/core/styles';
+
 import {
   Combobox,
   ComboboxInput,
@@ -17,11 +22,11 @@ import '@reach/combobox/styles.css'
 import '../App.css';
 
 
-function Search({panTo}){
+const Search = ({panTo}) => {
   const {
     ready, 
-    value, 
     suggestions: {status, data}, 
+    value, 
     setValue, 
     clearSuggestions
   } = usePlacesAutocomplete({ //Autocompletes suggestions of locations and has many available hooks
@@ -30,7 +35,7 @@ function Search({panTo}){
           lat: () => 41.076206, //want to receive function that it can call
           lng: () => -73.858749,
         },
-        radius: 200 * 1000, //need radius of search in meters
+        radius: 200 * 1000, //need radius of search in meters (120 mi)
     },
   });
 
@@ -65,7 +70,7 @@ return(
                     {
                     status === "OK" && data.map(({index, description}) => (
                         <ComboboxOption key={index} value={description} 
-                        //Gives suggestion opetions 
+                        //Gives suggestion options 
                         />
                     ))}
                     </ComboboxList>

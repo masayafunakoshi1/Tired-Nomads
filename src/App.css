@@ -73,7 +73,7 @@ h1 {
   z-index: 10;
 }
 
-.distanceMatrix{
+.distanceMatrix {
   position: absolute;
   background: none;
   top: 15px;
@@ -81,7 +81,6 @@ h1 {
   border: none;
   z-index: 15;
 }
-
 
 #saveBtn {
   left: 75%;

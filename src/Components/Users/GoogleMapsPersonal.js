@@ -9,9 +9,8 @@ import {
   GoogleMap,
   useLoadScript,
   Marker,
-  DistanceMatrixService
 } from "@react-google-maps/api";
-import '@reach/combobox/styles.css'
+// import '@reach/combobox/styles.css'
 import '../../App.css';
 import {regular, nightMode} from '../../mapStyles'
 
@@ -64,7 +63,7 @@ import {db} from '../../firebase'
 const GoogleMapsPersonal = () => {
     const [libraries] = useState(["places"]);
 
-//Hooks
+////////////////////////////////////////Hooks///////////////////////////////////
     const { isLoaded, loadError } = useLoadScript({
       //Get API key from the env.local file
       googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -281,15 +280,6 @@ const GoogleMapsPersonal = () => {
                     currentUser={currentUser}
                     />                     
                 : null}  
-
-          {/* <DistanceMatrixService
-            options={{
-              origins: [distanceMatrix.origins],
-              destinations: [distanceMatrix.destinations],
-              travelMode: distanceMatrix.travelMode,
-            }}
-            callback={distanceCallback}
-          /> */}
                 
             </GoogleMap>
     </div>

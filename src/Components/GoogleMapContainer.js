@@ -12,7 +12,7 @@ import {
   Marker,
   // DistanceMatrixService
 } from "@react-google-maps/api";
-import '@reach/combobox/styles.css'
+// import '@reach/combobox/styles.css'
 
 import '../App.css';
 import {regular, nightMode} from '../mapStyles'
@@ -34,12 +34,12 @@ import NightMode from './NightMode'
     height: '100vh',
   };
   const center = {
-    lat: 41.076206,
-    lng: -73.858749,
+    lat: 39.099724,
+    lng: -94.578331,
   }
 
 const GoogleMapContainer = ({popup, setPopup}) => {
-//Hooks
+///////////////////////////////////////Hooks///////////////////////////////////////////
     const { isLoaded, loadError } = useLoadScript({
       //Get API key from the env.local file
       googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -54,13 +54,15 @@ const GoogleMapContainer = ({popup, setPopup}) => {
     const [nightModeHandler, setNightModeHandler] = useState(false)
     const mapRef = useRef()
 
+    //Originally outside scope of functional component to prevent rerenders, but couldn't pass nightMode styled map with a conditional, so now inside functional component
+    //If nightModeHandler is toggled, map style becomes nightMode
     const options = {
       styles: !nightModeHandler ? regular : nightMode,
       disableDefaultUI: true,
       zoomControl: true
    }
 
-//Functions
+/////////////////////////////////////Functions////////////////////////////////////////
     //Use useCallback for functions you only want to run in certain situations
     const onMapClick = useCallback((event) => {
           setMarkers(current => [...current, {
@@ -131,7 +133,7 @@ const GoogleMapContainer = ({popup, setPopup}) => {
 
         <GoogleMap 
             mapContainerStyle={mapContainerStyle} 
-            zoom={10} 
+            zoom={4.9} 
             center={center}
             options={options}
             onClick={onMapClick}
