@@ -80,12 +80,6 @@ const GoogleMapsPersonal = () => {
     //Gets anchor element for popover to show
     const [anchorEl, setAnchorEl] = useState(null);
     const [nightModeHandler, setNightModeHandler] = useState(false)
-    // //Distance Matrix API (marking origins and destinations, calculating distance)
-    // const [distanceMatrix, setDistanceMatrix] = useState({
-    //   origins: {lat: 41.048395464035885, lng:-73.86802677461547},
-    //   destinations: {lat: 37.733795, lng: -122.446747},
-    //   travelMode: 'DRIVING'
-    // });
 
     const mapRef = useRef()
     const {currentUser} = useAuth();

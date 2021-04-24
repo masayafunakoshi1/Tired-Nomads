@@ -47,7 +47,7 @@ const Ratings = ({selected, user}) => {
 
     return (
         <Box component="fieldset" borderColor="transparent">
-            <Typography component="legend">Rating</Typography>
+            <Typography component={"span"}>Rating</Typography>
                 <Rating
                 name="simple-controlled"
                 value={value}

@@ -33,6 +33,24 @@ h1 {
   width: 100%;
 }
 
+.search-distance {
+  display: flex;
+  margin-top: 20px;
+  width: 90%;
+  max-width: 200px;
+  z-index: 10;
+}
+
+.search-distance input {
+  padding: 0.5rem;
+  font-size: 13pt;
+  width: 100%;
+}
+
+.search-distance-popover {
+  z-index: 20;
+}
+
 .locate {
   position: absolute;
   top: 15px;

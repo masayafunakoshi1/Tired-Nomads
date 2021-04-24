@@ -5,11 +5,6 @@ import usePlacesAutocomplete, {
   getLatLng,
 } from "use-places-autocomplete";
 
-// import {TextField, Typography} from '@material-ui/core';
-// import Autocomplete from '@material-ui/lab/Autocomplete';
-// import LocationOnIcon from '@material-ui/icons/LocationOn';
-// import { makeStyles } from '@material-ui/core/styles';
-
 import {
   Combobox,
   ComboboxInput,

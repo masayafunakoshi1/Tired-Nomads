@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react'
+import React, {useState, useCallback} from 'react'
 import {
     Marker,
     DistanceMatrixService
@@ -8,16 +8,21 @@ import {
   getGeocode,
   getLatLng,
 } from "use-places-autocomplete";
-
 import { makeStyles } from '@material-ui/core/styles';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import {TextField,
-        Grid,
-        Button,
+import {Button,
         Paper,
         FormControl,
         InputLabel,
         Select} from '@material-ui/core'
+import {
+    Combobox,
+    ComboboxInput,
+    ComboboxPopover,
+    ComboboxList,
+    ComboboxOption,
+ } from "@reach/combobox";
+ import '../../App.css'
+
 
 
 //Material UI styles
@@ -45,19 +50,27 @@ const DistanceMatrix = () => {
     //Distance Matrix API (marking origins and destinations, calculating distance)
     //Save origins and destinations data temporarily in this hook, until it is sent to 
     const [distanceMatrix, setDistanceMatrix] = useState({
-        origins: {lat: 41.048395464035885, lng:-73.86802677461547},
-        destinations: {lat: 37.733795, lng: -122.446747},
+        origin: {lat: 0, lng:0},
+        destination: {lat: 0, lng: 0},
         travelMode: 'DRIVING'
       });
-
-    // const [value, setValue] = useState(null)
-    // const [inputValue, setInputValue] = useState('')
-    const [options, setOptions] = useState([])
+    const [valueOrigin, setValueOrigin] = useState('')
+    const [originObj, setOriginObj] = useState({
+        address: '',
+        lat: 0,
+        lng: 0,
+    })
+    const [valueDestination, setValueDestination] = useState('')
+    const [destinationObj, setDestinationObj] = useState({
+        address: '',
+        lat: 0,
+        lng: 0,
+    })
+    const [travelMethod, setTravelMethod] = useState('')
     const {
-        ready, 
-        suggestions: {status, data}, 
-        value,
+        ready,
         setValue,
+        suggestions: {status, data}, 
         clearSuggestions
     } = usePlacesAutocomplete({ //Autocompletes suggestions of locations and has many available hooks
         requestOptions: {
@@ -65,16 +78,19 @@ const DistanceMatrix = () => {
             lat: () => 41.076206, //want to receive function that it can call
             lng: () => -73.858749,
             },
-            radius: 200 * 1000, //need radius of search in meters (12 mi)
+            radius: 200 * 1000, //need radius of search in meters (120 mi)
         },
     });
 
+    //////////////////////////////////////Next Step////////////////////////////////////////////
+    /////////////////////////////////////////create markers//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     //Distance Matrix Service callback function
     //Create markers with this callback
-    const distanceCallback = useCallback((response) => {
-        console.log(response)
-      }, []);
+    const distanceCallback = useCallback(() => {
+      });
 
+    //Open create trip popout
     const createTripBtn = () => {
         if(createTrip){
             setCreateTrip(false)
@@ -84,109 +100,139 @@ const DistanceMatrix = () => {
         }
     }
 
+    //may potentially have a problem with delay, we have to see when putting it on firestore
+
     const submitHandler = (e) => {
         e.preventDefault()
-        console.log('button pressed')
+        setDistanceMatrix(prevState => ({
+            ...prevState,
+            origin: {
+                lat: originObj.lat,
+                lng: originObj.lng
+            },
+            destination: {
+                lat: destinationObj.lat,
+                lng: destinationObj.lng
+            },
+            travelMode: travelMethod
+        }))
     }
 
-    const travelModeHandler = (e) => {
-        setDistanceMatrix(prevState => ({
-             ...prevState,
-            travelMode: e.target.value
-            })
-        )}
-
-
-    // useEffect(async (address) => {
-    //         setValue(address, false); //Comes from usePlacesAutocomplete hook
-    //         clearSuggestions()
-    //         try {
-    //             const results = await getGeocode({address}); //selects suggestion and shows information on it
-    //             const {lat, lng} = await getLatLng(results[0]) //gets lat/lng of location
-    //             setOptions([{
-    //                 results: results,
-    //                 lat: lat,
-    //                 lng: lng
-    //             }])
-    //         } catch(error){
-    //             console.log(error)
-    //         }
-    //     }, [value])
-
     return (
-        <div className="distanceMatrix">
+    <div className="distanceMatrix">
 
-            <Button 
-            className={classes.distanceMarkBtn}
-            variant="contained" 
-            color="primary" 
-            onClick={createTripBtn}>
-                Create Trip
-            </Button>
+        <Button 
+        className={classes.distanceMarkBtn}
+        variant="contained" 
+        color="primary" 
+        onClick={createTripBtn}>
+            Create Trip
+        </Button>
 
-        <div className={classes.paperContainer}>
-        {  createTrip ? 
-            <Paper 
-            elevation={4} 
-            variant="elevation"
-            className={classes.paperStyle}>
-                <form onSubmit={e => submitHandler(e)}>
-                    <div className={classes.formItems}>
-                        <TextField 
-                        id="standard-basic" 
-                        label="Start/Origin"/>
-                    </div>
+    <div className={classes.paperContainer}>
+    {  createTrip ? 
+    <Paper 
+    elevation={4} 
+    variant="elevation"
+    className={classes.paperStyle}>
 
-{/* //////////////////////////// Needs more work //////////////////////////////////// */}
-                    <div className={classes.formItems}>
-                        <Autocomplete 
-                        autoComplete
+        <form onSubmit={e => submitHandler(e)}>
+
+            <div className="search-distance">
+                <Combobox 
+                    onSelect={async (address) => {
+                        setValueOrigin(address, false); //Comes from usePlacesAutocomplete hook
+                        clearSuggestions()
+                        try {
+                            const results = await getGeocode({address}); //selects suggestion and shows information on it
+                            const {lat, lng} = await getLatLng(results[0]) //gets lat/lng of location
+                            setOriginObj(prevState => ({...prevState,
+                                            address: address,
+                                            lat: lat,
+                                            lng: lng})
+                                            )
+                        } catch(error){
+                            console.log("error!")
+                        }
+                    }}
+                    >
+                        <ComboboxInput  //Input Search bar
+                        value={valueOrigin} 
+                        onChange={(e) => {
+                        setValue(e.target.value)
+                        setValueOrigin(e.target.value)
+                        }}
+                        disabled={!ready}
+                        placeholder="Start/Origin"/>
+
+                        <ComboboxPopover 
+                        className="search-distance-popover"
+                        //Popover of suggestions
+                        > 
+                            <ComboboxList>
+                                {
+                                status === "OK" && data.map(({index, description}) => (
+                                    <ComboboxOption key={index} value={description} 
+                                    //Gives suggestion options 
+                                    />
+                                ))}
+                                </ComboboxList>
+                        </ComboboxPopover>
+                    </Combobox>
+                </div>
+
+                <div className="search-distance">
+                    <Combobox 
                         onSelect={async (address) => {
-                            setValue(address, false); //Comes from usePlacesAutocomplete hook
+                            setValueDestination(address, false); //Comes from usePlacesAutocomplete hook
                             clearSuggestions()
                             try {
                                 const results = await getGeocode({address}); //selects suggestion and shows information on it
                                 const {lat, lng} = await getLatLng(results[0]) //gets lat/lng of location
+                                setDestinationObj(prevState => ({...prevState,
+                                                    address: address,
+                                                    lat: lat,
+                                                    lng: lng})
+                                                    )
                             } catch(error){
                                 console.log("error!")
                             }
                         }}
-                        options={options}
-                        onChange={e => setValue(e.target.value)}
-                        id="destination-input"
-                        value={value}
-                        style={{width: 200}}
-                        renderInput={
-                            (params) => <TextField {...params} 
-                            id="standard-basic" 
-                            label="End/Destination" 
-                            fullWidth/>
-                            }
-                        renderOption={(option) => {
-                            return(
-                                <Grid item s>
-                                {status === 'OK' && data.map(({index, description}) => (
-                                <span key={index} >
-                                    {description}
-                                </span>
-                            ))}
-                            </Grid>
-                        )
-                        } }
-                        
-                        />
+                        >
+                            <ComboboxInput  //Input Search bar
+                            value={valueDestination} 
+                            onChange={(e) => {
+                            setValue(e.target.value)
+                            setValueDestination(e.target.value)
+                            }}
+                            disabled={!ready}
+                            placeholder="End/Destination"/>
+
+                            <ComboboxPopover 
+                            className="search-distance-popover"
+                            //Popover of suggestions
+                            > 
+                                <ComboboxList>
+                                    {
+                                    status === "OK" && data.map(({index, description}) => (
+                                        <ComboboxOption key={index} value={description} 
+                                        //Gives suggestion options 
+                                        />
+                                    ))}
+                                    </ComboboxList>
+                            </ComboboxPopover>
+                        </Combobox>
                     </div>
-
-
 
                     <div className={classes.formItems}>
                         <FormControl  className={classes.dropDown}>
                             <InputLabel>Travel Method</InputLabel>
                             <Select 
                                 native
-                                value={distanceMatrix.travelMode}
-                                onChange={e => travelModeHandler(e)}
+                                value={travelMethod}
+                                onChange={e => setTravelMethod(e.target.value)}
                             >
+                                <option value={''}></option>
                                 <option value={'DRIVING'}>Driving</option>
                                 <option value={'BICYCLING'}>Bicycling</option>
                                 <option value={'WALKING'}>Walking</option>
@@ -206,16 +252,20 @@ const DistanceMatrix = () => {
                     </div>
                 </form>
             </Paper>
+
             :
+
             ""
+            
             }
+
         </div>
 
         <DistanceMatrixService
         //Get firestore data and insert in options
             options={{
-              origins: [distanceMatrix.origins],
-              destinations: [distanceMatrix.destinations],
+              origins: [distanceMatrix.origin],
+              destinations: [distanceMatrix.destination],
               travelMode: distanceMatrix.travelMode,
             }}
             callback={distanceCallback}
