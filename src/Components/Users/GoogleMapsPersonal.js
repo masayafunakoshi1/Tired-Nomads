@@ -118,11 +118,6 @@ const GoogleMapsPersonal = () => {
       mapRef.current.setZoom(14);
     }, [])
 
-    // //Distance Matrix Service callback function
-    // const distanceCallback = useCallback((response) => {
-    //   console.log(response)
-    // }, []);
-
 
 
               ///////////////// Data Modification ////////////////////////
@@ -217,7 +212,7 @@ const GoogleMapsPersonal = () => {
         setAnchorEl={setAnchorEl}
         />
 
-        <DistanceMatrix />
+        <DistanceMatrix currentUser={currentUser} />
 
         <Logout setError={setError} changes={changes}/>
 
