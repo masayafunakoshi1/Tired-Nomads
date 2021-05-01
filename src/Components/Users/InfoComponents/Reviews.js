@@ -78,7 +78,7 @@ const Reviews = ({user, selected}) => {
       }).catch((err) => {
         console.log("Process unsuccessful", err)
       })
-    }, [selected, review  ])
+    }, [selected, review])
 
 
 

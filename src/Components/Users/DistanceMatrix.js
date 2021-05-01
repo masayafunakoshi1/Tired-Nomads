@@ -26,6 +26,7 @@ import {
  import '../../App.css'
 
 
+
 //Material UI styles
 const useStyles = makeStyles(() => ({
     distanceMarkBtn: {
@@ -77,6 +78,10 @@ const DistanceMatrix = ({currentUser}) => {
     })
     const [travelMethod, setTravelMethod] = useState('')
     const [tripMarkers, setTripMarkers] = useState([])
+    //Put firestore database collection into a const
+    const userTripMarkers = db.collection('users').doc(currentUser ? currentUser.uid : null).collection('tripMarkers')
+
+    ////////////////////UsePlacesAutocomplete API/////////////////////////
     const {
         ready,
         setValue,
@@ -91,18 +96,49 @@ const DistanceMatrix = ({currentUser}) => {
             radius: 200 * 1000, //need radius of search in meters (120 mi)
         },
     });
-    const userTripMarkers = db.collection('users').doc(currentUser ? currentUser.uid : null).collection('tripMarkers')
 
-    //////////////////////////////////////Next Step////////////////////////////////////////////
-    /////////////////////////////////////////create markers//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////// FUNCTIONS ////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////
 
     //Distance Matrix Service callback function
     //Create markers with this callback
-    const distanceCallback = () => {
-        console.log('called back')
+    const distanceCallback = (props) => {
+        // if()console.log(props)
     } 
 
-    //Open create trip popout
+    const originCoords = () => {
+        if(tripMarkers){
+            let origin = []
+            for(let i = 0; i < tripMarkers.length; i++){
+                origin.push(tripMarkers[i].origin)
+            }
+            return origin
+        }
+    }
+
+    const destinationCoords = () => {
+        if(tripMarkers){
+            let destination = []
+            for(let i = 0; i < tripMarkers.length; i++){
+                destination.push(tripMarkers[i].destination)
+            }
+            return destination
+        }
+    }
+
+    const travelModeHandler = () => {
+        if(tripMarkers){
+            let travelMode = []
+            for(let i = 0; i < tripMarkers.length; i++){
+                travelMode.push(tripMarkers[i].travelMode)
+            }
+            return travelMode
+        }
+    }
+
+
+    //////////////////////////////Open create trip popout//////////////////////////////////
     const createTripBtn = () => {
         if(createTrip){
             setCreateTrip(false)
@@ -112,7 +148,7 @@ const DistanceMatrix = ({currentUser}) => {
         }
     }
 
-    //Constraints that valueTripName must follow else doesn't work with firebase
+    //Constraints that valueTripName must follow, else doesn't work with firebase
     const tripNameConstraints = (e) => {
         if(e.target.value.indexOf(' ') > 0 || e.target.value.indexOf("/") > 0 || e.target.value === '.' || e.target.value === '..' || e.target.value === RegExp('__.*__') ){
             setTripNameCond(true)
@@ -121,12 +157,10 @@ const DistanceMatrix = ({currentUser}) => {
         }
     }
 
-    ///////////////////////////////Firestore set() and get()/////////////////////////////////
+    ///////////////////////////////Firestore set() and get()/////////////////////////////
     //Submit distance matrix to firestore, creating new doc if doc doesn't exist
 
-    /////////////////////// Need to fix submit handler, setDistanceMatrix doesn't recognize setState on first submit /////////////////////////////
-
-    const submitHandler = async(e) => {
+    const submitHandler = (e) => {
         e.preventDefault()
         setDistanceMatrix(prevState => {
            return{ ...prevState,
@@ -141,10 +175,13 @@ const DistanceMatrix = ({currentUser}) => {
             },
             travelMode: travelMethod
             }})
-
-        createTripFirebase()
     }
 
+    useEffect(() => {
+    if(distanceMatrix.tripName){
+        createTripFirebase()
+    }
+    }, [distanceMatrix])
 
     const createTripFirebase = () => {
         if(userTripMarkers){
@@ -164,27 +201,24 @@ const DistanceMatrix = ({currentUser}) => {
         }
     }
 
-    const comboboxOnSelect = async(address) => {
-
+    // Get trips from firestore and insert them into state hook 
+    useEffect(() => {
+    if(userTripMarkers){
+         (async() => {
+            const snapshot = await userTripMarkers.get()
+            const data = snapshot.docs.map(doc => doc.data());
+            for(let i = 0; i < data.length; i++){
+                tripMarkers.push(data[i].distanceMatrix)
+            }
+            })()
+    }else {
+        console.log("No accound data located")
     }
+    }, [distanceMatrix])
 
-    // useEffect(() => {
-    //     if(userTripMarkers){
-    //         userTripMarkers.doc("trip1").get()
-    //         .then((doc) => {
-    //             if(doc.exists){
-    //                 setTripMarkers(doc.data())
-    //             } else {
-    //                 console.log("Trip doesn't exist")
-    //             }
-    //         }).catch((err) => {
-    //             console.log(err);
-    //         })
-    //     } else {
-    //         console.log("No account data located");
-    //     }
-    // }, [])
 
+/////////////////////////////////////////// JSX /////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
     return (
     <div className="distanceMatrix">
 
@@ -254,8 +288,8 @@ const DistanceMatrix = ({currentUser}) => {
                         > 
                             <ComboboxList>
                                 {
-                                status === "OK" && data.map(({index, description}) => (
-                                    <ComboboxOption key={index} value={description} 
+                                status === "OK" && data.map(({id, description}) => (
+                                    <ComboboxOption key={id} value={description} 
                                     //Gives suggestion options 
                                     />
                                 ))}
@@ -297,8 +331,8 @@ const DistanceMatrix = ({currentUser}) => {
                             > 
                                 <ComboboxList>
                                     {
-                                    status === "OK" && data.map(({index, description}) => (
-                                        <ComboboxOption key={index} value={description} 
+                                    status === "OK" && data.map(({id, description}) => (
+                                        <ComboboxOption key={id} value={description} 
                                         //Gives suggestion options 
                                         />
                                     ))}
@@ -349,11 +383,11 @@ const DistanceMatrix = ({currentUser}) => {
       <DistanceMatrixService
         //Get firestore data and insert in options
             options={{
-                origins: [distanceMatrix.origin],
-                destinations: [distanceMatrix.destination],
-                travelMode: distanceMatrix.travelMode,
+                origins: originCoords(),
+                destinations: destinationCoords(),
+                travelMode: "DRIVING",
             }}
-            callback={distanceCallback}
+            callback={(res) => distanceCallback(res)}
             />
 
             {/* Create form to submit origin and destinations for different trips you take... use markers and figure out a way to match markers to their intended destinations. 

@@ -63,8 +63,8 @@ return(
             > 
                 <ComboboxList>
                     {
-                    status === "OK" && data.map(({index, description}) => (
-                        <ComboboxOption key={index} value={description} 
+                    status === "OK" && data.map(({id, description}) => (
+                        <ComboboxOption key={id} value={description} 
                         //Gives suggestion options 
                         />
                     ))}

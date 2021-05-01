@@ -212,8 +212,6 @@ const GoogleMapsPersonal = () => {
         setAnchorEl={setAnchorEl}
         />
 
-        <DistanceMatrix currentUser={currentUser} />
-
         <Logout setError={setError} changes={changes}/>
 
         <SaveButton 
@@ -269,6 +267,8 @@ const GoogleMapsPersonal = () => {
                     currentUser={currentUser}
                     />                     
                 : null}  
+
+            <DistanceMatrix currentUser={currentUser} />
                 
             </GoogleMap>
     </div>
