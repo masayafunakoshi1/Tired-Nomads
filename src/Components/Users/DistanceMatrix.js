@@ -51,6 +51,62 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
+
+
+//////////////////////// How the data moves within this component /////////////////////
+/* 
+1. insert origin and destination info in textfields on app
+2. setOriginObj() setDestinationObj() is the value storage of textfields
+3. SubmitHandler(
+    TripName
+    Origin
+    Destination
+    TravelMode
+) 
+all go into setDistanceMatrix onSubmit() of form
+
+4.setDistanceMatrix
+on setDistanceMatrix change => useEffect() => createFirebase() => sends to firestore && resets state hooks/textfields to empty strings
+5. get data from firestore onPageLoad && when a new "Trip" is created (on distanceMatrix state change)
+push data into tripMarkers
+6. 3 functions (originCoords(), destinationsCoords(), travelModeHandler()) picks out firestore data from tripMarkers into data that can be used by <DistanceMatrixService />
+
+DistanceMatrixService data looks like 
+e.g.
+2 origins
+2 destinations
+
+Origin Addresses:{}
+Destination Addresses:{}
+Rows: [
+        {1: [
+            { destination 1
+                distance,
+                duration
+            },
+            { destination 2
+                distance,
+                duration
+            }
+        ]}
+        {2: [
+            { destination 1
+                distance,
+                duration
+            },
+            { destination 2
+                distance,
+                duration
+            }
+        ]}
+    ]
+
+7. store DistanceMatrixService coordinates and distance data into 
+
+*/
+
+
+
 const DistanceMatrix = ({currentUser}) => {
     const classes = useStyles();
     const [createTrip, setCreateTrip] = useState(false)
@@ -77,7 +133,15 @@ const DistanceMatrix = ({currentUser}) => {
         lng: 0,
     })
     const [travelMethod, setTravelMethod] = useState('')
+
+    //Allow for proper data format to work with DistanceMatrixService
     const [tripMarkers, setTripMarkers] = useState([])
+    // const tripMarkers = []
+    const [tripOrigCoords, setTripOrigCoords] = useState([])
+    const [tripDestCoords, setTripDestCoords] = useState([])
+    const [tripMarkerTravelMode, setTripMarkerTravelMode] = useState([])
+    const [tripMarkerDetails, setTripMarkerDetails] = useState([])
+
     //Put firestore database collection into a const
     const userTripMarkers = db.collection('users').doc(currentUser ? currentUser.uid : null).collection('tripMarkers')
 
@@ -103,40 +167,38 @@ const DistanceMatrix = ({currentUser}) => {
 
     //Distance Matrix Service callback function
     //Create markers with this callback
-    const distanceCallback = (props) => {
-        // if()console.log(props)
-    } 
+
+    const distanceCallback = (props, status) => {
+        if(status === "OK"){
+            console.log(props)
+        } else {
+            console.log("Error: " + status)
+        }
+    }
 
     const originCoords = () => {
         if(tripMarkers){
-            let origin = []
             for(let i = 0; i < tripMarkers.length; i++){
-                origin.push(tripMarkers[i].origin)
+                setTripOrigCoords([...tripOrigCoords, tripMarkers[i].origin])
             }
-            return origin
         }
     }
 
     const destinationCoords = () => {
         if(tripMarkers){
-            let destination = []
             for(let i = 0; i < tripMarkers.length; i++){
-                destination.push(tripMarkers[i].destination)
+                setTripDestCoords([...tripDestCoords, tripMarkers[i].destination])
             }
-            return destination
         }
     }
 
     const travelModeHandler = () => {
         if(tripMarkers){
-            let travelMode = []
             for(let i = 0; i < tripMarkers.length; i++){
-                travelMode.push(tripMarkers[i].travelMode)
+                setTripMarkerTravelMode([...tripMarkerTravelMode, tripMarkers[i].travelMode])
             }
-            return travelMode
         }
     }
-
 
     //////////////////////////////Open create trip popout//////////////////////////////////
     const createTripBtn = () => {
@@ -208,14 +270,24 @@ const DistanceMatrix = ({currentUser}) => {
             const snapshot = await userTripMarkers.get()
             const data = snapshot.docs.map(doc => doc.data());
             for(let i = 0; i < data.length; i++){
-                tripMarkers.push(data[i].distanceMatrix)
+                 tripMarkers.push(data[i].distanceMatrix)
             }
+            console.log("got data from firebase")
             })()
     }else {
         console.log("No accound data located")
     }
-    }, [distanceMatrix])
+    
+    }, [])
 
+
+    useEffect(() => {
+        setTimeout(() => {
+            originCoords()
+            destinationCoords()
+            travelModeHandler()
+        }, 3000);
+    }, [])
 
 /////////////////////////////////////////// JSX /////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -383,11 +455,11 @@ const DistanceMatrix = ({currentUser}) => {
       <DistanceMatrixService
         //Get firestore data and insert in options
             options={{
-                origins: originCoords(),
-                destinations: destinationCoords(),
+                origins: tripOrigCoords,
+                destinations: tripDestCoords,
                 travelMode: "DRIVING",
             }}
-            callback={(res) => distanceCallback(res)}
+            callback={(...res) => distanceCallback(...res)}
             />
 
             {/* Create form to submit origin and destinations for different trips you take... use markers and figure out a way to match markers to their intended destinations. 
