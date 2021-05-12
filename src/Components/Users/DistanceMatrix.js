@@ -105,8 +105,6 @@ Rows: [
 
 */
 
-
-
 const DistanceMatrix = ({currentUser}) => {
     const classes = useStyles();
     const [createTrip, setCreateTrip] = useState(false)
@@ -136,11 +134,11 @@ const DistanceMatrix = ({currentUser}) => {
 
     //Allow for proper data format to work with DistanceMatrixService
     const [getDMS, setGetDMS] = useState(true) //To stop callback from running endlessly
-    const [tripMarkers, setTripMarkers] = useState([])
-    const [tripOrigCoords, setTripOrigCoords] = useState([])
-    const [tripDestCoords, setTripDestCoords] = useState([])
-    const [tripMarkerTravelMode, setTripMarkerTravelMode] = useState([])
-    const [tripMarkerDetails, setTripMarkerDetails] = useState()
+    const [tripMarkers, setTripMarkers] = useState([]) //Has all firestore trip data
+    const [tripOrigCoords, setTripOrigCoords] = useState([]) //Trip origin coords
+    const [tripDestCoords, setTripDestCoords] = useState([]) //Trip dest. coords
+    const [tripMarkerTravelMode, setTripMarkerTravelMode] = useState([]) //Travel Mode
+    const [tripMarkerDetails, setTripMarkerDetails] = useState() //Data from Distance Matrix API callback response (based on trip origin, dest., travel mode)
 
     //Put firestore database collection into a const
     const userTripMarkers = db.collection('users').doc(currentUser ? currentUser.uid : null).collection('tripMarkers')
@@ -453,7 +451,8 @@ const DistanceMatrix = ({currentUser}) => {
         <DistanceMatrixService
         //Get firestore data and insert in options
             options={{
-                origins: tripOrigCoords,
+                //Array of data
+                origins: tripOrigCoords, 
                 destinations: tripDestCoords,
                 travelMode: "DRIVING",
             }}
