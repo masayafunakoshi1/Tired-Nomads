@@ -267,10 +267,10 @@ const GoogleMapsPersonal = () => {
                     currentUser={currentUser}
                     />                     
                 : null}  
-
-            <DistanceMatrix currentUser={currentUser} />
                 
             </GoogleMap>
+            
+            <DistanceMatrix currentUser={currentUser} />
     </div>
 
     )
