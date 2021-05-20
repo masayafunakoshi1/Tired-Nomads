@@ -24,7 +24,7 @@ import {
  } from "@reach/combobox";
  import {db} from '../../firebase'
  import '../../App.css'
-
+ import TripMarkers from './DistanceMatrixComps/TripMarkers'
 
 
 //Material UI styles
@@ -105,7 +105,12 @@ Rows: [
 
 */
 
-const DistanceMatrix = ({currentUser}) => {
+const DistanceMatrix = (
+    {currentUser, 
+    tripMarkers, 
+    setTripMarkers,
+    setTripMarkersShow 
+}) => {
     const classes = useStyles();
     const [createTrip, setCreateTrip] = useState(false)
     const [tripNameCond, setTripNameCond] = useState(false)
@@ -134,7 +139,7 @@ const DistanceMatrix = ({currentUser}) => {
 
     //Allow for proper data format to work with DistanceMatrixService
     const [getDMS, setGetDMS] = useState(true) //To stop callback from running endlessly
-    const [tripMarkers, setTripMarkers] = useState([]) //Has all firestore trip data
+    // const [tripMarkers, setTripMarkers] = useState([]) //Has all firestore trip data
     const [tripOrigCoords, setTripOrigCoords] = useState([]) //Trip origin coords
     const [tripDestCoords, setTripDestCoords] = useState([]) //Trip dest. coords
     const [tripMarkerTravelMode, setTripMarkerTravelMode] = useState([]) //Travel Mode
@@ -168,8 +173,8 @@ const DistanceMatrix = ({currentUser}) => {
 
     const distanceCallback = (props, status) => {
         if(status === "OK" && getDMS){
-            console.log(props)
-            setTripMarkerDetails(props)
+            console.log(props.rows[0].elements[0])
+            setTripMarkerDetails(props.rows[0].elements[0])
             setGetDMS(false)
         } else {
             console.log("Error: " + status)
@@ -288,7 +293,8 @@ const DistanceMatrix = ({currentUser}) => {
             originCoords()
             destinationCoords()
             travelModeHandler()
-        }, 3000);
+            setTripMarkersShow(true)
+        }, 1000);
     }, [])
 
 
@@ -448,6 +454,10 @@ const DistanceMatrix = ({currentUser}) => {
             :""}
         </div>
 
+        <TripMarkers 
+        tripMarkerDetails={tripMarkerDetails} 
+        tripMarkers={tripMarkers}
+        />
         <DistanceMatrixService
         //Get firestore data and insert in options
             options={{
@@ -456,7 +466,7 @@ const DistanceMatrix = ({currentUser}) => {
                 destinations: tripDestCoords,
                 travelMode: "DRIVING",
             }}
-            callback={getDMS ? (...res) => distanceCallback(...res) : console.log("callback stopped")}
+            callback={getDMS ? (...res) => distanceCallback(...res) : ""}
         />
 
             {/* Create form to submit origin and destinations for different trips you take... use markers and figure out a way to match markers to their intended destinations. 

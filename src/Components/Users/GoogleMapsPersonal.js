@@ -23,6 +23,7 @@ import SaveButton from './SaveButton';
 import Logout from '../Logout'
 import NightMode from '../NightMode'
 import DistanceMatrix from './DistanceMatrix'
+import TripMarkers from './DistanceMatrixComps/TripMarkers'
 
 import {useAuth} from '../contexts/AuthContext'
 import {db} from '../../firebase'
@@ -71,14 +72,18 @@ const GoogleMapsPersonal = () => {
       libraries,
     });
     const [markers, setMarkers] = useState([])
-    //Gets the information of the currently selected marker
-    const [selected, setSelected] = useState(null);
+    //Trip Markers getting data from "TripMarkers" in DistanceMatrix.js and mapping it into markers from TripMarkers.js
+
+    const [tripMarkers, setTripMarkers] = useState([]) //Has all firestore trip data
+    const [tripMarkersShow, setTripMarkersShow] = useState(false)
+
+    const [selected, setSelected] = useState(null); //Gets the information of the currently selected marker
+
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
-    // Checks if there were changes to determine if the save btn should be available or not
-    const [changes, setChanges] = useState(false)
-    //Gets anchor element for popover to show
-    const [anchorEl, setAnchorEl] = useState(null);
+    const [changes, setChanges] = useState(false) // Checks if there were changes to determine if the save btn should be available or not
+
+    const [anchorEl, setAnchorEl] = useState(null); //Gets anchor element for popover to show
     const [nightModeHandler, setNightModeHandler] = useState(false)
 
     const mapRef = useRef()
@@ -237,9 +242,9 @@ const GoogleMapsPersonal = () => {
             center={center}
             options={options}
             onClick={onMapClick}
-            onLoad = {onMapLoad}
+            onLoad={onMapLoad}
             >
-            {/* Render markers onto map in GoogleMap component with a Marker component. Need to add a key as we are iterating through."newMarker" is the new version of "markers*/}
+            {/* Render markers onto map in GoogleMap component with a Marker component. Need to add a key as we are iterating through. "newMarker" is the new version of "markers*/}
             {markers.map((newMarker) => (
                   <Marker 
                   key={`${newMarker.lat}-${newMarker.lng}`} 
@@ -259,18 +264,27 @@ const GoogleMapsPersonal = () => {
                 // Makes marker show when clicking on the map
             ))}
 
-            {selected ?
-                    <Information 
-                    selected={selected} 
-                    setSelected={setSelected} 
-                    deleteMarker={deleteMarker} 
-                    currentUser={currentUser}
-                    />                     
-                : null}  
+              <TripMarkers //Trip markers, Origin (green) Destination (red)
+              tripMarkers={tripMarkers}
+              tripMarkersShow={tripMarkersShow}
+              />
+
+              {selected ?
+                      <Information 
+                      selected={selected} 
+                      setSelected={setSelected} 
+                      deleteMarker={deleteMarker} 
+                      currentUser={currentUser}
+                      />                     
+                  : null}  
                 
             </GoogleMap>
             
-            <DistanceMatrix currentUser={currentUser} />
+            <DistanceMatrix 
+            tripMarkers={tripMarkers}
+            setTripMarkers={setTripMarkers}
+            setTripMarkersShow={setTripMarkersShow}
+            currentUser={currentUser} />
     </div>
 
     )
