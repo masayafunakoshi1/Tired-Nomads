@@ -5,17 +5,17 @@ import {
   
 import DistanceInformation from './DistanceInformation'
 
-const TripMarkers = ({tripMarkers, tripMarkersShow}) => {
+const TripMarkers = ({tripMarkers, tripMarkersShow, tripMarkerDetails}) => {
     const [tripSelected, setTripSelected] = useState(null) //Keeps track of what trip marker is currently selected
     const [tripSelectedDest, setTripSelectedDest] = useState(false)
-
-    // const [tripSelectedOrig, setTripSelectedOrig] = useState(null) //Keeps track of what trip marker Origin is currently selected
-    // const [tripSelectedDest, setTripSelectedDest] = useState(null) //Keeps track of what trip marker Destination is currently selected
 
 
     return (
     <>
 {/* Origin Marker */}
+
+        <button onClick={() => console.log(tripMarkerDetails)}>click me </button>
+
         {tripMarkersShow && tripMarkers.map((newMarker) => (
                   <Marker 
                   key={`${newMarker.tripName}`}
@@ -52,6 +52,7 @@ const TripMarkers = ({tripMarkers, tripMarkersShow}) => {
 
         {tripSelected ?
         <DistanceInformation 
+        tripMarkerDetails={tripMarkerDetails}
         tripSelected={tripSelected}
         tripSelectedDest={tripSelectedDest}
         setTripSelectedDest={setTripSelectedDest}

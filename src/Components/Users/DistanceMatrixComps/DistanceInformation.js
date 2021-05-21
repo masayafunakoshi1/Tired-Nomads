@@ -11,6 +11,7 @@ const DistanceInformation = (props) => {
     // Handle Click Away from Component
     const handleClickAway = () => {
         props.setTripSelected(null)
+        props.setTripSelectedDest(false)
       }
 
     return (
@@ -29,16 +30,19 @@ const DistanceInformation = (props) => {
                 <h3>{props.tripSelected.tripName}</h3>
                 <p>Distance: 2km</p>
                 <p>Duration: 1hr</p>
+
+                <Button onClick={() => console.log(props.tripMarkerDetails)}> Check </Button>
+                <div>
+                    <Button 
+                        variant="contained"
+                        color="secondary"
+                        startIcon={<DeleteIcon />}
+                        onClick={() => console.log("Insert Delete Marker")}
+                        >
+                        Delete Trip
+                    </Button> 
+                </div>
             </div>
-{/*  ----------------ERROR APPEARS WHEN ADDING BUTTON--------------
-            <Button 
-                variant="contained"
-                color="secondary"
-                startIcon={<DeleteIcon />}
-                onClick={() => console.log("Insert Delete Marker")}
-            >
-                Delete Trip
-            </Button> */}
         </ClickAwayListener>
     </InfoWindow>
     )

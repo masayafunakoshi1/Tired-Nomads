@@ -143,6 +143,9 @@ const DistanceMatrix = (
     const [tripOrigCoords, setTripOrigCoords] = useState([]) //Trip origin coords
     const [tripDestCoords, setTripDestCoords] = useState([]) //Trip dest. coords
     const [tripMarkerTravelMode, setTripMarkerTravelMode] = useState([]) //Travel Mode
+    const detailsArr = [] //TEMPORARY hold of data from Distance Matrix API callback response
+    //Only OK because callback has conditions which prevent it from being called repetitively for no reason
+    //!!!!!!!!Would like a better solution as this could take up alot of memory!!!!!!//
     const [tripMarkerDetails, setTripMarkerDetails] = useState() //Data from Distance Matrix API callback response (based on trip origin, dest., travel mode)
 
     //Put firestore database collection into a const
@@ -173,7 +176,10 @@ const DistanceMatrix = (
 
     const distanceCallback = (props, status) => {
         if(status === "OK" && getDMS){
-            console.log(props.rows[0].elements[0])
+            console.log(props)
+            // detailsArr.push(props.rows[0].elements[0])
+            // //Should take care of any duplicates in array
+            // setTripMarkerDetails([...new Set(detailsArr)])
             setTripMarkerDetails(props.rows[0].elements[0])
             setGetDMS(false)
         } else {
