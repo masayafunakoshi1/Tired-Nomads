@@ -37,7 +37,7 @@ const DistanceInformation = (props) => {
                         variant="contained"
                         color="secondary"
                         startIcon={<DeleteIcon />}
-                        onClick={() => console.log("Insert Delete Marker")}
+                        onClick={() => props.deleteTrip(props.tripSelected.tripName)}
                         >
                         Delete Trip
                     </Button> 

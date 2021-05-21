@@ -107,8 +107,7 @@ Rows: [
 
 const DistanceMatrix = (
     {currentUser, 
-    tripMarkers, 
-    setTripMarkers,
+    tripMarkers,
     setTripMarkersShow 
 }) => {
     const classes = useStyles();
@@ -139,7 +138,6 @@ const DistanceMatrix = (
 
     //Allow for proper data format to work with DistanceMatrixService
     const [getDMS, setGetDMS] = useState(true) //To stop callback from running endlessly
-    // const [tripMarkers, setTripMarkers] = useState([]) //Has all firestore trip data
     const [tripOrigCoords, setTripOrigCoords] = useState([]) //Trip origin coords
     const [tripDestCoords, setTripDestCoords] = useState([]) //Trip dest. coords
     const [tripMarkerTravelMode, setTripMarkerTravelMode] = useState([]) //Travel Mode
@@ -230,9 +228,20 @@ const DistanceMatrix = (
         }
     }
 
-    ///////////////////////////////Firestore set() and get()//////////////////////////
+    ///////////////////////////////Firestore set(), get() and Delete Trip//////////////////////////
     //////////////////////////////////////////////////////////////////////////////////
     //Submit distance matrix to firestore, creating new doc if doc doesn't exist
+
+    // const deleteTrip = (props) => {
+    //     deleteTripData(props)
+    //     const newTripList = tripMarkers.filter((deleteFromTrips) => {
+    //         if(!)
+    //     })
+    // }
+
+    // const deleteTripData = (tripName) => {
+
+    // }
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -274,6 +283,7 @@ const DistanceMatrix = (
             console.log("No account storage located")
         }
     }
+
 
    ////////// GET trips from firestore and insert them into state hook ////////////
    //On pageload, push data into tripMarkers state hook. Then 
@@ -461,9 +471,10 @@ const DistanceMatrix = (
         </div>
 
         <TripMarkers 
-        tripMarkerDetails={tripMarkerDetails} 
-        tripMarkers={tripMarkers}
+        tripMarkerDetails={tripMarkerDetails}
+        userTripMarkers={userTripMarkers} 
         />
+
         <DistanceMatrixService
         //Get firestore data and insert in options
             options={{

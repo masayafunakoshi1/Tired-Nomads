@@ -129,15 +129,15 @@ const GoogleMapsPersonal = () => {
     //Delete selected marker and firestore data, props is key value/ID on firestore
     const deleteMarker = async (props) => {
         deleteMarkerData(props)
-        await deleteRatingData(props)
-        await deleteReviewData(props)
+        deleteRatingData(props)
+        deleteReviewData(props)
         const newMarkerList = markers.filter((deleteFromMarkers) => {
             if(selected !== deleteFromMarkers) {
               return deleteFromMarkers
             } 
           })
-        await setMarkers(newMarkerList);
-        await setSelected(null);
+        setMarkers(newMarkerList);
+        setSelected(null);
         setChanges(true)
       }
 

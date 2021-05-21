@@ -5,16 +5,45 @@ import {
   
 import DistanceInformation from './DistanceInformation'
 
-const TripMarkers = ({tripMarkers, tripMarkersShow, tripMarkerDetails}) => {
+const TripMarkers = (
+    {tripMarkers, 
+    setTripMarkers, 
+    tripMarkersShow, 
+    tripMarkerDetails },
+    userTripMarkers 
+    ) => {
     const [tripSelected, setTripSelected] = useState(null) //Keeps track of what trip marker is currently selected
     const [tripSelectedDest, setTripSelectedDest] = useState(false)
+//////////////////////////////// UNDER CONSTRUCTION //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //Functions delete trip markers and trip data
+    const deleteTrip = async (props) => {
+        deleteTripData(props)
+        const newTripList = tripMarkers.filter((deleteFromTrips) => {
+            if(!tripSelected !== deleteFromTrips){
+                return deleteFromTrips
+            }
+        })
+        setTripMarkers(newTripList);
+        setTripSelected(null);
+    }
+
+    const deleteTripData = (tripName) => {
+        const fbTripData = userTripMarkers.doc('newTrip')
+        console.log(fbTripData)
+
+        // userTripMarkers.doc(tripName).delete().then(() => {
+        //     console.log("Trip Successfully Deleted");
+        // }).catch((error) => {console.log("Error removing Trip: ", error)
+        // });
+    }
 
 
     return (
     <>
 {/* Origin Marker */}
 
-        <button onClick={() => console.log(tripMarkerDetails)}>click me </button>
+    <button onClick={() => console.log(tripMarkerDetails)}>click me </button>
 
         {tripMarkersShow && tripMarkers.map((newMarker) => (
                   <Marker 
@@ -50,8 +79,9 @@ const TripMarkers = ({tripMarkers, tripMarkersShow, tripMarkerDetails}) => {
                 />
             ))}
 
-        {tripSelected ?
+    {tripSelected ?
         <DistanceInformation 
+        deleteTrip={deleteTrip} //Function
         tripMarkerDetails={tripMarkerDetails}
         tripSelected={tripSelected}
         tripSelectedDest={tripSelectedDest}
