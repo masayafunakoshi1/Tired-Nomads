@@ -27,9 +27,10 @@ const DistanceInformation = (props) => {
         >
         <ClickAwayListener onClickAway={handleClickAway}>
             <div>
-                <h3>{props.tripSelected.tripName}</h3>
-                <p>Distance: 2km</p>
-                <p>Duration: 1hr</p>
+                <h2>{props.tripSelected.tripName}</h2>
+                <h3>{props.tripSelectedDest ? 'Destination' : 'Origin'}</h3>
+                <p>Distance: {props.tripMarkerDetails ? props.tripMarkerDetails.distance.text: 0}</p>
+                <p>Duration: {props.tripMarkerDetails ? props.tripMarkerDetails.duration.text : 0}</p>
 
                 <Button onClick={() => console.log(props.tripMarkerDetails)}> Check </Button>
                 <div>

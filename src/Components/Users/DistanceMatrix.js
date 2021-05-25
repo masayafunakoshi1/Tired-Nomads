@@ -108,6 +108,7 @@ Rows: [
 const DistanceMatrix = (
     {currentUser, 
     tripMarkers,
+    // setTripMarkers,
     setTripMarkersShow 
 }) => {
     const classes = useStyles();
@@ -172,13 +173,13 @@ const DistanceMatrix = (
     //Distance Matrix Service callback function
     //Create markers with this callback
 
-    const distanceCallback = (props, status) => {
+    const distanceCallback = ({props, status}) => {
         if(status === "OK" && getDMS){
             console.log(props)
             // detailsArr.push(props.rows[0].elements[0])
             // //Should take care of any duplicates in array
             // setTripMarkerDetails([...new Set(detailsArr)])
-            setTripMarkerDetails(props.rows[0].elements[0])
+            // setTripMarkerDetails(props.rows[0].elements[0])
             setGetDMS(false)
         } else {
             console.log("Error: " + status)
@@ -232,17 +233,6 @@ const DistanceMatrix = (
     //////////////////////////////////////////////////////////////////////////////////
     //Submit distance matrix to firestore, creating new doc if doc doesn't exist
 
-    // const deleteTrip = (props) => {
-    //     deleteTripData(props)
-    //     const newTripList = tripMarkers.filter((deleteFromTrips) => {
-    //         if(!)
-    //     })
-    // }
-
-    // const deleteTripData = (tripName) => {
-
-    // }
-
     const submitHandler = (e) => {
         e.preventDefault()
         setDistanceMatrix(prevState => {
@@ -293,8 +283,8 @@ const DistanceMatrix = (
             const snapshot = await userTripMarkers.get()
             const data = snapshot.docs.map(doc => doc.data());
             for(let i = 0; i < data.length; i++){
-                console.log(data[i].distanceMatrix)
-                 tripMarkers.push(data[i].distanceMatrix)
+                console.log(data[i].distanceMatrix  )
+                tripMarkers.push(data[i].distanceMatrix)
             }
             console.log("got data from firebase")
             })()
@@ -312,6 +302,7 @@ const DistanceMatrix = (
             setTripMarkersShow(true)
         }, 1000);
     }, [])
+
 
 
 /////////////////////////////////////////// JSX /////////////////////////////////////////
@@ -472,7 +463,6 @@ const DistanceMatrix = (
 
         <TripMarkers 
         tripMarkerDetails={tripMarkerDetails}
-        userTripMarkers={userTripMarkers} 
         />
 
         <DistanceMatrixService

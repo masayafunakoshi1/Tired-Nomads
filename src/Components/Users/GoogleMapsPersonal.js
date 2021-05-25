@@ -127,7 +127,7 @@ const GoogleMapsPersonal = () => {
 
               ///////////////// Data Modification ////////////////////////
     //Delete selected marker and firestore data, props is key value/ID on firestore
-    const deleteMarker = async (props) => {
+    const deleteMarker = (props) => {
         deleteMarkerData(props)
         deleteRatingData(props)
         deleteReviewData(props)
@@ -267,6 +267,7 @@ const GoogleMapsPersonal = () => {
               <TripMarkers //Trip markers, Origin (green) Destination (red)
               tripMarkers={tripMarkers}
               tripMarkersShow={tripMarkersShow}
+              setTripMarkers={setTripMarkers}
               />
 
               {selected ?
