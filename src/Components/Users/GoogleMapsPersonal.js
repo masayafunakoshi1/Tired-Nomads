@@ -14,6 +14,7 @@ import {
 import '../../App.css';
 import {regular, nightMode} from '../../mapStyles'
 
+import { useBeforeunload } from 'react-beforeunload';
 import {Alert} from '@material-ui/lab'
 
 import Information from './Information'
@@ -103,6 +104,14 @@ const GoogleMapsPersonal = () => {
 
 ///////////////////////////////////////Functions///////////////////////////////////////
 
+//UseBeforeUnload npm package, alert prevent action if unsaved changes
+    useBeforeunload((event) => {
+      if(changes){
+        event.preventDefault();
+      }
+    });
+
+
 //Use useCallback for functions you only want to run in certain situations or for functions with complex props from components 
     //Creates markers and sets them on map click
     const onMapClick = useCallback((event) => {
@@ -189,7 +198,6 @@ const GoogleMapsPersonal = () => {
         })
     }, [])
 
-
     /////////////////////////////////////////JSX///////////////////////////////////
     //If there is a load error, DOM will show this message
     if(loadError) return(<div className="App">Error loading maps</div>)
@@ -244,7 +252,7 @@ const GoogleMapsPersonal = () => {
             zoom={4.9} 
             center={center}
             options={options}
-            onClick={selected ? onMapClick : ''}
+            onClick={selected ? '' : onMapClick}
             onLoad={onMapLoad}
             >
             {/* Render markers onto map in GoogleMap component with a Marker component. Need to add a key as we are iterating through. "newMarker" is the new version of "markers*/}
@@ -271,8 +279,9 @@ const GoogleMapsPersonal = () => {
               tripMarkerDetails={tripMarkerDetails}
               setTripMarkerDetails={setTripMarkerDetails}
               tripMarkers={tripMarkers}
-              tripMarkersShow={tripMarkersShow}
               setTripMarkers={setTripMarkers}
+              tripMarkersShow={tripMarkersShow}
+              setTripMarkersShow={setTripMarkersShow}
               />
 
               {selected ?

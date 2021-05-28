@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react'
 import {
-    Marker,
     DistanceMatrixService
   } from "@react-google-maps/api";
 
@@ -24,7 +23,7 @@ import {
  } from "@reach/combobox";
  import {db} from '../../firebase'
  import '../../App.css'
- import TripMarkers from './DistanceMatrixComps/TripMarkers'
+import { tr } from 'date-fns/esm/locale';
 
 
 //Material UI styles
@@ -165,19 +164,22 @@ const DistanceMatrix = (
     });
 
 
-    ////////////////////////////////////// FUNCTIONS ////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////// FUNCTIONS ////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+
 
     //Distance Matrix Service callback function
     //Create markers with this callback
-
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// UNDER CONSTRUCTION ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     const distanceCallback = (props, status) => {
         if(status === "OK" && getDMS){
             console.log(props)
+            setTripMarkerDetails(props.rows[0].elements[0])
+
             // detailsArr.push(props.rows[0].elements[0])
             // //Should take care of any duplicates in array
             // setTripMarkerDetails([...new Set(detailsArr)])
-            setTripMarkerDetails(props.rows[0].elements[0])
+
             setGetDMS(false)
         } else {
             console.log("Error: " + status)
@@ -220,7 +222,7 @@ const DistanceMatrix = (
 
     //Constraints that valueTripName must follow, else doesn't work with firebase
     const tripNameConstraints = (e) => {
-        if(e.target.value.indexOf(' ') > 0 || e.target.value.indexOf("/") > 0 || e.target.value === '.' || e.target.value === '..' || e.target.value === RegExp('__.*__') ){
+        if(e.target.value.indexOf(' ') > 0 || e.target.value.indexOf("/") > 0 || e.target.value === '.' || e.target.value === '..' || e.target.value === RegExp('__.*__') || e.target.value.includes(" ")){
             setTripNameCond(true)
         } else {
             setTripNameCond(false)
@@ -264,6 +266,12 @@ const DistanceMatrix = (
                 setValueOrigin('')
                 setValueDestination('')
                 setTravelMethod('')
+            }).then(() => {
+                getDataFromFB()
+                setTripMarkersShow(false)
+                setTimeout(() => {
+                    setTripMarkersShow(true)
+                }, 100)
             }).catch((err) => {
                 console.log(err)
             })
@@ -275,20 +283,24 @@ const DistanceMatrix = (
 
    ////////// GET trips from firestore and insert them into state hook ////////////
    //On pageload, push data into tripMarkers state hook. Then 
-    useEffect(() => {
-    if(userTripMarkers){
+
+    const getDataFromFB = () => {
+      if(userTripMarkers){
          (async() => {
             const snapshot = await userTripMarkers.get()
             const data = snapshot.docs.map(doc => doc.data());
             for(let i = 0; i < data.length; i++){
-                console.log(data[i].distanceMatrix  )
                 tripMarkers.push(data[i].distanceMatrix)
             }
             console.log("got data from firebase")
             })()
-    }else {
-        console.log("No account data located")
+        }else {
+            console.log("No account data located")
+        }
     }
+
+    useEffect(() => {
+        getDataFromFB()
     }, [])
 
 
@@ -449,7 +461,7 @@ const DistanceMatrix = (
                         variant="contained"
                         color="primary"
                         type="submit"
-                        disabled={tripNameCond || !valueOrigin || !valueDestination || !travelMethod}
+                        disabled={ !valueOrigin || !valueDestination || !travelMethod || tripNameCond || valueTripName == ""}
                         >
                             Set Markers
                         </Button>
@@ -458,30 +470,7 @@ const DistanceMatrix = (
             </Paper>
             :""}
         </div>
-
-        {/* <TripMarkers 
-        tripMarkerDetails={tripMarkerDetails}
-        tripMarkers={tripMarkers}
-        tripMarkersShow={tripMarkersShow}
-        setTripMarkers={setTripMarkers}
-        /> */}
-
-        <DistanceMatrixService
-        //Get firestore data and insert in options
-            options={{
-                //Array of data
-                origins: tripOrigCoords, 
-                destinations: tripDestCoords,
-                travelMode: "DRIVING",
-            }}
-            callback={getDMS ? (...res) => distanceCallback(...res) : ""}
-        />
-
-            {/* Create form to submit origin and destinations for different trips you take... use markers and figure out a way to match markers to their intended destinations. 
-            
-            Create emoji table to use emojis as markers... research how that can be done.
-            */}
-        </div>
+    </div>
     )
 }
 

@@ -136,7 +136,7 @@ const GoogleMapContainer = ({popup, setPopup}) => {
             zoom={4.9} 
             center={center}
             options={options}
-            onClick={onMapClick}
+            onClick={selected ? '' :onMapClick}
             onLoad={onMapLoad}
             >
             {/* Render markers onto map in GoogleMap component with a Marker component. Need to add a key as we are iterating through."newMarker" is the new version of "markers*/}

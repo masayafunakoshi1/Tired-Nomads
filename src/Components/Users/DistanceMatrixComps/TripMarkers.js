@@ -11,6 +11,7 @@ const TripMarkers = (
     {tripMarkers, 
     setTripMarkers, 
     tripMarkersShow,
+    setTripMarkersShow,
     tripMarkerDetails, 
 },
 ) => {
@@ -18,7 +19,7 @@ const TripMarkers = (
     const [tripSelectedDest, setTripSelectedDest] = useState(false)
     const {currentUser} = useAuth()
     const userTripMarkers = db.collection('users').doc(currentUser ? currentUser.uid : '').collection('tripMarkers')
-//////////////////////////////// UNDER CONSTRUCTION //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     //Functions delete trip markers and trip data
     const deleteTrip = (props) => {
@@ -30,6 +31,10 @@ const TripMarkers = (
         })
         setTripMarkers(newTripList);
         setTripSelected(null);
+        setTripMarkersShow(false)
+        setTimeout(() => {
+            setTripMarkersShow(true)
+        }, 100)
     }
 
     const deleteTripData = (tripName) => {
@@ -44,31 +49,10 @@ const TripMarkers = (
     //tripMarkers does not have new data until refresh, add new data on change
     //Make trip markers appear on state change
 
-    // useEffect(() => {
-    //     // setTripMarkers(userTripMarkers)
-    //     setTripMarkers([]);
-    //     if(userTripMarkers){
-    //         (async() => {
-    //             const snapshot = await userTripMarkers.get()
-    //             const data = snapshot.docs.map(doc => doc.data());
-    //             for(let i = 0; i < data.length; i++){
-    //                 console.log(data[i].distanceMatrix  )
-    //                 tripMarkers.push(data[i].distanceMatrix)
-    //             }
-    //             console.log("got data from firebase")
-    //             })()
-    //     }else {
-    //         console.log("No account data located")
-    //     }
-    // }, [tripMarkers])
-
 
     return (
     <>
 {/* Origin Marker */}
-
-    <button onClick={() => console.log(tripMarkerDetails)}>click me </button>
-
         {tripMarkersShow && tripMarkers.map((newMarker) => (
                   <Marker 
                   key={`${newMarker.tripName}`}
