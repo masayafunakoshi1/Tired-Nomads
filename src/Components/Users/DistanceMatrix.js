@@ -51,8 +51,6 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-
-
 //////////////////////// How the data moves within this component /////////////////////
 /* 
 1. insert origin and destination info in textfields on app
@@ -108,7 +106,7 @@ Rows: [
 const DistanceMatrix = (
     {currentUser, 
     tripMarkers,
-    // setTripMarkers,
+    setTripMarkerDetails,
     setTripMarkersShow 
 }) => {
     const classes = useStyles();
@@ -145,7 +143,7 @@ const DistanceMatrix = (
     const detailsArr = [] //TEMPORARY hold of data from Distance Matrix API callback response
     //Only OK because callback has conditions which prevent it from being called repetitively for no reason
     //!!!!!!!!Would like a better solution as this could take up alot of memory!!!!!!//
-    const [tripMarkerDetails, setTripMarkerDetails] = useState() //Data from Distance Matrix API callback response (based on trip origin, dest., travel mode)
+    // const [tripMarkerDetails, setTripMarkerDetails] = useState() //Data from Distance Matrix API callback response (based on trip origin, dest., travel mode)
 
     //Put firestore database collection into a const
     const userTripMarkers = db.collection('users').doc(currentUser ? currentUser.uid : null).collection('tripMarkers')
@@ -173,13 +171,13 @@ const DistanceMatrix = (
     //Distance Matrix Service callback function
     //Create markers with this callback
 
-    const distanceCallback = ({props, status}) => {
+    const distanceCallback = (props, status) => {
         if(status === "OK" && getDMS){
             console.log(props)
             // detailsArr.push(props.rows[0].elements[0])
             // //Should take care of any duplicates in array
             // setTripMarkerDetails([...new Set(detailsArr)])
-            // setTripMarkerDetails(props.rows[0].elements[0])
+            setTripMarkerDetails(props.rows[0].elements[0])
             setGetDMS(false)
         } else {
             console.log("Error: " + status)
@@ -461,9 +459,12 @@ const DistanceMatrix = (
             :""}
         </div>
 
-        <TripMarkers 
+        {/* <TripMarkers 
         tripMarkerDetails={tripMarkerDetails}
-        />
+        tripMarkers={tripMarkers}
+        tripMarkersShow={tripMarkersShow}
+        setTripMarkers={setTripMarkers}
+        /> */}
 
         <DistanceMatrixService
         //Get firestore data and insert in options

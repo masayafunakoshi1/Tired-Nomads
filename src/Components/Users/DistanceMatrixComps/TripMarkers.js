@@ -10,10 +10,10 @@ import {useAuth} from '../../contexts/AuthContext'
 const TripMarkers = (
     {tripMarkers, 
     setTripMarkers, 
-    tripMarkersShow, 
-    tripMarkerDetails,
+    tripMarkersShow,
+    tripMarkerDetails, 
 },
-    ) => {
+) => {
     const [tripSelected, setTripSelected] = useState(null) //Keeps track of what trip marker is currently selected
     const [tripSelectedDest, setTripSelectedDest] = useState(false)
     const {currentUser} = useAuth()

@@ -86,6 +86,9 @@ const GoogleMapsPersonal = () => {
     const [anchorEl, setAnchorEl] = useState(null); //Gets anchor element for popover to show
     const [nightModeHandler, setNightModeHandler] = useState(false)
 
+    const [tripMarkerDetails, setTripMarkerDetails] = useState() //Data from Distance Matrix API callback response (based on trip origin, dest., travel mode)
+
+
     const mapRef = useRef()
     const {currentUser} = useAuth();
     const markersDocs = db.collection('users').doc(currentUser.uid).collection('markers')
@@ -241,7 +244,7 @@ const GoogleMapsPersonal = () => {
             zoom={4.9} 
             center={center}
             options={options}
-            onClick={onMapClick}
+            onClick={selected ? onMapClick : ''}
             onLoad={onMapLoad}
             >
             {/* Render markers onto map in GoogleMap component with a Marker component. Need to add a key as we are iterating through. "newMarker" is the new version of "markers*/}
@@ -265,6 +268,8 @@ const GoogleMapsPersonal = () => {
             ))}
 
               <TripMarkers //Trip markers, Origin (green) Destination (red)
+              tripMarkerDetails={tripMarkerDetails}
+              setTripMarkerDetails={setTripMarkerDetails}
               tripMarkers={tripMarkers}
               tripMarkersShow={tripMarkersShow}
               setTripMarkers={setTripMarkers}
@@ -284,8 +289,12 @@ const GoogleMapsPersonal = () => {
             <DistanceMatrix 
             tripMarkers={tripMarkers}
             setTripMarkers={setTripMarkers}
+            tripMarkersShow={tripMarkersShow}
             setTripMarkersShow={setTripMarkersShow}
-            currentUser={currentUser} />
+            currentUser={currentUser}
+            tripMarkerDetails={tripMarkerDetails}
+            setTripMarkerDetails={setTripMarkerDetails}
+            />
     </div>
 
     )

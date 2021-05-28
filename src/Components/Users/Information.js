@@ -30,7 +30,7 @@ const Information = ({selected, setSelected, deleteMarker, currentUser}) => {
           <ClickAwayListener onClickAway={handleClickAway}>
                 <div>
                 <h2>Slept Here</h2>
-                <p>Time: {`${selected.time}`}</p>
+                <h5>{`${selected.time}`}</h5>
 
                 <Ratings selected={selected} user={user}/>
                 <Reviews user={user} selected={selected}/>

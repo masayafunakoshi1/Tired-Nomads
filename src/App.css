@@ -303,7 +303,7 @@ h1 {
 
   .search {
     position: absolute;
-    top: 7rem;
+    top: 6rem;
     left: 50%;
     transform: translateX(-50%);
     width: 75%;
@@ -353,8 +353,8 @@ h1 {
   }
 
   .distanceMatrix {
-    top: 165px;
-    left: 10%;
+    top: 150px;
+    left: 15%;
   }
 
   /*//////////////// Btns on landing page /////////////////////////////*/
@@ -390,7 +390,7 @@ h1 {
 
   .search {
     position: absolute;
-    top: 7rem;
+    top: 5rem;
     left: 50%;
     transform: translateX(-50%);
     width: 75%;
@@ -440,7 +440,7 @@ h1 {
   }
 
   .distanceMatrix {
-    top: 165px;
+    top: 135px;
     left: 12%;
   }
 
