@@ -10,7 +10,7 @@ import {
   useLoadScript,
   Marker,
 } from "@react-google-maps/api";
-// import '@reach/combobox/styles.css'
+
 import '../../App.css';
 import {regular, nightMode} from '../../mapStyles'
 
@@ -146,7 +146,7 @@ const GoogleMapsPersonal = () => {
         const newMarkerList = markers.filter((deleteFromMarkers) => {
             if(selected !== deleteFromMarkers) {
               return deleteFromMarkers
-            } 
+            } else return console.log("No markers deleted")
           })
         setMarkers(newMarkerList);
         setSelected(null);

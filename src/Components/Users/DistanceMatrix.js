@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react'
-import {
-    DistanceMatrixService
-  } from "@react-google-maps/api";
+
+// import {
+//     DistanceMatrixService
+//   } from "@react-google-maps/api";
 
   import usePlacesAutocomplete, {
   getGeocode,
@@ -23,8 +24,10 @@ import {
  } from "@reach/combobox";
  import {db} from '../../firebase'
  import '../../App.css'
-import { tr } from 'date-fns/esm/locale';
 
+ 
+ /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// UNDER DEVELOPMENT ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Currently only showing trip markers and trip names ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// When I figure out DistanceMatrixService a bit more then can add distance and duration of trips ///////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Material UI styles
 const useStyles = makeStyles(() => ({
@@ -49,6 +52,7 @@ const useStyles = makeStyles(() => ({
         margin: '20px 0px 20px 0px'
     }
 }));
+
 
 //////////////////////// How the data moves within this component /////////////////////
 /* 
@@ -134,15 +138,18 @@ const DistanceMatrix = (
     })
     const [travelMethod, setTravelMethod] = useState('')
 
-    //Allow for proper data format to work with DistanceMatrixService
-    const [getDMS, setGetDMS] = useState(true) //To stop callback from running endlessly
     const [tripOrigCoords, setTripOrigCoords] = useState([]) //Trip origin coords
     const [tripDestCoords, setTripDestCoords] = useState([]) //Trip dest. coords
     const [tripMarkerTravelMode, setTripMarkerTravelMode] = useState([]) //Travel Mode
-    const detailsArr = [] //TEMPORARY hold of data from Distance Matrix API callback response
+
+    /////////////////////////////////////// FOR DISTANCE MATRIX SERVICE /////////////////////////////////////////////
+    //  //Allow for proper data format to work with DistanceMatrixService
+    // const [getDMS, setGetDMS] = useState(true) //To stop callback from running endlessly
+
+    // const detailsArr = [] 
+    //TEMPORARY hold of data from Distance Matrix API callback response
     //Only OK because callback has conditions which prevent it from being called repetitively for no reason
     //!!!!!!!!Would like a better solution as this could take up alot of memory!!!!!!//
-    // const [tripMarkerDetails, setTripMarkerDetails] = useState() //Data from Distance Matrix API callback response (based on trip origin, dest., travel mode)
 
     //Put firestore database collection into a const
     const userTripMarkers = db.collection('users').doc(currentUser ? currentUser.uid : null).collection('tripMarkers')
@@ -168,23 +175,22 @@ const DistanceMatrix = (
 /////////////////////////////////////////////////////////////////////////////////////
 
 
-    //Distance Matrix Service callback function
-    //Create markers with this callback
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// UNDER CONSTRUCTION ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    const distanceCallback = (props, status) => {
-        if(status === "OK" && getDMS){
-            console.log(props)
-            setTripMarkerDetails(props.rows[0].elements[0])
 
-            // detailsArr.push(props.rows[0].elements[0])
-            // //Should take care of any duplicates in array
-            // setTripMarkerDetails([...new Set(detailsArr)])
+    // const distanceCallback = (props, status) => {
+    //     if(status === "OK" && getDMS){
+    //         console.log(props)
+    //         setTripMarkerDetails(props.rows[0].elements[0])
 
-            setGetDMS(false)
-        } else {
-            console.log("Error: " + status)
-        }
-    }
+    //         // detailsArr.push(props.rows[0].elements[0])
+    //         // //Should take care of any duplicates in array
+    //         // setTripMarkerDetails([...new Set(detailsArr)])
+
+    //         setGetDMS(false)
+    //     } else {
+    //         console.log("Error: " + status)
+    //     }
+    // }
 
     const originCoords = () => {
         if(tripMarkers){
@@ -239,10 +245,12 @@ const DistanceMatrix = (
            return{ ...prevState,
             tripName: valueTripName,
             origin: {
+                address: originObj.address,
                 lat: originObj.lat,
                 lng: originObj.lng
             },
             destination: {
+                address: destinationObj.address,
                 lat: destinationObj.lat,
                 lng: destinationObj.lng
             },
@@ -461,7 +469,7 @@ const DistanceMatrix = (
                         variant="contained"
                         color="primary"
                         type="submit"
-                        disabled={ !valueOrigin || !valueDestination || !travelMethod || tripNameCond || valueTripName == ""}
+                        disabled={ !valueOrigin || !valueDestination || !travelMethod || tripNameCond || valueTripName === ""}
                         >
                             Set Markers
                         </Button>
@@ -470,8 +478,29 @@ const DistanceMatrix = (
             </Paper>
             :""}
         </div>
+
+
+{/* 
+    /////////////////////////////////// Gets distance information from Google Distance API using react-google-maps component //////////////////////////////
+        <DistanceMatrixService
+        //Get firestore data and insert in options
+            options={{
+                //Array of data
+                origins: tripOrigCoords, 
+                destinations: tripDestCoords,
+                travelMode: "DRIVING",
+            }}
+            callback={getDMS ? (...res) => distanceCallback(...res) : ""}
+        />
+
+            
+*/}
+
     </div>
+
     )
 }
+
+
 
 export default DistanceMatrix

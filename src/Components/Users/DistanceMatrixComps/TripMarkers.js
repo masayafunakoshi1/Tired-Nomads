@@ -1,8 +1,7 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import {
     Marker
   } from "@react-google-maps/api";
-  
 import DistanceInformation from './DistanceInformation'
 import {db} from '../../../firebase'
 import {useAuth} from '../../contexts/AuthContext'
@@ -27,7 +26,7 @@ const TripMarkers = (
         const newTripList = tripMarkers.filter((deleteFromTrips) => {
             if(tripSelected !== deleteFromTrips){
                 return deleteFromTrips
-            }
+            } else return console.log("No trip deleted")
         })
         setTripMarkers(newTripList);
         setTripSelected(null);

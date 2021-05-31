@@ -35,7 +35,6 @@ export const AuthProvider = ({ children }) => {
                     //Problem with history.push when logging in with google account first time, doesn't redirect. Redirects on the second time.
                     setCurrentUser(currentUser)
                     //Works with await console.log(), so probably a timing issue
-                    await console.log(currentUser);
                     await history.push("/myMap")
                 }) 
                 .catch((error) => {
