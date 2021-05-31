@@ -38,7 +38,7 @@ import NightMode from './NightMode'
     lng: -94.578331,
   }
 
-const GoogleMapContainer = ({popup, setPopup}) => {
+const GoogleMapContainer = () => {
 ///////////////////////////////////////Hooks///////////////////////////////////////////
     const { isLoaded, loadError } = useLoadScript({
       //Get API key from the env.local file
@@ -119,6 +119,8 @@ const GoogleMapContainer = ({popup, setPopup}) => {
         <NightMode 
         nightModeHandler = {nightModeHandler}
         setNightModeHandler = {setNightModeHandler}
+        anchorEl={anchorEl}
+        setAnchorEl={setAnchorEl}
         />
 
         {/* Login & Signup buttons */}
