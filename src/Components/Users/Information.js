@@ -10,7 +10,7 @@ import Reviews from './InfoComponents/Reviews'
 
 const Information = ({selected, setSelected, deleteMarker, currentUser}) => {
 
-    const [user, setUser] = useState({
+    const [user] = useState({
        userName: currentUser ? `${currentUser.email}` : 'JohnChongus@gmail.com',
        avatar: currentUser ? `${currentUser.avatar}` : null,
        uid: currentUser ? currentUser.uid : "user1",
@@ -30,7 +30,7 @@ const Information = ({selected, setSelected, deleteMarker, currentUser}) => {
           <ClickAwayListener onClickAway={handleClickAway}>
                 <div>
                 <h2>Slept Here</h2>
-                <p>Time: {`${selected.time}`}</p>
+                <h5>{`${selected.time}`}</h5>
 
                 <Ratings selected={selected} user={user}/>
                 <Reviews user={user} selected={selected}/>

@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import Rating from '@material-ui/lab/Rating';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
@@ -47,7 +47,7 @@ const Ratings = ({selected, user}) => {
 
     return (
         <Box component="fieldset" borderColor="transparent">
-            <Typography component="legend">Rating</Typography>
+            <Typography component={"span"}>Rating</Typography>
                 <Rating
                 name="simple-controlled"
                 value={value}

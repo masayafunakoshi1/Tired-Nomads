@@ -76,7 +76,7 @@ const Login = () => {
             </form>
 
             <div>
-                <p>Login with <button onClick={googleSignin}>Google Account</button></p>
+                <p>Login with <Button variant="outlined" onClick={googleSignin}>Google Account</Button></p>
             </div>
 
             <div className="links">

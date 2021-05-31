@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react'
-import '../../../styles/InfoWindow.css'
 import { makeStyles } from '@material-ui/core/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import PublishIcon from '@material-ui/icons/Publish';
@@ -72,13 +71,14 @@ const Reviews = ({user, selected}) => {
       .then((doc) => {
         if(doc.exists){
           setReviewArr([doc.data().review])
+          console.log("review")
         }else{
           console.log("Review doesn't exist")
         }
       }).catch((err) => {
         console.log("Process unsuccessful", err)
       })
-    }, [selected, onReviewSet])
+    }, [selected, review])
 
 
 
@@ -91,7 +91,7 @@ const Reviews = ({user, selected}) => {
             <ListItemText
             primary={user.userName}
             secondary={
-                <div>
+                <span>
                     <Typography
                         component={"span"}
                         variant="body2"
@@ -114,7 +114,7 @@ const Reviews = ({user, selected}) => {
 
 
                     <Divider component={"span"}/>
-                </div>
+                </span>
             }
             />
         </ListItem>

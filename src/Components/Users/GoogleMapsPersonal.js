@@ -10,10 +10,11 @@ import {
   useLoadScript,
   Marker,
 } from "@react-google-maps/api";
-import '@reach/combobox/styles.css'
+// import '@reach/combobox/styles.css'
 import '../../App.css';
-import mapStyles from '../../mapStyles'
+import {regular, nightMode} from '../../mapStyles'
 
+import { useBeforeunload } from 'react-beforeunload';
 import {Alert} from '@material-ui/lab'
 
 import Information from './Information'
@@ -21,31 +22,50 @@ import Search from '../Search'
 import LocateReset from '../LocateReset';
 import SaveButton from './SaveButton';
 import Logout from '../Logout'
+import NightMode from '../NightMode'
+import DistanceMatrix from './DistanceMatrix'
+import TripMarkers from './DistanceMatrixComps/TripMarkers'
 
 import {useAuth} from '../contexts/AuthContext'
 import {db} from '../../firebase'
-import PopoverComp from '../PopoverComp';
 
   //Must be set with 100 vw/vh to make it fit page
   const mapContainerStyle = {
     width: '100vw',
     height: '100vh',
   };
+
+////////////////// Attempting to change starting location to user's location if location checker is allowed/////////////////////////////
+
+  // const successLocation = (position) => {
+  //   return({
+  //       lat: position.coords.latitude,
+  //       lng: position.coords.longitude
+  //     })
+  // }
+
+  // const errorLocation = (err) => {
+  //   console.log(err)
+  //   return ({
+  //     lat: 41.076206,
+  //     lng: -73.858749,
+  //   })
+  // }    
+
+  // const yourLocation = navigator.geolocation.getCurrentPosition(successLocation, errorLocation)
+    
+  // const center = yourLocation
+
   const center = {
-    lat: 41.076206,
-    lng: -73.858749,
+    lat: 39.099724,
+    lng: -94.578331,
   }
-  const options = {
-    styles: mapStyles,
-    disableDefaultUI: true,
-    zoomControl: true
-  }
+
 
 const GoogleMapsPersonal = () => {
-    //Avoid rerenders
     const [libraries] = useState(["places"]);
 
-//Hooks
+////////////////////////////////////////Hooks///////////////////////////////////
     const { isLoaded, loadError } = useLoadScript({
       //Get API key from the env.local file
       googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -53,21 +73,46 @@ const GoogleMapsPersonal = () => {
       libraries,
     });
     const [markers, setMarkers] = useState([])
-    //Gets the information of the currently selected marker
-    const [selected, setSelected] = useState(null);
+    //Trip Markers getting data from "TripMarkers" in DistanceMatrix.js and mapping it into markers from TripMarkers.js
+
+    const [tripMarkers, setTripMarkers] = useState([]) //Has all firestore trip data
+    const [tripMarkersShow, setTripMarkersShow] = useState(false)
+
+    const [selected, setSelected] = useState(null); //Gets the information of the currently selected marker
+
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
-    // Checks if there were changes to determine if the save btn should be available or not
-    const [changes, setChanges] = useState(false)
-    //Gets anchor element for popover to show
-    const [anchorEl, setAnchorEl] = useState(null);
+    const [changes, setChanges] = useState(false) // Checks if there were changes to determine if the save btn should be available or not
+
+    const [anchorEl, setAnchorEl] = useState(null); //Gets anchor element for popover to show
+    const [nightModeHandler, setNightModeHandler] = useState(false)
+
+    const [tripMarkerDetails, setTripMarkerDetails] = useState() //Data from Distance Matrix API callback response (based on trip origin, dest., travel mode)
+
+
     const mapRef = useRef()
     const {currentUser} = useAuth();
     const markersDocs = db.collection('users').doc(currentUser.uid).collection('markers')
 
+    //Originally outside scope of functional component to prevent rerenders, but couldn't pass nightMode styled map with a conditional, so now inside functional component
+    //If nightModeHandler is toggled, map style becomes nightMode
+    const options = {
+      styles: !nightModeHandler ? regular : nightMode,
+      disableDefaultUI: true,
+      zoomControl: true
+    }     
 
-//Functions
-    //Use useCallback for functions you only want to run in certain situations
+///////////////////////////////////////Functions///////////////////////////////////////
+
+//UseBeforeUnload npm package, alert prevent action if unsaved changes
+    useBeforeunload((event) => {
+      if(changes){
+        event.preventDefault();
+      }
+    });
+
+
+//Use useCallback for functions you only want to run in certain situations or for functions with complex props from components 
     //Creates markers and sets them on map click
     const onMapClick = useCallback((event) => {
           setMarkers(current => [...current, {
@@ -85,24 +130,26 @@ const GoogleMapsPersonal = () => {
       }, []);
 
     //When searching a location, zoom into the location on map
-    const panTo = React.useCallback(({lat, lng}) => {
+    const panTo = useCallback(({lat, lng}) => {
       mapRef.current.panTo({lat, lng});
-      mapRef.current.setZoom(10);
+      mapRef.current.setZoom(14);
     }, [])
 
-////////////////////////// Data Modification //////////////////////////////////
+
+
+              ///////////////// Data Modification ////////////////////////
     //Delete selected marker and firestore data, props is key value/ID on firestore
-    const deleteMarker = async (props) => {
+    const deleteMarker = (props) => {
         deleteMarkerData(props)
-        await deleteRatingData(props)
-        await deleteReviewData(props)
+        deleteRatingData(props)
+        deleteReviewData(props)
         const newMarkerList = markers.filter((deleteFromMarkers) => {
             if(selected !== deleteFromMarkers) {
               return deleteFromMarkers
             } 
           })
-        await setMarkers(newMarkerList);
-        await setSelected(null);
+        setMarkers(newMarkerList);
+        setSelected(null);
         setChanges(true)
       }
 
@@ -151,7 +198,7 @@ const GoogleMapsPersonal = () => {
         })
     }, [])
 
-
+    /////////////////////////////////////////JSX///////////////////////////////////
     //If there is a load error, DOM will show this message
     if(loadError) return(<div className="App">Error loading maps</div>)
     //When map is loading, will show this message
@@ -161,17 +208,17 @@ const GoogleMapsPersonal = () => {
     <div className="App">
         {error && <Alert severity="error">{error}</Alert>}
         {success && <Alert severity="success">{success}</Alert>}
-        <h1>
-        Welcome back, 
-        <br/>{currentUser.email}!
-            <span role="img" aria-label="sleep">
-            😎
-            </span>
+
+        <h1 className={nightModeHandler ? 'nightModeFont' : ''}>
+          Welcome back, 
+          <br/>{currentUser.email}!
+              <span role="img" aria-label="sleep">
+              😎
+              </span>
         </h1>
 
         <Search panTo = {panTo}/>
 
-        {/* <PopoverComp onMouseOver={() => setPopoverNum(0)} popoverNum={popoverNum}> */}
         <LocateReset 
         panTo = {panTo} 
         setMarkers={setMarkers} 
@@ -180,7 +227,6 @@ const GoogleMapsPersonal = () => {
         anchorEl={anchorEl}
         setAnchorEl={setAnchorEl}
         />
-        {/* </PopoverComp> */}
 
         <Logout setError={setError} changes={changes}/>
 
@@ -190,17 +236,26 @@ const GoogleMapsPersonal = () => {
         setError={setError}
         currentUser={currentUser}
         setChanges={setChanges}
-        changes={changes}/>
+        changes={changes}
+        nightModeHandler={nightModeHandler}
+        />
+
+        <NightMode 
+        nightModeHandler = {nightModeHandler}
+        setNightModeHandler = {setNightModeHandler}
+        anchorEl={anchorEl}
+        setAnchorEl={setAnchorEl}
+        />
 
         <GoogleMap 
             mapContainerStyle={mapContainerStyle} 
-            zoom={10} 
+            zoom={4.9} 
             center={center}
             options={options}
-            onClick={onMapClick}
-            onLoad = {onMapLoad}
+            onClick={selected ? '' : onMapClick}
+            onLoad={onMapLoad}
             >
-            {/* Render markers onto map in GoogleMap component with a Marker component. Need to add a key as we are iterating through."newMarker" is the new version of "markers*/}
+            {/* Render markers onto map in GoogleMap component with a Marker component. Need to add a key as we are iterating through. "newMarker" is the new version of "markers*/}
             {markers.map((newMarker) => (
                   <Marker 
                   key={`${newMarker.lat}-${newMarker.lng}`} 
@@ -220,17 +275,35 @@ const GoogleMapsPersonal = () => {
                 // Makes marker show when clicking on the map
             ))}
 
-            {selected ?
-                    <Information 
-                    selected={selected} 
-                    setSelected={setSelected} 
-                    deleteMarker={deleteMarker} 
-                    currentUser={currentUser}
-                    />                     
-                : null}  
+              <TripMarkers //Trip markers, Origin (green) Destination (red)
+              tripMarkerDetails={tripMarkerDetails}
+              setTripMarkerDetails={setTripMarkerDetails}
+              tripMarkers={tripMarkers}
+              setTripMarkers={setTripMarkers}
+              tripMarkersShow={tripMarkersShow}
+              setTripMarkersShow={setTripMarkersShow}
+              />
+
+              {selected ?
+                      <Information 
+                      selected={selected} 
+                      setSelected={setSelected} 
+                      deleteMarker={deleteMarker} 
+                      currentUser={currentUser}
+                      />                     
+                  : null}  
                 
             </GoogleMap>
-
+            
+            <DistanceMatrix 
+            tripMarkers={tripMarkers}
+            setTripMarkers={setTripMarkers}
+            tripMarkersShow={tripMarkersShow}
+            setTripMarkersShow={setTripMarkersShow}
+            currentUser={currentUser}
+            tripMarkerDetails={tripMarkerDetails}
+            setTripMarkerDetails={setTripMarkerDetails}
+            />
     </div>
 
     )

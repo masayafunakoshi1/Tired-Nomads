@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import Popover from '@material-ui/core/Popover';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
@@ -26,6 +26,8 @@ const PopoverComp = (props) => {
                 return <Typography>Your Location</Typography>
             case 'reset':
                 return <Typography>Reset Markers</Typography>
+            case 'nightMode':
+                return <Typography>Toggle NightMode</Typography>
             default: 
                 return null
         };

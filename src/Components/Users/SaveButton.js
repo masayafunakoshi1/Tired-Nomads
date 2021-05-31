@@ -3,26 +3,19 @@ import { Button } from '@material-ui/core';
 import {db} from '../../firebase'
 import '../../App.css'
 
-const SaveButton = (
-    {markers, 
-    setSuccess, 
-    setError, 
-    currentUser, 
-    setChanges, 
-    changes}
-    ) => {
+const SaveButton = (props) => {
 
     const openSuccessAlert = () => {
-        setSuccess("Saved Successfully")
+        props.setSuccess("Saved Successfully")
         setTimeout(() => {
-            setSuccess("")
+            props.setSuccess("")
         }, 2000)
     }
 
     const openFailureAlert = () => {
-        setError("Failed to save")
+        props.setError("Failed to save")
         setTimeout(() => {
-            setError("")
+            props.setError("")
         }, 2000)
 
     }
@@ -30,10 +23,10 @@ const SaveButton = (
     const saveHandler = () => {
         let batch = db.batch();
         //sets batch as new mark ers, then commits them to firestore
-        if(markers !== [] || null || undefined){
-            markers.forEach((doc) => {
+        if(props.markers !== [] || null || undefined){
+            props.markers.forEach((doc) => {
                 let markersList = db.collection('users')
-                                .doc(currentUser.uid)
+                                .doc(props.currentUser.uid)
                                 .collection('markers')
                                 .doc(`${doc.key}`);
                 batch.set(markersList, doc);
@@ -41,7 +34,7 @@ const SaveButton = (
             batch.commit()
             .then(() => {
                 openSuccessAlert()
-                setChanges(false)
+                props.setChanges(false)
             })
         } else{
             openFailureAlert()
@@ -54,9 +47,9 @@ const SaveButton = (
         <div className="buttons" id="saveBtn">
             <Button 
             variant="contained" 
-            color="primary" 
+            color={props.nightModeHandler ? "default" : "primary"} 
             onClick={saveHandler}
-            disabled={!changes}
+            disabled={!props.changes}
             >Save</Button>
         </div>
     )

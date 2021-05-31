@@ -4,18 +4,18 @@ import
     useState, 
     useRef, 
     useCallback,
-    useEffect
 }from 'react';
 
 import {
   GoogleMap,
   useLoadScript,
   Marker,
+  // DistanceMatrixService
 } from "@react-google-maps/api";
-import '@reach/combobox/styles.css'
+// import '@reach/combobox/styles.css'
 
 import '../App.css';
-import mapStyles from '../mapStyles'
+import {regular, nightMode} from '../mapStyles'
 import { Link } from 'react-router-dom'
 import { Button } from '@material-ui/core';
 
@@ -23,6 +23,7 @@ import Information from './Users/Information'
 import Search from './Search'
 import LocateReset from './LocateReset';
 import DialogPopup from './DialogPopup';
+import NightMode from './NightMode'
 
 
   //Avoid rerenders
@@ -33,17 +34,12 @@ import DialogPopup from './DialogPopup';
     height: '100vh',
   };
   const center = {
-    lat: 41.076206,
-    lng: -73.858749,
-  }
-  const options = {
-    styles: mapStyles,
-    disableDefaultUI: true,
-    zoomControl: true
+    lat: 39.099724,
+    lng: -94.578331,
   }
 
 const GoogleMapContainer = ({popup, setPopup}) => {
-//Hooks
+///////////////////////////////////////Hooks///////////////////////////////////////////
     const { isLoaded, loadError } = useLoadScript({
       //Get API key from the env.local file
       googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -55,9 +51,18 @@ const GoogleMapContainer = ({popup, setPopup}) => {
     const [selected, setSelected] = useState(null);
     //Gets anchor element for popover to show    
     const [anchorEl, setAnchorEl] = useState(null);
+    const [nightModeHandler, setNightModeHandler] = useState(false)
     const mapRef = useRef()
 
-//Functions
+    //Originally outside scope of functional component to prevent rerenders, but couldn't pass nightMode styled map with a conditional, so now inside functional component
+    //If nightModeHandler is toggled, map style becomes nightMode
+    const options = {
+      styles: !nightModeHandler ? regular : nightMode,
+      disableDefaultUI: true,
+      zoomControl: true
+   }
+
+/////////////////////////////////////Functions////////////////////////////////////////
     //Use useCallback for functions you only want to run in certain situations
     const onMapClick = useCallback((event) => {
           setMarkers(current => [...current, {
@@ -96,7 +101,7 @@ const GoogleMapContainer = ({popup, setPopup}) => {
 
     return (
     <div className="App">
-        <h1>
+        <h1 className={nightModeHandler ? "nightModeFont" : ""}>
           Tired Nomads
             <span role="img" aria-label="sleep">
             🚗🚙🚚💤
@@ -111,6 +116,10 @@ const GoogleMapContainer = ({popup, setPopup}) => {
         setAnchorEl={setAnchorEl}
         anchorEl={anchorEl}
         />
+        <NightMode 
+        nightModeHandler = {nightModeHandler}
+        setNightModeHandler = {setNightModeHandler}
+        />
 
         {/* Login & Signup buttons */}
           <div className="buttons-landing" id="loginBtn">
@@ -124,10 +133,10 @@ const GoogleMapContainer = ({popup, setPopup}) => {
 
         <GoogleMap 
             mapContainerStyle={mapContainerStyle} 
-            zoom={10} 
+            zoom={4.9} 
             center={center}
             options={options}
-            onClick={onMapClick}
+            onClick={selected ? '' :onMapClick}
             onLoad={onMapLoad}
             >
             {/* Render markers onto map in GoogleMap component with a Marker component. Need to add a key as we are iterating through."newMarker" is the new version of "markers*/}

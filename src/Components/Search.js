@@ -17,20 +17,20 @@ import '@reach/combobox/styles.css'
 import '../App.css';
 
 
-function Search({panTo}){
+const Search = ({panTo}) => {
   const {
     ready, 
-    value, 
     suggestions: {status, data}, 
+    value, 
     setValue, 
     clearSuggestions
   } = usePlacesAutocomplete({ //Autocompletes suggestions of locations and has many available hooks
       requestOptions: {
         location: {    
-          lat: () => 41.076206, //want to recieve function that it can call
+          lat: () => 41.076206, //want to receive function that it can call
           lng: () => -73.858749,
         },
-        radius: 200 * 1000, //need radius of search in meters
+        radius: 200 * 1000, //need radius of search in meters (120 mi)
     },
   });
 
@@ -63,9 +63,9 @@ return(
             > 
                 <ComboboxList>
                     {
-                    status === "OK" && data.map(({index, description}) => (
-                        <ComboboxOption key = {index} value = {description} 
-                        //Gives suggestion opetions 
+                    status === "OK" && data.map(({id, description}) => (
+                        <ComboboxOption key={id} value={description} 
+                        //Gives suggestion options 
                         />
                     ))}
                     </ComboboxList>

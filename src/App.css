@@ -13,6 +13,10 @@ h1 {
   padding: 0;
 }
 
+.nightModeFont {
+  color: white;
+}
+
 .search {
   position: absolute;
   top: 1rem;
@@ -27,6 +31,24 @@ h1 {
   padding: 0.5rem;
   font-size: 1.5rem;
   width: 100%;
+}
+
+.search-distance {
+  display: flex;
+  margin-top: 20px;
+  width: 90%;
+  max-width: 200px;
+  z-index: 10;
+}
+
+.search-distance input {
+  padding: 0.5rem;
+  font-size: 13pt;
+  width: 100%;
+}
+
+.search-distance-popover {
+  z-index: 20;
 }
 
 .locate {
@@ -69,6 +91,15 @@ h1 {
   z-index: 10;
 }
 
+.distanceMatrix {
+  position: absolute;
+  background: none;
+  top: 15px;
+  left: 66.5%;
+  border: none;
+  z-index: 15;
+}
+
 #saveBtn {
   left: 75%;
 }
@@ -76,9 +107,15 @@ h1 {
 #signupBtn {
   left: 74%;
 }
+#nightMode {
+  top: 15px;
+  left: 95%;
+  font-size: 16pt;
+}
 
 /*///////////////////////////////// Display Size Changes ////////////////////////////*/
-@media (max-width: 1300px) {
+
+@media (max-width: 1400px) {
   h1 {
     position: absolute;
     top: 1rem;
@@ -102,7 +139,7 @@ h1 {
   .locate {
     position: absolute;
     top: 18%;
-    left: 95%;
+    left: 92%;
     background: none;
     border: none;
     z-index: 10;
@@ -111,7 +148,7 @@ h1 {
   .reset {
     position: absolute;
     top: 23%;
-    left: 95%;
+    left: 92%;
     background: none;
     border: none;
     z-index: 10;
@@ -125,14 +162,24 @@ h1 {
     z-index: 10;
   }
 
+  #nightMode {
+    top: 30%;
+    left: 88%;
+  }
+
   /*/////////////// Btns on homepage after login //////////////////////*/
   #logoutBtn {
-    left: 90%;
+    left: 88%;
   }
 
   #saveBtn {
     top: 4%;
-    left: 92%;
+    left: 90%;
+  }
+
+  .distanceMatrix {
+    top: 150px;
+    left: 35%;
   }
 
   /*//////////////// Btns on landing page /////////////////////////////*/
@@ -154,12 +201,12 @@ h1 {
   }
 }
 
-/*///////////////////////////////////////PHONE ///////////////////////////////// */
-@media (max-width: 500px) {
+/*/////////////////////////////////////// SMALL TABLET / PHONE ///////////////////////////////// */
+@media (max-width: 660px) {
   h1 {
     position: absolute;
     top: 1rem;
-    font-size: 15pt;
+    font-size: 21pt;
     left: 5%;
     color: #221a6e;
     z-index: 10;
@@ -202,15 +249,199 @@ h1 {
     z-index: 10;
   }
 
+  #nightMode {
+    top: 50%;
+    left: 75%;
+  }
+
   /*/////////////// Btns on homepage after login //////////////////////*/
   #logoutBtn {
     top: 25%;
-    left: 80%;
+    left: 75%;
   }
 
   #saveBtn {
     top: 32%;
     left: 80%;
+  }
+
+  .distanceMatrix {
+    top: 165px;
+    left: 15%;
+  }
+
+  /*//////////////// Btns on landing page /////////////////////////////*/
+  .buttons-landing {
+    position: absolute;
+    background: none;
+    border: none;
+    z-index: 10;
+  }
+
+  #loginBtn {
+    top: 25%;
+    left: 77%;
+  }
+
+  #signupBtn {
+    top: 32%;
+    left: 75%;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    position: absolute;
+    top: 1rem;
+    font-size: 15pt;
+    left: 5%;
+    color: #221a6e;
+    z-index: 10;
+    margin: 0;
+    padding: 0;
+  }
+
+  .search {
+    position: absolute;
+    top: 6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 75%;
+    max-width: 400px;
+    z-index: 10;
+  }
+
+  .locate {
+    position: absolute;
+    top: 40%;
+    left: 85%;
+    background: none;
+    border: none;
+    z-index: 10;
+  }
+
+  .reset {
+    position: absolute;
+    top: 45%;
+    left: 85%;
+    background: none;
+    border: none;
+    z-index: 10;
+  }
+
+  .buttons {
+    position: absolute;
+    background: none;
+    border: none;
+    z-index: 10;
+  }
+
+  #nightMode {
+    top: 50%;
+    left: 75%;
+  }
+
+  /*/////////////// Btns on homepage after login //////////////////////*/
+  #logoutBtn {
+    top: 25%;
+    left: 72%;
+  }
+
+  #saveBtn {
+    top: 32%;
+    left: 78%;
+  }
+
+  .distanceMatrix {
+    top: 150px;
+    left: 15%;
+  }
+
+  /*//////////////// Btns on landing page /////////////////////////////*/
+  .buttons-landing {
+    position: absolute;
+    background: none;
+    border: none;
+    z-index: 10;
+  }
+
+  #loginBtn {
+    top: 25%;
+    left: 77%;
+  }
+
+  #signupBtn {
+    top: 32%;
+    left: 75%;
+  }
+}
+
+@media (max-width: 360px) {
+  h1 {
+    position: absolute;
+    top: 1rem;
+    font-size: 14pt;
+    left: 5%;
+    color: #221a6e;
+    z-index: 10;
+    margin: 0;
+    padding: 0;
+  }
+
+  .search {
+    position: absolute;
+    top: 5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 75%;
+    max-width: 400px;
+    z-index: 10;
+  }
+
+  .locate {
+    position: absolute;
+    top: 45%;
+    left: 85%;
+    background: none;
+    border: none;
+    z-index: 10;
+  }
+
+  .reset {
+    position: absolute;
+    top: 50%;
+    left: 85%;
+    background: none;
+    border: none;
+    z-index: 10;
+  }
+
+  .buttons {
+    position: absolute;
+    background: none;
+    border: none;
+    z-index: 10;
+  }
+
+  #nightMode {
+    top: 55%;
+    left: 75%;
+  }
+
+  /*/////////////// Btns on homepage after login //////////////////////*/
+  #logoutBtn {
+    top: 30%;
+    left: 70%;
+  }
+
+  #saveBtn {
+    top: 37%;
+    left: 76%;
+  }
+
+  .distanceMatrix {
+    top: 135px;
+    left: 12%;
   }
 
   /*//////////////// Btns on landing page /////////////////////////////*/
