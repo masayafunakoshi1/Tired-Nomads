@@ -20,10 +20,14 @@ const Login = () => {
     const [error, setError] = useState('')
     const history = useHistory()
 
+    const guestAcc = async (e) => {
+        emailRef.current.value = "user1@guest.com"
+        passwordRef.current.value = "guest123"
+        await handleSubmit(e);
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(emailRef.current.value, passwordRef.current.value)
 
         //If they filled out the inputs correctly
         try{
@@ -35,7 +39,7 @@ const Login = () => {
             setError("Failed to sign in")
         }
             setLoading(false)
-        }
+    }
 
     return (
         <Container className="loginContainer" maxWidth="sm">
@@ -77,6 +81,12 @@ const Login = () => {
 
             <div>
                 <p>Login with <Button variant="outlined" onClick={googleSignin}>Google Account</Button></p>
+            </div>
+
+            
+
+            <div /*GUEST ACCOUNT, UNSURE IF I SHOULD ADD IT*/ >
+                <p>OR<br/> <br/>Try it out with our <Button variant="contained" onClick={guestAcc}>Guest Account</Button></p>
             </div>
 
             <div className="links">
