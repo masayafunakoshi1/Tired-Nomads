@@ -88,7 +88,7 @@ const GoogleMapContainer = ({popup, setPopup}) => {
       const newMarkerList = markers.filter((deleteFromMarkers) => {
         if(selected !== deleteFromMarkers) {
           return deleteFromMarkers
-        } 
+        } else return console.log("No marker deleted")
       })
       setMarkers(newMarkerList);
       setSelected(null);
