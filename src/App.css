@@ -58,6 +58,7 @@ h1 {
   background: none;
   border: none;
   z-index: 10;
+  padding: 3px 5px 5px 5px;
 }
 .locate img {
   width: 30px;
@@ -71,6 +72,7 @@ h1 {
   background: none;
   border: none;
   z-index: 10;
+  padding: 3px 5px 5px 5px;
 }
 
 .buttons {
@@ -97,6 +99,22 @@ h1 {
   top: 15px;
   left: 66.5%;
   border: none;
+  z-index: 15;
+}
+
+.feedbackBtn {
+  display: flex;
+  background: none;
+  border: none;
+  padding: 3px 5px 5px 5px;
+}
+
+.feedback {
+  position: absolute;
+  background: none;
+  border: none;
+  top: 15px;
+  left: 87%;
   z-index: 15;
 }
 
@@ -138,7 +156,7 @@ h1 {
 
   .locate {
     position: absolute;
-    top: 18%;
+    top: 22%;
     left: 92%;
     background: none;
     border: none;
@@ -147,7 +165,7 @@ h1 {
 
   .reset {
     position: absolute;
-    top: 23%;
+    top: 28%;
     left: 92%;
     background: none;
     border: none;
@@ -163,7 +181,7 @@ h1 {
   }
 
   #nightMode {
-    top: 30%;
+    top: 35%;
     left: 88%;
   }
 
@@ -180,6 +198,11 @@ h1 {
   .distanceMatrix {
     top: 150px;
     left: 35%;
+  }
+
+  .feedback {
+    top: 17%;
+    left: 92%;
   }
 
   /*//////////////// Btns on landing page /////////////////////////////*/
@@ -226,7 +249,7 @@ h1 {
 
   .locate {
     position: absolute;
-    top: 40%;
+    top: 45%;
     left: 85%;
     background: none;
     border: none;
@@ -235,7 +258,7 @@ h1 {
 
   .reset {
     position: absolute;
-    top: 45%;
+    top: 50%;
     left: 85%;
     background: none;
     border: none;
@@ -250,24 +273,29 @@ h1 {
   }
 
   #nightMode {
-    top: 50%;
+    top: 55%;
     left: 75%;
   }
 
   /*/////////////// Btns on homepage after login //////////////////////*/
   #logoutBtn {
-    top: 25%;
+    top: 32%;
     left: 75%;
   }
 
   #saveBtn {
-    top: 32%;
+    top: 25%;
     left: 80%;
   }
 
   .distanceMatrix {
     top: 165px;
     left: 15%;
+  }
+
+  .feedback {
+    top: 40%;
+    left: 85%;
   }
 
   /*//////////////// Btns on landing page /////////////////////////////*/
@@ -293,8 +321,8 @@ h1 {
   h1 {
     position: absolute;
     top: 1rem;
-    font-size: 15pt;
-    left: 5%;
+    font-size: 18pt;
+    left: 18%;
     color: #221a6e;
     z-index: 10;
     margin: 0;
@@ -313,7 +341,7 @@ h1 {
 
   .locate {
     position: absolute;
-    top: 40%;
+    top: 47%;
     left: 85%;
     background: none;
     border: none;
@@ -322,7 +350,7 @@ h1 {
 
   .reset {
     position: absolute;
-    top: 45%;
+    top: 53%;
     left: 85%;
     background: none;
     border: none;
@@ -337,18 +365,18 @@ h1 {
   }
 
   #nightMode {
-    top: 50%;
+    top: 60%;
     left: 75%;
   }
 
   /*/////////////// Btns on homepage after login //////////////////////*/
   #logoutBtn {
-    top: 25%;
+    top: 32%;
     left: 72%;
   }
 
   #saveBtn {
-    top: 32%;
+    top: 25%;
     left: 78%;
   }
 
@@ -381,7 +409,7 @@ h1 {
     position: absolute;
     top: 1rem;
     font-size: 14pt;
-    left: 5%;
+    left: 20%;
     color: #221a6e;
     z-index: 10;
     margin: 0;
@@ -430,12 +458,12 @@ h1 {
 
   /*/////////////// Btns on homepage after login //////////////////////*/
   #logoutBtn {
-    top: 30%;
+    top: 33%;
     left: 70%;
   }
 
   #saveBtn {
-    top: 37%;
+    top: 25%;
     left: 76%;
   }
 

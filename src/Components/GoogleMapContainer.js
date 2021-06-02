@@ -22,7 +22,7 @@ import { Button } from '@material-ui/core';
 import Information from './Users/Information'
 import Search from './Search'
 import LocateReset from './LocateReset';
-import DialogPopup from './DialogPopup';
+import DialogPopUpHome from './DialogPopUpFolder/DialogPopUpHome'
 import NightMode from './NightMode'
 
 
@@ -108,6 +108,8 @@ const GoogleMapContainer = () => {
             </span>
         </h1>
 
+        <DialogPopUpHome/>
+
         <Search panTo = {panTo}/>
         <LocateReset 
         panTo = {panTo} 
@@ -130,8 +132,6 @@ const GoogleMapContainer = () => {
           <div className="buttons-landing" id="signupBtn">
             <Button variant="contained" color="primary" component={Link} to="/signup" >Sign Up</Button>
           </div>
-
-         <DialogPopup/>
 
         <GoogleMap 
             mapContainerStyle={mapContainerStyle} 

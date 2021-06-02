@@ -49,7 +49,7 @@ const Login = () => {
                     <Link to="/">
                         <CloseIcon style={{ fontSize: 50 }} />
                     </Link>
-                </div>
+            </div>
             {error && <Alert severity="error">{error}</Alert>}
 
             <form onSubmit={handleSubmit}> 
@@ -79,11 +79,9 @@ const Login = () => {
                 </div>
             </form>
 
-            <div>
+            <div >
                 <p>Login with <Button variant="outlined" onClick={googleSignin}>Google Account</Button></p>
             </div>
-
-            
 
             <div /*GUEST ACCOUNT, UNSURE IF I SHOULD ADD IT*/ >
                 <p>OR<br/> <br/>Try it out with our <Button variant="contained" onClick={guestAcc}>Guest Account</Button></p>

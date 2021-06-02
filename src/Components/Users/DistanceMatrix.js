@@ -335,83 +335,39 @@ const DistanceMatrix = (
             Create Trip
         </Button>
 
-    <div className={classes.paperContainer}>
-    {  createTrip ? 
-    <Paper 
-    elevation={4} 
-    variant="elevation"
-    className={classes.paperStyle}>
-
-        {/* Search for origin and destination coords */}
-        <form onSubmit={e => submitHandler(e)}>
-            <div>
-                <TextField 
-                className={classes.tripName} 
-                label="Trip Name"
-                value={valueTripName}
-                error={tripNameCond}
-                onChange={(e) => {
-                //Setting trip name with conditional func to make sure name works with firebase
-                    setValueTripName(e.target.value)
-                    tripNameConstraints(e)
-                }}  
-                />
-            </div>
-
-            <div className="search-distance">
-                <Combobox 
-                    onSelect={ 
-                        //Tried to make reusable, but sets values to different states
-                        async(address) => {      
-                        setValueOrigin(address, false); //Comes from usePlacesAutocomplete hook
-                        clearSuggestions()
-                        try {
-                            const results = await getGeocode({address}); //selects suggestion and shows information on it
-                            const {lat, lng} = await getLatLng(results[0]) //gets lat/lng of location
-                            setOriginObj(prevState => ({...prevState,
-                                            address: address,
-                                            lat: lat,
-                                            lng: lng})
-                                            )
-                        } catch(error){
-                            console.log("error!")
-                        }
-                    }}
-                    >
-                        <ComboboxInput  //Input Search bar
-                        value={valueOrigin} 
-                        onChange={(e) => {
-                        setValue(e.target.value)
-                        setValueOrigin(e.target.value)
-                        }}
-                        disabled={!ready}
-                        placeholder="Start/Origin"/>
-
-                        <ComboboxPopover 
-                        className="search-distance-popover"
-                        //Popover of suggestions
-                        > 
-                            <ComboboxList>
-                                {
-                                status === "OK" && data.map(({id, description}) => (
-                                    <ComboboxOption key={id} value={description} 
-                                    //Gives suggestion options 
-                                    />
-                                ))}
-                                </ComboboxList>
-                        </ComboboxPopover>
-                    </Combobox>
+            <div className={classes.paperContainer}>
+            {  createTrip &&
+            <Paper 
+            elevation={4} 
+            variant="elevation"
+            className={classes.paperStyle}>
+            {/* Search for origin and destination coords */}
+            <form onSubmit={e => submitHandler(e)}>
+                <div>
+                    <TextField 
+                    className={classes.tripName} 
+                    label="Trip Name"
+                    value={valueTripName}
+                    error={tripNameCond}
+                    onChange={(e) => {
+                    //Setting trip name with conditional func to make sure name works with firebase
+                        setValueTripName(e.target.value)
+                        tripNameConstraints(e)
+                    }}  
+                    />
                 </div>
 
                 <div className="search-distance">
                     <Combobox 
-                        onSelect={async(address) => {      
-                            setValueDestination(address, false); //Comes from usePlacesAutocomplete hook
+                        onSelect={ 
+                            //Tried to make reusable, but sets values to different states
+                            async(address) => {      
+                            setValueOrigin(address, false); //Comes from usePlacesAutocomplete hook
                             clearSuggestions()
                             try {
                                 const results = await getGeocode({address}); //selects suggestion and shows information on it
                                 const {lat, lng} = await getLatLng(results[0]) //gets lat/lng of location
-                                setDestinationObj(prevState => ({...prevState,
+                                setOriginObj(prevState => ({...prevState,
                                                 address: address,
                                                 lat: lat,
                                                 lng: lng})
@@ -419,16 +375,16 @@ const DistanceMatrix = (
                             } catch(error){
                                 console.log("error!")
                             }
-                    }}
+                        }}
                         >
                             <ComboboxInput  //Input Search bar
-                            value={valueDestination} 
+                            value={valueOrigin} 
                             onChange={(e) => {
                             setValue(e.target.value)
-                            setValueDestination(e.target.value)
+                            setValueOrigin(e.target.value)
                             }}
                             disabled={!ready}
-                            placeholder="End/Destination"/>
+                            placeholder="Start/Origin"/>
 
                             <ComboboxPopover 
                             className="search-distance-popover"
@@ -446,37 +402,80 @@ const DistanceMatrix = (
                         </Combobox>
                     </div>
 
-                {/* Dropdown with travel methods */}
-                    <div className={classes.formItems}>
-                        <FormControl  className={classes.dropDown}>
-                            <InputLabel>Travel Method</InputLabel>
-                            <Select 
-                                native
-                                value={travelMethod}
-                                onChange={e => setTravelMethod(e.target.value)}
+                    <div className="search-distance">
+                        <Combobox 
+                            onSelect={async(address) => {      
+                                setValueDestination(address, false); //Comes from usePlacesAutocomplete hook
+                                clearSuggestions()
+                                try {
+                                    const results = await getGeocode({address}); //selects suggestion and shows information on it
+                                    const {lat, lng} = await getLatLng(results[0]) //gets lat/lng of location
+                                    setDestinationObj(prevState => ({...prevState,
+                                                    address: address,
+                                                    lat: lat,
+                                                    lng: lng})
+                                                    )
+                                } catch(error){
+                                    console.log("error!")
+                                }
+                        }}
                             >
-                                <option value={''}></option>
-                                <option value={'DRIVING'}>Driving</option>
-                                <option value={'BICYCLING'}>Bicycling</option>
-                                <option value={'WALKING'}>Walking</option>
-                                <option value={'TRANSIT'}>Transit</option>
-                            </Select>
-                        </FormControl>
+                                <ComboboxInput  //Input Search bar
+                                value={valueDestination} 
+                                onChange={(e) => {
+                                setValue(e.target.value)
+                                setValueDestination(e.target.value)
+                                }}
+                                disabled={!ready}
+                                placeholder="End/Destination"/>
 
-                    </div>
-                    <div className={classes.formItems}>
-                        <Button 
-                        variant="contained"
-                        color="primary"
-                        type="submit"
-                        disabled={ !valueOrigin || !valueDestination || !travelMethod || tripNameCond || valueTripName === ""}
-                        >
-                            Set Markers
-                        </Button>
-                    </div>
+                                <ComboboxPopover 
+                                className="search-distance-popover"
+                                //Popover of suggestions
+                                > 
+                                    <ComboboxList>
+                                        {
+                                        status === "OK" && data.map(({id, description}) => (
+                                            <ComboboxOption key={id} value={description} 
+                                            //Gives suggestion options 
+                                            />
+                                        ))}
+                                        </ComboboxList>
+                                </ComboboxPopover>
+                            </Combobox>
+                        </div>
+
+                    {/* Dropdown with travel methods */}
+                        <div className={classes.formItems}>
+                            <FormControl  className={classes.dropDown}>
+                                <InputLabel>Travel Method</InputLabel>
+                                <Select 
+                                    native
+                                    value={travelMethod}
+                                    onChange={e => setTravelMethod(e.target.value)}
+                                >
+                                    <option value={''}></option>
+                                    <option value={'DRIVING'}>Driving</option>
+                                    <option value={'BICYCLING'}>Bicycling</option>
+                                    <option value={'WALKING'}>Walking</option>
+                                    <option value={'TRANSIT'}>Transit</option>
+                                </Select>
+                            </FormControl>
+                        </div>
+                        
+                        <div className={classes.formItems}>
+                            <Button 
+                            variant="contained"
+                            color="primary"
+                            type="submit"
+                            disabled={ !valueOrigin || !valueDestination || !travelMethod || tripNameCond || valueTripName === ""}
+                            >
+                                Set Markers
+                            </Button>
+                        </div>
                 </form>
             </Paper>
-            :""}
+            }
         </div>
 
 
