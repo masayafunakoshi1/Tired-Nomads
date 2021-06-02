@@ -174,8 +174,8 @@ const GoogleMapsPersonal = () => {
           }))
           setMarkers(data)
               })
-        .catch(() => {
-          console.log("Failed to get data")
+        .catch((err) => {
+          console.log("Failed to get data", err)
         })
     }, [])
 
@@ -211,7 +211,7 @@ const GoogleMapsPersonal = () => {
         setAnchorEl={setAnchorEl}
         />
 
-        <Feedback setAnchorEl={setAnchorEl}/>
+        <Feedback currentUser={currentUser} setAnchorEl={setAnchorEl}/>
 
         <Logout setError={setError} changes={changes}/>
 

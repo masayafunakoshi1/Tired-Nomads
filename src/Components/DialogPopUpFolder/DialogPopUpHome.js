@@ -19,7 +19,6 @@ const DialogPopUpHome = () => {
 
     //"Get Started" pop-up
     useEffect(() => {
-        console.log("popup show")
         setPopup(true);
     }, [])
 
@@ -42,7 +41,7 @@ const DialogPopUpHome = () => {
                         <Link to="/signup">Create an account</Link> to start marking down your sleep-venture!
                         <br/>
                         Or try our <Link to="/login">Guest Account</Link>.
-                        <h4>Click on the map to get started!</h4>
+                        <strong>Click on the map to get started!</strong>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

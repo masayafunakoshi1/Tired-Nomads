@@ -45,6 +45,7 @@ return(
                 const results = await getGeocode({address}); //selects suggestion and shows information on it
                 const {lat, lng} = await getLatLng(results[0]) //gets lat/lng of location
                 panTo({ lat,lng }); //Pans to location in the map
+                setValue('')
             } catch(error){
                 console.log("error!")
             }

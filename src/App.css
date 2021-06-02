@@ -75,11 +75,12 @@ h1 {
   padding: 3px 5px 5px 5px;
 }
 
+/* logout button */
 .buttons {
   position: absolute;
   background: none;
   top: 15px;
-  left: 80%;
+  left: 83.5%;
   border: none;
   z-index: 10;
 }
@@ -97,7 +98,7 @@ h1 {
   position: absolute;
   background: none;
   top: 15px;
-  left: 66.5%;
+  left: 69%;
   border: none;
   z-index: 15;
 }
@@ -114,12 +115,12 @@ h1 {
   background: none;
   border: none;
   top: 15px;
-  left: 87%;
+  left: 65.5%;
   z-index: 15;
 }
 
 #saveBtn {
-  left: 75%;
+  left: 78%;
 }
 
 #signupBtn {
@@ -201,8 +202,8 @@ h1 {
   }
 
   .feedback {
-    top: 17%;
-    left: 92%;
+    top: 147px;
+    left: 63%;
   }
 
   /*//////////////// Btns on landing page /////////////////////////////*/
@@ -294,8 +295,8 @@ h1 {
   }
 
   .feedback {
-    top: 40%;
-    left: 85%;
+    top: 163px;
+    left: 39%;
   }
 
   /*//////////////// Btns on landing page /////////////////////////////*/
@@ -331,7 +332,7 @@ h1 {
 
   .search {
     position: absolute;
-    top: 6rem;
+    top: 5rem;
     left: 50%;
     transform: translateX(-50%);
     width: 75%;
@@ -341,8 +342,8 @@ h1 {
 
   .locate {
     position: absolute;
-    top: 47%;
-    left: 85%;
+    top: 91%;
+    left: 38%;
     background: none;
     border: none;
     z-index: 10;
@@ -350,8 +351,8 @@ h1 {
 
   .reset {
     position: absolute;
-    top: 53%;
-    left: 85%;
+    top: 90.5%;
+    left: 50%;
     background: none;
     border: none;
     z-index: 10;
@@ -365,24 +366,29 @@ h1 {
   }
 
   #nightMode {
-    top: 60%;
-    left: 75%;
+    top: 91%;
+    left: 60%;
   }
 
   /*/////////////// Btns on homepage after login //////////////////////*/
   #logoutBtn {
-    top: 32%;
-    left: 72%;
+    top: 90%;
+    left: 7%;
   }
 
   #saveBtn {
-    top: 25%;
-    left: 78%;
+    top: 83%;
+    left: 7%;
   }
 
   .distanceMatrix {
-    top: 150px;
+    top: 130px;
     left: 15%;
+  }
+
+  .feedback {
+    top: 165px;
+    left: 14%;
   }
 
   /*//////////////// Btns on landing page /////////////////////////////*/
@@ -418,7 +424,7 @@ h1 {
 
   .search {
     position: absolute;
-    top: 5rem;
+    top: 4rem;
     left: 50%;
     transform: translateX(-50%);
     width: 75%;
@@ -428,8 +434,8 @@ h1 {
 
   .locate {
     position: absolute;
-    top: 45%;
-    left: 85%;
+    top: 90%;
+    left: 20%;
     background: none;
     border: none;
     z-index: 10;
@@ -437,8 +443,8 @@ h1 {
 
   .reset {
     position: absolute;
-    top: 50%;
-    left: 85%;
+    top: 89.5%;
+    left: 35%;
     background: none;
     border: none;
     z-index: 10;
@@ -452,24 +458,29 @@ h1 {
   }
 
   #nightMode {
-    top: 55%;
-    left: 75%;
+    top: 90%;
+    left: 50%;
   }
 
   /*/////////////// Btns on homepage after login //////////////////////*/
   #logoutBtn {
-    top: 33%;
+    top: 75%;
     left: 70%;
   }
 
   #saveBtn {
-    top: 25%;
+    top: 68%;
     left: 76%;
   }
 
   .distanceMatrix {
-    top: 135px;
+    top: 115px;
     left: 12%;
+  }
+
+  .feedback {
+    top: 150px;
+    left: 11%;
   }
 
   /*//////////////// Btns on landing page /////////////////////////////*/

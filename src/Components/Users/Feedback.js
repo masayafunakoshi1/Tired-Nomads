@@ -8,6 +8,7 @@ import {Button,
         InputLabel,
         Select} from '@material-ui/core'
 import FeedbackIcon from '@material-ui/icons/Feedback';
+import {db} from '../../firebase'
 
 const useStyles = makeStyles(() => ({
     paperStyle: {
@@ -27,15 +28,36 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-const Feedback = ({setAnchorEl}) => {
+const Feedback = ({setAnchorEl, currentUser}) => {
     const classes = useStyles();
     const [showFeedback, setShowFeedback] = useState(false)
     const [feedbackTopic, setFeedbackTopic] = useState('')
     const [feedbackValue, setFeedbackValue] = useState('')
+    const userFeedback = db.collection('users').doc(currentUser ? currentUser.uid : null).collection('feedback')
 
     const submitHandler = (e) => {
-        console.log(e)
+        e.preventDefault()
+        FBHandler()
     }
+
+    const FBHandler = () => { 
+        if(userFeedback){
+            userFeedback.doc(generateKey(feedbackTopic)).set({
+                feedbackValue
+            }).then(() => {
+                console.log("Feedback Sent")
+                setFeedbackTopic('')
+                setFeedbackValue('')
+            }).catch((err) => {
+                console.log(err)
+            })
+        }
+
+    }
+
+    const generateKey = (data) => { //Generate random key for feedback in Firebase
+        return `${data}_${new Date().getTime() }`;
+    } 
 
     const showFeedbackHandler = () => {
         if(!showFeedback){setShowFeedback(true)}
