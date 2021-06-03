@@ -1,5 +1,19 @@
-A map application to mark where you've slept during a road-trip. Using React, Google-Maps-API, Places-Autocomplete, Geocode, and Combo box. Using firestore as backend for user-authentication and storing data, allowing users personalized maps and the ability to leave reviews, comments, and share their own maps. 
+It's late, you're extremly tired. You've been keeping your eyes open with the last of your willpower... but willpower can only take you so far. You need to find a place where you can rest your weary eyes, but the brain is already running on fumes, begging for the sweet release of sleep. In a desperate situation like this, you wish to yourself, 
 
+--"I wish there was an app that could let me know where I've slept before, with great features like adding reviews and comments to each marker, a button to see my current location, with non-intrusive UI and a beautiful night-mode"-- 
+ 
+Well look no further! Here is the Google Maps App you've been waiting for: 
+
+                                                     TIRED NOMADS 🚗🚙🚚💤
+
+A map application to mark where you've slept during a road-trip past or present. Using React, React-Google-Maps, Google-Maps-API (Maps Javascript, Places, Geocoding, Distance-Matrix), Places-Autocomplete, Geocode, and Combo box. Using firestore as backend for user-authentication and storing data, allowing users personalized maps with the ability to leave reviews, comments, and good ol' memories :^)
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+----------------------Website: https://www.tirednomads.com/ -------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+######################## REACT BOILER PLATE ##########################
 
 # Getting Started with Create React App
 
