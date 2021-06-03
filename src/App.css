@@ -58,6 +58,10 @@ h1 {
   z-index: 20;
 }
 
+.distanceInfoDelBtn {
+  margin-top: 10px;
+}
+
 .locate {
   position: absolute;
   top: 15px;
@@ -108,6 +112,12 @@ h1 {
   left: 69%;
   border: none;
   z-index: 15;
+}
+
+.title {
+  margin: 10px 0px 0px 0px;
+  font-size: 15pt;
+  font-weight: 400;
 }
 
 .feedbackBtn {

@@ -16,12 +16,11 @@ const useStyles = makeStyles(() => ({
         justifyContent: 'center',
         flexWrap: 'wrap',
         width: '250px',
-        height: '200px',
+        height: '240px',
         zIndex: 20,
     },
     formItems: {
-        marginTop: '15px',
-        marginBottom: '15px',
+        marginBottom: '20px',
     },
     dropDown: {
         width: '130px'
@@ -103,6 +102,7 @@ const Feedback = ({setAnchorEl, currentUser, setSuccess, setError}) => {
                 variant="elevation"
                 className={classes.paperStyle}
                 >
+                <div className="title">Send Feedback</div>
                 <form onSubmit={e => submitHandler(e)}>
                     <div className={classes.formItems}>
                         <FormControl  className={classes.dropDown}>

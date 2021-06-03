@@ -38,7 +38,7 @@ const useStyles = makeStyles(() => ({
         display: 'flex',
         justifyContent:'center',
         width: '270px',
-        height: '320px',
+        height: '340px',
     },
     formItems: {
         marginTop: '15px',
@@ -49,7 +49,7 @@ const useStyles = makeStyles(() => ({
     tripName: {
         height: '20px',
         width: '150px',
-        margin: '20px 0px 20px 0px'
+        margin: '0px 0px 20px 0px'
     }
 }));
 
@@ -364,6 +364,7 @@ const DistanceMatrix = (
             className={classes.paperStyle}>
             {/* Search for origin and destination coords */}
             <form onSubmit={e => submitHandler(e)}>
+                <div className="title">Create Trip Markers</div>
                 <div>
                     <TextField 
                     className={classes.tripName} 
