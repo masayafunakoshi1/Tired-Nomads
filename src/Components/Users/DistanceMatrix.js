@@ -110,7 +110,9 @@ const DistanceMatrix = (
     {currentUser, 
     tripMarkers,
     setTripMarkerDetails,
-    setTripMarkersShow 
+    setTripMarkersShow,
+    setSuccess,
+    setError, 
 }) => {
     const classes = useStyles();
     const [createTrip, setCreateTrip] = useState(false)
@@ -226,6 +228,23 @@ const DistanceMatrix = (
         }
     }
 
+    //////////////////////////// Succes or Error alerts //////////////////////////////
+
+    const openSuccessAlert = () => {
+        setSuccess("Trip created successfully")
+        setTimeout(() => {
+            setSuccess("")
+        }, 1500)
+    }
+
+    const openFailureAlert = () => {
+        setError("Failed to create trip")
+        setTimeout(() => {
+            setError("")
+        }, 1500)
+
+    }
+
     //Constraints that valueTripName must follow, else doesn't work with firebase
     const tripNameConstraints = (e) => {
         if(e.target.value.indexOf(' ') > 0 || e.target.value.indexOf("/") > 0 || e.target.value === '.' || e.target.value === '..' || e.target.value === RegExp('__.*__') || e.target.value.includes(" ")){
@@ -280,8 +299,10 @@ const DistanceMatrix = (
                 setTimeout(() => {
                     setTripMarkersShow(true)
                 }, 100)
+                openSuccessAlert()
             }).catch((err) => {
                 console.log(err)
+                openFailureAlert()
             })
         } else {
             console.log("No account storage located")

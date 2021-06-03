@@ -9,14 +9,14 @@ const SaveButton = (props) => {
         props.setSuccess("Saved Successfully")
         setTimeout(() => {
             props.setSuccess("")
-        }, 2000)
+        }, 1500)
     }
 
     const openFailureAlert = () => {
         props.setError("Failed to save")
         setTimeout(() => {
             props.setError("")
-        }, 2000)
+        }, 1500)
 
     }
 

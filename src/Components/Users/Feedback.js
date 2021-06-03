@@ -28,7 +28,7 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-const Feedback = ({setAnchorEl, currentUser}) => {
+const Feedback = ({setAnchorEl, currentUser, setSuccess, setError}) => {
     const classes = useStyles();
     const [showFeedback, setShowFeedback] = useState(false)
     const [feedbackTopic, setFeedbackTopic] = useState('')
@@ -40,6 +40,21 @@ const Feedback = ({setAnchorEl, currentUser}) => {
         FBHandler()
     }
 
+    const openSuccessAlert = () => {
+        setSuccess("Feedback sent successfully")
+        setTimeout(() => {
+            setSuccess("")
+        }, 1500)
+    }
+
+    const openFailureAlert = () => {
+        setError("Failed to send")
+        setTimeout(() => {
+            setError("")
+        }, 1500)
+
+    }
+
     const FBHandler = () => { 
         if(userFeedback){
             userFeedback.doc(generateKey(feedbackTopic)).set({
@@ -48,8 +63,11 @@ const Feedback = ({setAnchorEl, currentUser}) => {
                 console.log("Feedback Sent")
                 setFeedbackTopic('')
                 setFeedbackValue('')
+            }).then(() => {
+                openSuccessAlert()
             }).catch((err) => {
                 console.log(err)
+                openFailureAlert()
             })
         }
 

@@ -187,9 +187,10 @@ const GoogleMapsPersonal = () => {
 
     return (
     <div className="App">
+      <div className="alerts">
         {error && <Alert severity="error">{error}</Alert>}
         {success && <Alert severity="success">{success}</Alert>}
-
+      </div>
         <h1 className={nightModeHandler ? 'nightModeFont' : ''}>
           Welcome back, 
           <br/>{currentUser.email}!
@@ -211,7 +212,12 @@ const GoogleMapsPersonal = () => {
         setAnchorEl={setAnchorEl}
         />
 
-        <Feedback currentUser={currentUser} setAnchorEl={setAnchorEl}/>
+        <Feedback 
+        currentUser={currentUser} 
+        setAnchorEl={setAnchorEl}
+        setSuccess={setSuccess}
+        setError={setError}
+        />
 
         <Logout setError={setError} changes={changes}/>
 
@@ -282,12 +288,11 @@ const GoogleMapsPersonal = () => {
             
             <DistanceMatrix 
             tripMarkers={tripMarkers}
-            setTripMarkers={setTripMarkers}
-            tripMarkersShow={tripMarkersShow}
             setTripMarkersShow={setTripMarkersShow}
             currentUser={currentUser}
-            tripMarkerDetails={tripMarkerDetails}
             setTripMarkerDetails={setTripMarkerDetails}
+            setSuccess={setSuccess}
+            setError={setError}
             />
     </div>
 

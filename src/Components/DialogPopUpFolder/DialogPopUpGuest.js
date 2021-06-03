@@ -39,9 +39,9 @@ const DialogPopUpGuest = ({currentUser}) => {
                             <DialogContentText id="alert-dialog-slide-description">
                                 Thanks for trying out my app!
                                 <br/>
-                                <p>
+                                <div>
                                     This is the <strong>guest version</strong>, so note that anything you save or write can be accessed and changed by <strong>---ANYONE---</strong>
-                                </p>
+                                </div>
                                 If you have any questions, comments, or bugs that you encounter, <br/> click on this button -- <FeedbackIcon color="primary" fontSize="small"/> -- in the app. <br/>I'd love to hear some feedback!
 
                             </DialogContentText>
