@@ -29,13 +29,15 @@ export const AuthProvider = ({ children }) => {
 
     function googleSignin() {
         auth.signInWithPopup(provider)
-            .then(async () => {
+            .then(() => {
                     // This gives you a Google Access Token. You can use it to access the Google API.
                     
                     //Problem with history.push when logging in with google account first time, doesn't redirect. Redirects on the second time.
                     setCurrentUser(currentUser)
                     //Works with await console.log(), so probably a timing issue
-                    await history.push("/myMap")
+                    setTimeout(() => {
+                        history.push("/myMap")
+                    }, 300)
                 }) 
                 .catch((error) => {
                     console.log(error.code, error.message)

@@ -28,6 +28,8 @@ const PopoverComp = (props) => {
                 return <Typography>Reset Markers</Typography>
             case 'nightMode':
                 return <Typography>Toggle NightMode</Typography>
+            case 'feedbackBtn':
+                return <Typography>Write Feedback</Typography>
             default: 
                 return null
         };

@@ -25,36 +25,17 @@ import Logout from '../Logout'
 import NightMode from '../NightMode'
 import DistanceMatrix from './DistanceMatrix'
 import TripMarkers from './DistanceMatrixComps/TripMarkers'
+import Feedback from './Feedback'
 
 import {useAuth} from '../contexts/AuthContext'
 import {db} from '../../firebase'
+import DialogPopUpGuest from '../DialogPopUpFolder/DialogPopUpGuest'
 
   //Must be set with 100 vw/vh to make it fit page
   const mapContainerStyle = {
     width: '100vw',
     height: '100vh',
   };
-
-////////////////// Attempting to change starting location to user's location if location checker is allowed/////////////////////////////
-
-  // const successLocation = (position) => {
-  //   return({
-  //       lat: position.coords.latitude,
-  //       lng: position.coords.longitude
-  //     })
-  // }
-
-  // const errorLocation = (err) => {
-  //   console.log(err)
-  //   return ({
-  //     lat: 41.076206,
-  //     lng: -73.858749,
-  //   })
-  // }    
-
-  // const yourLocation = navigator.geolocation.getCurrentPosition(successLocation, errorLocation)
-    
-  // const center = yourLocation
 
   const center = {
     lat: 39.099724,
@@ -89,10 +70,10 @@ const GoogleMapsPersonal = () => {
 
     const [tripMarkerDetails, setTripMarkerDetails] = useState() //Data from Distance Matrix API callback response (based on trip origin, dest., travel mode)
 
-
     const mapRef = useRef()
     const {currentUser} = useAuth();
     const markersDocs = db.collection('users').doc(currentUser.uid).collection('markers')
+
 
     //Originally outside scope of functional component to prevent rerenders, but couldn't pass nightMode styled map with a conditional, so now inside functional component
     //If nightModeHandler is toggled, map style becomes nightMode
@@ -193,8 +174,8 @@ const GoogleMapsPersonal = () => {
           }))
           setMarkers(data)
               })
-        .catch(() => {
-          console.log("Failed to get data")
+        .catch((err) => {
+          console.log("Failed to get data", err)
         })
     }, [])
 
@@ -206,9 +187,10 @@ const GoogleMapsPersonal = () => {
 
     return (
     <div className="App">
+      <div className="alerts">
         {error && <Alert severity="error">{error}</Alert>}
         {success && <Alert severity="success">{success}</Alert>}
-
+      </div>
         <h1 className={nightModeHandler ? 'nightModeFont' : ''}>
           Welcome back, 
           <br/>{currentUser.email}!
@@ -216,6 +198,8 @@ const GoogleMapsPersonal = () => {
               😎
               </span>
         </h1>
+
+        <DialogPopUpGuest currentUser={currentUser}/>
 
         <Search panTo = {panTo}/>
 
@@ -226,6 +210,13 @@ const GoogleMapsPersonal = () => {
         setChanges={setChanges}
         anchorEl={anchorEl}
         setAnchorEl={setAnchorEl}
+        />
+
+        <Feedback 
+        currentUser={currentUser} 
+        setAnchorEl={setAnchorEl}
+        setSuccess={setSuccess}
+        setError={setError}
         />
 
         <Logout setError={setError} changes={changes}/>
@@ -297,12 +288,11 @@ const GoogleMapsPersonal = () => {
             
             <DistanceMatrix 
             tripMarkers={tripMarkers}
-            setTripMarkers={setTripMarkers}
-            tripMarkersShow={tripMarkersShow}
             setTripMarkersShow={setTripMarkersShow}
             currentUser={currentUser}
-            tripMarkerDetails={tripMarkerDetails}
             setTripMarkerDetails={setTripMarkerDetails}
+            setSuccess={setSuccess}
+            setError={setError}
             />
     </div>
 

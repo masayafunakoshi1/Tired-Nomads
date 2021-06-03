@@ -34,7 +34,7 @@ const DistanceInformation = (props) => {
             <div>
                 <h2>{props.tripSelected.tripName}</h2>
                 <h4>{props.tripSelectedDest ? 'Destination:' : 'Origin:'}</h4>
-                <p>{props.tripSelectedDest ? props.tripSelected.destination.address : props.tripSelected.origin.address}</p>
+                <div>{props.tripSelectedDest ? props.tripSelected.destination.address : props.tripSelected.origin.address}</div>
 
 
                 {/* <p><strong>Distance: </strong> {props.tripMarkerDetails ? 

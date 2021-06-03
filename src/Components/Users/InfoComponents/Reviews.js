@@ -71,7 +71,6 @@ const Reviews = ({user, selected}) => {
       .then((doc) => {
         if(doc.exists){
           setReviewArr([doc.data().review])
-          console.log("review")
         }else{
           console.log("Review doesn't exist")
         }
