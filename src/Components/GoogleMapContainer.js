@@ -60,7 +60,7 @@ const GoogleMapContainer = () => {
       styles: !nightModeHandler ? regular : nightMode,
       disableDefaultUI: true,
       zoomControl: true,
-      gestureHandler: 'greedy',
+      gestureHandling: "greedy",
    }
 
 /////////////////////////////////////Functions////////////////////////////////////////
