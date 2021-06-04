@@ -80,7 +80,9 @@ const GoogleMapsPersonal = () => {
     const options = {
       styles: !nightModeHandler ? regular : nightMode,
       disableDefaultUI: true,
-      zoomControl: true
+      zoomControl: true,
+      gestureHandler: 'greedy',
+
     }     
 
 ///////////////////////////////////////Functions///////////////////////////////////////
