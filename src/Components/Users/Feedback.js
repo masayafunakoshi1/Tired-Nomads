@@ -122,7 +122,7 @@ const Feedback = ({setAnchorEl, currentUser, setSuccess, setError}) => {
                     <div className={classes.formItems}>
                         <TextField 
                         className={classes.multilineTextfield}
-                        label="Multiline"
+                        label="Message"
                         multiline
                         rowsMax={5}
                         value={feedbackValue}

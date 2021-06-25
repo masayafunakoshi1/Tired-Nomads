@@ -26,11 +26,17 @@ const Information = ({selected, setSelected, deleteMarker, currentUser}) => {
             position={{lat: parseFloat(selected.lat), lng: parseFloat(selected.lng)}} 
             onCloseClick = {() => {
                 setSelected(null);
-            }}>
+            }}
+            options={{shouldFocus: false}}
+            >
           <ClickAwayListener onClickAway={handleClickAway}>
                 <div>
                 <h2>Slept Here</h2>
                 <h5>{`${selected.time}`}</h5>
+
+                <button className='invBtn' 
+                //Invisible button because glitch in InfoWindow 
+                /> 
 
                 <Ratings selected={selected} user={user}/>
                 <Reviews user={user} selected={selected}/>

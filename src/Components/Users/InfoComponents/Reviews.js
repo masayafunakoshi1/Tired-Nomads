@@ -20,12 +20,17 @@ import {db} from '../../../firebase'
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    maxWidth: '50ch',
+    maxWidth: '40ch',
     backgroundColor: theme.palette.background.paper,
+
   },
   inline: {
-    display: 'inline',
+    display: 'inline', 
   },
+  listItem: {
+    maxHeight: '150px',
+
+  }
 }));
 
 ////////////////////////////////// Functional Component //////////////////////////////////////
@@ -83,28 +88,32 @@ const Reviews = ({user, selected}) => {
 
     return (
         <List className={classes.root}>
-        <ListItem alignItems="flex-start">
+          <ListItem className={classes.listItem} alignItems="flex-start">
             <ListItemAvatar>
               <Avatar src={user.avatar ? user.avatar : `${AccountCircleIcon}`}/>
             </ListItemAvatar>
             <ListItemText
             primary={user.userName}
             secondary={
-                <span>
+                <div>
                     <Typography
                         component={"span"}
                         variant="body2"
                         className={classes.inline}
                         color="textPrimary"
                     >
-          {/*////// May want to add multiple reviews eventually/////// */}
+          {/*////// May want to add multiple reviews eventually/////// */}    
+                    <p>
                       {user && user.uid !== "user1" ? reviewArr : "This was a nice Walmart to sleep at"}
+                    </p>
 
-                      {reviewArr !== null || undefined ? <IconButton 
+                      {reviewArr !== null || undefined ? 
+                      <IconButton 
                         color="secondary"
                         type="delete" 
                         aria-label="delete"
                         onClick={deleteReviewBtn}
+                        className='deleteBtnInfo'
                         >
                         <DeleteIcon />
                       </IconButton> : ""}
@@ -113,7 +122,7 @@ const Reviews = ({user, selected}) => {
 
 
                     <Divider component={"span"}/>
-                </span>
+                </div>
             }
             />
         </ListItem>
