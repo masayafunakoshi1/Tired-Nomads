@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import { AuthProvider } from './Components/contexts/AuthContext';
 import "./App.css"
@@ -10,6 +10,10 @@ import Privateroute from "./Components/Privateroute"
 import GoogleMapsPersonal from './Components/Users/GoogleMapsPersonal';
 
 const App = () => {
+
+  useEffect(() => {
+    document.title='Tired Nomads - A google maps app'
+  }, [])
 
     return (
       <Router>
