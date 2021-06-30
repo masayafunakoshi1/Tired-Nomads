@@ -22,7 +22,7 @@ const SaveButton = (props) => {
 
     const saveHandler = () => {
         let batch = db.batch();
-        //sets batch as new mark ers, then commits them to firestore
+        //sets batch as new markers, then commits them to firestore
         if(props.markers !== [] || null || undefined){
             props.markers.forEach((doc) => {
                 let markersList = db.collection('users')

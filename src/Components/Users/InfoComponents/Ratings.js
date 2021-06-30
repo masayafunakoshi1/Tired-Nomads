@@ -32,6 +32,7 @@ const Ratings = ({selected, user}) => {
             .then((doc) => {
                 if(doc.exists){
                     setValue(doc.data().rating)
+                    console.log('value set')
                 }
                 else{
                     console.log("Rating doesn't exist")
@@ -42,7 +43,7 @@ const Ratings = ({selected, user}) => {
         } else {
             console.log("No account data located")
         }
-    }, [selected])
+    }, [selected, value])
 
 
     return (
@@ -53,7 +54,7 @@ const Ratings = ({selected, user}) => {
                 value={value}
                 onChange={
                 (event, newValue) => {
-                    onValueSet(newValue)       
+                    onValueSet(newValue)      
                     }
                 }
                 />

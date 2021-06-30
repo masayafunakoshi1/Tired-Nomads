@@ -246,13 +246,25 @@ const DistanceMatrix = (
     }
 
     //Constraints that valueTripName must follow, else doesn't work with firebase
+    const tripNameChanger = (e) => {
+        if(e.target.value.includes(" ") || e.target.value.indexOf(' ') > 0){
+            let string = e.target.value.replace(/\s+/g, '-')
+            setValueTripName(string)
+        }
+        else{
+        setValueTripName(e.target.value)
+        }
+        tripNameConstraints(e)
+    }
+
     const tripNameConstraints = (e) => {
-        if(e.target.value.indexOf(' ') > 0 || e.target.value.indexOf("/") > 0 || e.target.value === '.' || e.target.value === '..' || e.target.value === RegExp('__.*__') || e.target.value.includes(" ")){
+        if(e.target.value.includes("/")|| e.target.value.includes('.') || e.target.value.includes('..') || e.target.value.includes(`${RegExp('__.*__')}`)){
             setTripNameCond(true)
         } else {
             setTripNameCond(false)
         }
     }
+
 
     ///////////////////////////////Firestore set(), get() and Delete Trip//////////////////////////
     //////////////////////////////////////////////////////////////////////////////////
@@ -371,11 +383,9 @@ const DistanceMatrix = (
                     label="Trip Name"
                     value={valueTripName}
                     error={tripNameCond}
-                    onChange={(e) => {
-                    //Setting trip name with conditional func to make sure name works with firebase
-                        setValueTripName(e.target.value)
-                        tripNameConstraints(e)
-                    }}  
+                    onChange={(e) => tripNameChanger(e)
+                    //Setting trip name with conditional func to make sure name works with firebase 
+                    }  
                     />
                 </div>
 

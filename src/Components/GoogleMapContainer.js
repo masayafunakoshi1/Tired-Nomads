@@ -81,7 +81,7 @@ const GoogleMapContainer = () => {
     //When searching a location, zoom into the location on map
     const panTo = React.useCallback(({lat, lng}) => {
       mapRef.current.panTo({lat, lng});
-      mapRef.current.setZoom(14);
+      mapRef.current.setZoom(18);
     }, [])
 
     //Delete selected marker

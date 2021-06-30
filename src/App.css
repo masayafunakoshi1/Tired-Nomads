@@ -86,6 +86,17 @@ h1 {
   padding: 3px 5px 5px 5px;
 }
 
+.invBtn {
+  cursor: default;
+  background-color: Transparent;
+  border: none;
+}
+
+.deleteBtnInfo {
+  bottom: 25px;
+  left: 75%;
+}
+
 /* logout button */
 .buttons {
   position: absolute;
@@ -137,7 +148,6 @@ h1 {
 }
 
 #saveBtn {
-  bottom: 20px;
   left: 78%;
 }
 
@@ -383,6 +393,16 @@ h1 {
     z-index: 10;
   }
 
+  .deleteBtnInfo {
+    bottom: 20px;
+    left: 65%;
+  }
+
+  #infoDeleteBtn {
+    right: 45px;
+    bottom: 45px;
+  }
+
   #nightMode {
     top: 91%;
     left: 60%;
@@ -447,7 +467,7 @@ h1 {
     transform: translateX(-50%);
     width: 75%;
     max-width: 400px;
-    z-index: 10;
+    z-index: 5;
   }
 
   .locate {
@@ -472,7 +492,17 @@ h1 {
     position: absolute;
     background: none;
     border: none;
-    z-index: 10;
+    z-index: 5;
+  }
+
+  .deleteBtnInfo {
+    bottom: 38px;
+    left: 75%;
+  }
+
+  #infoDeleteBtn {
+    right: 30px;
+    top: -50px;
   }
 
   #nightMode {
@@ -494,6 +524,7 @@ h1 {
   .distanceMatrix {
     top: 115px;
     left: 12%;
+    z-index: 5;
   }
 
   .feedback {
