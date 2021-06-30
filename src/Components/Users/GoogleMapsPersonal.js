@@ -115,7 +115,7 @@ const GoogleMapsPersonal = () => {
     //When searching a location, zoom into the location on map
     const panTo = useCallback(({lat, lng}) => {
       mapRef.current.panTo({lat, lng});
-      mapRef.current.setZoom(14);
+      mapRef.current.setZoom(18);
     }, [])
 
 
@@ -219,6 +219,7 @@ const GoogleMapsPersonal = () => {
         setAnchorEl={setAnchorEl}
         setSuccess={setSuccess}
         setError={setError}
+        nightModeHandler={nightModeHandler}
         />
 
         <Logout setError={setError} changes={changes}/>

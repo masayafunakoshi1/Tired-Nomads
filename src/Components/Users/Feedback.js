@@ -27,7 +27,7 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-const Feedback = ({setAnchorEl, currentUser, setSuccess, setError}) => {
+const Feedback = ({setAnchorEl, currentUser, setSuccess, setError, nightModeHandler}) => {
     const classes = useStyles();
     const [showFeedback, setShowFeedback] = useState(false)
     const [feedbackTopic, setFeedbackTopic] = useState('')
@@ -90,7 +90,7 @@ const Feedback = ({setAnchorEl, currentUser, setSuccess, setError}) => {
                     className="feedbackBtn"
                 >
                     <FeedbackIcon 
-                    color="primary" 
+                    color={nightModeHandler ? 'secondary' : 'primary'} 
                     fontSize="large" 
                     cursor="pointer"
                     />
@@ -133,7 +133,7 @@ const Feedback = ({setAnchorEl, currentUser, setSuccess, setError}) => {
                     <div className={classes.formItems}>
                         <Button 
                         variant="contained" 
-                        color="primary"
+                        color='primary'
                         type="submit"
                         disabled={ !feedbackTopic || !feedbackValue || feedbackValue === "" }
                         >

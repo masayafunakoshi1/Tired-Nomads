@@ -20,23 +20,39 @@ import {db} from '../../../firebase'
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    maxWidth: '40ch',
+    maxWidth: '41ch',
     backgroundColor: theme.palette.background.paper,
-
+        [theme.breakpoints.down('sm')]: {
+        maxWidth: '40ch',
+        },
+        [theme.breakpoints.down('xs')]: {
+        maxWidth: '30ch',
+        },
   },
   inline: {
-    display: 'inline', 
+    display: 'inline',
+  },
+  submitBtn: {
+      [theme.breakpoints.down('sm')]: {
+        marginLeft: '160px'
+      },
+
   },
   listItem: {
-    maxHeight: '150px',
+        overflow: 'auto',
+        maxHeight: '170px',
+    [theme.breakpoints.down('sm')]: {
+        maxHeight: '100px',
+      },
+  },
 
-  }
 }));
 
 ////////////////////////////////// Functional Component //////////////////////////////////////
 const Reviews = ({user, selected}) => {
     const classes = useStyles();
     const [review, setReview] = useState('')
+    const [reviewDep, setReviewDep] = useState(false) //Review update on submit
     const [reviewArr, setReviewArr] = useState(null)
     const userReview = db.collection('users').doc(user ? user.uid : null).collection('reviews')
 
@@ -44,7 +60,7 @@ const Reviews = ({user, selected}) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         onReviewSet();
-        await setReview('')
+        setReview('')
       }
 
     //Sending data into firestore
@@ -52,8 +68,12 @@ const Reviews = ({user, selected}) => {
         userReview.doc(`${selected.key}`).set({
             review
         }).then(() => {
+            setReviewDep(true)
             console.log("Review saved successfully")
-        }).catch((err) => {
+        }).then(() => {
+            setReviewDep(false)
+        })
+        .catch((err) => {
             console.log(err)
         })
       }
@@ -75,14 +95,16 @@ const Reviews = ({user, selected}) => {
       userReview.doc(`${selected.key}`).get()
       .then((doc) => {
         if(doc.exists){
-          setReviewArr([doc.data().review])
+          setTimeout(() => {
+            setReviewArr([doc.data().review])
+          }, 100)
         }else{
           console.log("Review doesn't exist")
         }
       }).catch((err) => {
         console.log("Process unsuccessful", err)
       })
-    }, [selected, review])
+    }, [selected, reviewDep])
 
 
 
@@ -148,6 +170,7 @@ const Reviews = ({user, selected}) => {
                 color="primary"
                 type="submit" 
                 aria-label="submit"
+                className={classes.submitBtn}
                 >
                 <PublishIcon />
               </IconButton>

@@ -8,8 +8,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Ratings from './InfoComponents/Ratings'
 import Reviews from './InfoComponents/Reviews'
 
-const Information = ({selected, setSelected, deleteMarker, currentUser}) => {
 
+const Information = ({selected, setSelected, deleteMarker, currentUser}) => {
     const [user] = useState({
        userName: currentUser ? `${currentUser.email}` : 'JohnChongus@gmail.com',
        avatar: currentUser ? `${currentUser.avatar}` : null,
@@ -40,14 +40,17 @@ const Information = ({selected, setSelected, deleteMarker, currentUser}) => {
 
                 <Ratings selected={selected} user={user}/>
                 <Reviews user={user} selected={selected}/>
-                <Button
-                    variant="contained"
-                    color="secondary"
-                    startIcon={<DeleteIcon />}
-                    onClick={() => deleteMarker(selected.key)}
-                    >
-                    Delete
-                </Button>
+                <div>
+                  <Button
+                      id="infoDeleteBtn"
+                      variant="contained"
+                      color="secondary"
+                      startIcon={<DeleteIcon />}
+                      onClick={() => deleteMarker(selected.key)}
+                      >
+                      Delete
+                  </Button>
+                </div>
                 </div>
             </ClickAwayListener>
           </InfoWindow>
