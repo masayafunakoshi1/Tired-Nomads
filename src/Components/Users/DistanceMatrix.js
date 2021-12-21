@@ -1,27 +1,34 @@
-import React, { useState, useEffect } from "react";
 
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  Paper,
+  Select,
+  TextField,
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxList,
+  ComboboxOption,
+  ComboboxPopover,
+} from "@reach/combobox";
+import React, { useEffect, useState } from "react";
+// import {
+//     DistanceMatrixService
+//   } from "@react-google-maps/api";
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
 } from "use-places-autocomplete";
-import { makeStyles } from "@material-ui/core/styles";
-import {
-  Button,
-  TextField,
-  Paper,
-  FormControl,
-  InputLabel,
-  Select,
-} from "@material-ui/core";
-import {
-  Combobox,
-  ComboboxInput,
-  ComboboxPopover,
-  ComboboxList,
-  ComboboxOption,
-} from "@reach/combobox";
-import { db } from "../../firebase";
 import "../../App.css";
+import { db } from "../../firebase";
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// UNDER DEVELOPMENT ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Currently only showing trip markers and trip names ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// When I figure out DistanceMatrixService a bit more then can add distance and duration of trips ///////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 //Material UI styles
 const useStyles = makeStyles(() => ({
@@ -136,7 +143,7 @@ const DistanceMatrix = ({
   const [tripOrigCoords, setTripOrigCoords] = useState([]); //Trip origin coords
   const [tripDestCoords, setTripDestCoords] = useState([]); //Trip dest. coords
   const [tripMarkerTravelMode, setTripMarkerTravelMode] = useState([]); //Travel Mode
-
+  
   //Put firestore database collection into a const
   const userTripMarkers = db
     .collection("users")

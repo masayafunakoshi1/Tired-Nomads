@@ -1,7 +1,7 @@
-import React from "react";
+import { Typography } from "@material-ui/core";
 import Popover from "@material-ui/core/Popover";
 import { makeStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
+import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   popover: {
@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PopoverComp = (props) => {
+
   const classes = useStyles();
   const open = Boolean(props.anchorEl);
 

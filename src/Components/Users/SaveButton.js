@@ -1,7 +1,7 @@
-import React from "react";
 import { Button } from "@material-ui/core";
-import { db } from "../../firebase";
+import React from "react";
 import "../../App.css";
+import { db } from "../../firebase";
 
 const SaveButton = (props) => {
   const openSuccessAlert = () => {
