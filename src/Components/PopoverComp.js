@@ -13,8 +13,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PopoverComp = (props) => {
-  // const arrayOfLabels = ['Your Location', 'Reset Markers']
-  // const [label, setLabel] = useState('')
+
   const classes = useStyles();
   const open = Boolean(props.anchorEl);
 
