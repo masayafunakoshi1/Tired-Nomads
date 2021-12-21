@@ -1,8 +1,8 @@
-import React, { useState } from "react";
 import { Marker } from "@react-google-maps/api";
-import DistanceInformation from "./DistanceInformation";
+import React, { useState } from "react";
 import { db } from "../../../firebase";
 import { useAuth } from "../../contexts/AuthContext";
+import DistanceInformation from "./DistanceInformation";
 
 const TripMarkers = ({
   tripMarkers,
