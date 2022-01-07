@@ -10,14 +10,17 @@ import {
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+//Pulls out homepage dialog popup to introduce the site to user
+
 const DialogPopUpHome = () => {
   const [popup, setPopup] = useState(false);
 
+  //Closes popup
   const handleClose = () => {
     setPopup(false);
   };
 
-  //"Get Started" pop-up
+  //"Get Started" pop-up on page load
   useEffect(() => {
     setPopup(true);
   }, []);
@@ -42,6 +45,7 @@ const DialogPopUpHome = () => {
               <Link to="/signup">Create an account</Link> to start marking down
               your sleep-venture!
               <br />
+              {/* Maybe should link directly to guest account */}
               Or try our <Link to="/login">Guest Account</Link>.
               <strong>Click on the map to get started!</strong>
             </DialogContentText>

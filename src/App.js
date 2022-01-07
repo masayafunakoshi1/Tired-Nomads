@@ -9,10 +9,7 @@ import Signup from "./Components/Signup";
 import GoogleMapsPersonal from "./Components/Users/GoogleMapsPersonal";
 
 const App = () => {
-  useEffect(() => {
-    document.title = "Tired Nomads - A google maps app";
-  }, []);
-
+  //React Router to display different pages on screen
   return (
     <Router>
       <div className="App">

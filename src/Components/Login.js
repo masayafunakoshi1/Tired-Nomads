@@ -6,6 +6,8 @@ import { Link, useHistory } from "react-router-dom";
 import "../styles/Login.css";
 import { useAuth } from "./contexts/AuthContext";
 
+//Login page for users or guests, has access to O-auth with Firebase
+
 const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -14,12 +16,14 @@ const Login = () => {
   const [error, setError] = useState("");
   const history = useHistory();
 
+  //Guest account works by filling in login values with Guest account info
   const guestAcc = async (e) => {
     emailRef.current.value = "user1@guest.com";
     passwordRef.current.value = "guest123";
     await handleSubmit(e);
   };
 
+  //Login user
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -85,7 +89,12 @@ const Login = () => {
         </p>
       </div>
 
-      <div /*GUEST ACCOUNT, UNSURE IF I SHOULD ADD IT*/>
+      {/* GUEST ACCOUNT, an account accessible to anybody
+          Figuring out whether to change it to a sandbox mode that resets every session
+          OR
+          Keep it the same way
+      */}
+      <div>
         <p>
           OR
           <br /> <br />

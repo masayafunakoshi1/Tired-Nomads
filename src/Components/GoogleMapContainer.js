@@ -85,7 +85,7 @@ const GoogleMapContainer = () => {
   //If there is a load error, DOM will show this message
   if (loadError) return <div className="App">Error loading maps</div>;
   //When map is loading, will show this message
-  if (!isLoaded) return <div className="App">Loading Maps</div>;
+  if (!isLoaded) return <div className="App">Loading Maps...</div>;
 
   return (
     <div className="App">
