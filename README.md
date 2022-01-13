@@ -8,14 +8,20 @@ Well look no further! Here is the Google Maps App you've been waiting for:
 
 A map application to mark where you've slept during a road-trip past or present. Using React, React-Google-Maps, Google-Maps-API (Maps Javascript, Places, Geocoding, Distance-Matrix), Places-Autocomplete, Geocode, and Combo box. Using firestore as backend for user-authentication and storing data, allowing users personalized maps with the ability to leave reviews, comments, and good ol' memories :^)
 
--------------------------------------------------------------------------------------------------------------------------------------------
-----------------------Website: https://www.tirednomads.com/ -------------------------------
--------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
+<p align="center"> <strong>Website: </strong> https://www.tirednomads.com/ </p>
 
+-------------------------------------------------------------------------------------------------------------------
 
-######################## REACT BOILER PLATE ##########################
+## Notice:
+If you download this project for yourself, be aware that you will be unable to utilize the data storage with Firebase or Google Maps API unless you use you're own.
+Here are some links to get you started, they're free to use!
+#### Firebase: https://firebase.google.com/
+#### Google Maps API: https://developers.google.com/maps
 
-# Getting Started with Create React App
+-------------------------------------------------------------------------------------------------------------------
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -24,6 +30,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 In the project directory, you can run:
 
 ### `yarn start`
+OR
+### `npm start`
+if yarn isn't installed
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
